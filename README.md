@@ -1,36 +1,156 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎀 Portfólio Y2K - Fashion Designer
 
-## Getting Started
+Um portfólio interativo de designer de moda com estética Y2K/jogos de dress-up dos anos 2000.
 
-First, run the development server:
+## ✨ Conceito
+
+> **"Meu Closet Virtual, Meu Mundo"**
+
+Este não é um portfólio linear — é um quarto/jogo de moda onde cada peça do trabalho da designer é um item de roupa ou acessório customizável. A navegação simula abrir gavetas, trocar manequins, colar polaroids na parede e abrir janelas pop-up estilo Windows 2000.
+
+## 🚀 Tecnologias
+
+- **Next.js 14+** - Framework React com App Router
+- **TypeScript** - Tipagem estática
+- **Tailwind CSS** - Estilização utilitária
+- **Framer Motion** - Animações
+- **Lucide React** - Ícones
+- **clsx + tailwind-merge** - Gerenciamento de classes
+
+## 📦 Instalação
 
 ```bash
+# Clone o repositório
+git clone <url-do-repositório>
+
+# Entre na pasta do projeto
+cd y2k-fashion-portfolio
+
+# Instale as dependências
+npm install
+
+# Execute o servidor de desenvolvimento
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse [http://localhost:3000](http://localhost:3000) no navegador.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🎨 Paleta de Cores Y2K
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Nome | Hex | Uso |
+|------|-----|-----|
+| Pink 2000 | `#FF1493` | Fundo de botões, destaques |
+| Glitter Pink | `#FF69B4` | Hover, brilhos, bordas |
+| Cyber Pink | `#FF1493` | Cursores, acentos |
+| Soft White | `#FFF0F5` | Fundos principais |
+| Night Purple | `#4B0082` | Textos secundários, pop-ups |
+| Flash Photo | `#FFE55C` | Destaque de fotos |
+| Leopard Brown | `#D4A373` | Padrões, texturas |
+| Polaroid Off-white | `#FDF5E6` | Cards, legendas |
 
-## Learn More
+## 🔤 Tipografia
 
-To learn more about Next.js, take a look at the following resources:
+| Tipo | Fonte | Uso |
+|------|-------|-----|
+| Display | **Fredoka One** | Títulos, nome da designer |
+| Terminal | **VT323** | Pop-ups, textos técnicos |
+| Handwriting | **Caveat** | Legendas, post-its |
+| Body | **Inter** | Texto corrido |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🗂️ Estrutura de Pastas
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+y2k-fashion-portfolio/
+├── app/
+│   ├── layout.tsx          # Layout raiz com fontes e metadados
+│   ├── page.tsx            # Página inicial
+│   ├── globals.css         # Estilos globais e tema Y2K
+│   ├── lookbook/           # Seção de coleções
+│   ├── styling-lab/        # Projetos de styling
+│   ├── sketchbook/         # Ilustrações e croquis
+│   ├── runway/             # Vídeos de desfiles
+│   ├── about/              # Página sobre (estilo MySpace)
+│   └── contact/            # Formulário de contato
+├── components/
+│   ├── ui/                 # Componentes reutilizáveis
+│   ├── mannequin/          # Componente do manequim
+│   ├── polaroid/           # Cards estilo polaroid
+│   └── windows/            # Janelas estilo Windows 2000
+├── lib/
+│   └── utils.ts            # Utilitários (cn, etc)
+├── public/
+│   ├── cursors/            # Cursores personalizados
+│   ├── patterns/           # Texturas e padrões
+│   └── sounds/             # Efeitos sonoros (opcional)
+└── types/
+    └── index.ts            # Tipos TypeScript
+```
 
-## Deploy on Vercel
+## 🎮 Funcionalidades Planejadas
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### MVP (Sprint Atual)
+- [x] Estrutura base com Next.js + Tailwind
+- [x] Configuração de tema Y2K (cores, fontes, animações)
+- [ ] Manequim central + 4 gavetas principais
+- [ ] Galeria com polaroid + modal pop-up
+- [ ] CMS para projetos, imagens, textos
+- [ ] Formulário de contato funcional
+- [ ] Responsividade básica
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Futuro (v2)
+- [ ] Drag & drop de acessórios
+- [ ] Sistema de favoritos (localStorage)
+- [ ] Sons de interação (toggle)
+- [ ] Blog
+- [ ] Versão em inglês
+
+## 🎨 Diretrizes de Design
+
+- ❌ Nada de design "flat" ou minimalista
+- ❌ Evitar glassmorphism genérico
+- ✅ Cursores personalizados (💄, ⭐, ✂️)
+- ✅ Botões glossy com gradiente e sombra
+- ✅ Padrões de leopard print e xadrez
+- ✅ Polaroids com bordas brancas
+- ✅ Janelas pop-up estilo Windows 2000
+- ✅ Animações: float, sparkle, wiggle, glossy-shine
+
+## 🔧 Variáveis de Ambiente
+
+Crie um arquivo `.env.local` na raiz:
+
+```env
+# Exemplo de variáveis (ajuste conforme necessário)
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_CMS_API_URL=your-cms-url
+```
+
+## 📱 Responsividade
+
+- **Desktop**: Experiência completa Y2K com manequim central e gavetas laterais
+- **Tablet**: Layout adaptativo mantendo a estética
+- **Mobile**: Modo "closet compacto" com menu hambúrguer
+
+## 🌟 Scripts Disponíveis
+
+```bash
+npm run dev      # Servidor de desenvolvimento
+npm run build    # Build de produção
+npm run start    # Inicia servidor de produção
+npm run lint     # Executa ESLint
+```
+
+## 📝 Notas de Desenvolvimento
+
+- O projeto usa Tailwind CSS v4 com configuração via CSS
+- Animações customizadas estão definidas em `globals.css`
+- Cursores personalizados usam emojis via data URI SVG
+- Fontes são carregadas via `next/font/google`
+
+## 👩‍💻 Autor
+
+Fashion Designer - [Instagram](https://instagram.com) | [Behance](https://behance.net)
+
+---
+
+💖 Feito com muito amor e glitter no ano 2000 (e alguns anos depois).

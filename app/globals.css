@@ -1,26 +1,220 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Y2K Color Palette */
+  --pink-2000: #FF1493;
+  --glitter-pink: #FF69B4;
+  --leopard-brown: #D4A373;
+  --cyber-pink: #FF1493;
+  --soft-white: #FFF0F5;
+  --night-purple: #4B0082;
+  --flash-photo: #FFE55C;
+  --polaroid-offwhite: #FDF5E6;
+  --plaid-blue: #3A5A9A;
+  --dark-text: #1A1A1A;
+
+  /* Theme Variables */
+  --background: var(--soft-white);
+  --foreground: var(--dark-text);
+  --primary: var(--pink-2000);
+  --secondary: var(--glitter-pink);
+  --accent: var(--flash-photo);
+  --muted: var(--polaroid-offwhite);
 }
 
 @theme inline {
+  /* Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-pink-2000: var(--pink-2000);
+  --color-glitter-pink: var(--glitter-pink);
+  --color-leopard-brown: var(--leopard-brown);
+  --color-cyber-pink: var(--cyber-pink);
+  --color-soft-white: var(--soft-white);
+  --color-night-purple: var(--night-purple);
+  --color-flash-photo: var(--flash-photo);
+  --color-polaroid-offwhite: var(--polaroid-offwhite);
+  --color-plaid-blue: var(--plaid-blue);
+  --color-dark-text: var(--dark-text);
+
+  /* Font Families */
+  --font-display: var(--font-fredoka);
+  --font-terminal: var(--font-vt323);
+  --font-handwriting: var(--font-caveat);
+  --font-body: var(--font-inter);
+
+  /* Animations */
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-sparkle: sparkle 2s ease-in-out infinite;
+  --animate-wiggle: wiggle 1s ease-in-out infinite;
+  --animate-glossy-shine: glossy-shine 2s ease-in-out infinite;
+  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Custom Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+@keyframes glossy-shine {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 5px var(--glitter-pink), 0 0 10px var(--glitter-pink); }
+  50% { box-shadow: 0 0 15px var(--glitter-pink), 0 0 25px var(--glitter-pink); }
+}
+
+/* Utility Classes for Animations */
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-sparkle {
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+.animate-wiggle {
+  animation: wiggle 1s ease-in-out infinite;
+}
+
+.animate-glossy-shine {
+  animation: glossy-shine 2s ease-in-out infinite;
+  background-size: 200% 200%;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glossy-shine 2s ease-in-out infinite;
+}
+
+/* Custom Cursor */
+.cursor-lipstick {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext y='24' font-size='20'%3E💄%3C/text%3E%3C/svg%3E"), auto;
+}
+
+.cursor-star {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext y='24' font-size='20'%3E⭐%3C/text%3E%3C/svg%3E"), auto;
+}
+
+.cursor-scissors {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext y='24' font-size='20'%3E✂️%3C/text%3E%3C/svg%3E"), auto;
+}
+
+/* Background Patterns */
+.bg-stars {
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, var(--glitter-pink), transparent),
+    radial-gradient(2px 2px at 40px 70px, var(--flash-photo), transparent),
+    radial-gradient(2px 2px at 50px 160px, var(--glitter-pink), transparent),
+    radial-gradient(2px 2px at 90px 40px, var(--flash-photo), transparent),
+    radial-gradient(2px 2px at 130px 80px, var(--glitter-pink), transparent);
+  background-size: 200px 200px;
+}
+
+.bg-leopard {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4A373' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.bg-radial-pink {
+  background: radial-gradient(ellipse at center, var(--soft-white) 0%, var(--glitter-pink) 100%);
+}
+
+/* Y2K Glossy Button Style */
+.btn-glossy {
+  background: linear-gradient(180deg, var(--pink-2000) 0%, var(--glitter-pink) 100%);
+  border-radius: 20px;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 4px 8px rgba(255, 20, 147, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-glossy:hover {
+  transform: scale(1.02);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 6px 12px rgba(255, 20, 147, 0.4);
+}
+
+/* Polaroid Card Style */
+.polaroid {
+  background: var(--polaroid-offwhite);
+  padding: 8px 8px 24px 8px;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.15);
+  transform: rotate(-2deg);
+  transition: transform 0.3s ease;
+}
+
+.polaroid:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+/* Windows 2000 Style Window */
+.win95-window {
+  background: var(--polaroid-offwhite);
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.win95-titlebar {
+  background: linear-gradient(90deg, var(--plaid-blue) 0%, var(--night-purple) 100%);
+  color: white;
+  padding: 4px 8px;
+  font-family: var(--font-terminal);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+/* Selection Style */
+::selection {
+  background: var(--glitter-pink);
+  color: white;
+}
+
+/* Scrollbar Style (Webkit) */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--soft-white);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--pink-2000), var(--glitter-pink));
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cyber-pink);
 }
