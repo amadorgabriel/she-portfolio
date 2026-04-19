@@ -6,6 +6,8 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Heart, Sparkles, Tag } from "lucide-react";
 import { useState } from "react";
+import { SparkleHoverSurface } from "@/components/interactive/SparkleHoverSurface";
+import { IMAGE_BLUR_DATA_URL } from "@/lib/image-blur";
 
 interface ManequinCardProps {
   id: string;
@@ -19,6 +21,9 @@ interface ManequinCardProps {
   onFavoriteToggle?: (id: string) => void;
   className?: string;
   index?: number;
+  /** LCP: apenas 1–2 cards acima da dobra. */
+  imagePriority?: boolean;
+  imageSizes?: string;
 }
 
 export function ManequinCard({
@@ -33,8 +38,11 @@ export function ManequinCard({
   onFavoriteToggle,
   className,
   index = 0,
+  imagePriority = false,
+  imageSizes,
 }: ManequinCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const thumbRemote = thumbnail.startsWith("http");
 
   return (
     <motion.div
@@ -120,35 +128,40 @@ export function ManequinCard({
             </button>
           )}
 
-          {/* Imagem */}
-          <div className="relative aspect-[3/4] overflow-hidden rounded-t-3xl bg-gray-100">
-            <Image
-              src={thumbnail}
-              alt={title}
-              fill
-              sizes="(max-width: 768px) 50vw, 300px"
-              className={cn(
-                "object-cover transition-all duration-500",
-                isHovered && "scale-105"
-              )}
-            />
+          {/* Imagem + glitter */}
+          <SparkleHoverSurface className="rounded-t-3xl">
+            <div className="relative aspect-[3/4] overflow-hidden rounded-t-3xl bg-gray-100">
+              <Image
+                src={thumbnail}
+                alt={title}
+                fill
+                priority={imagePriority}
+                loading={imagePriority ? undefined : "lazy"}
+                sizes={imageSizes ?? "(max-width: 768px) 50vw, (max-width:1200px) 33vw, 300px"}
+                placeholder={thumbRemote ? "blur" : "empty"}
+                blurDataURL={thumbRemote ? IMAGE_BLUR_DATA_URL : undefined}
+                className={cn(
+                  "object-cover transition-all duration-500",
+                  isHovered && "scale-105"
+                )}
+                data-cursor-image="true"
+              />
 
-            {/* Overlay gradiente no hover */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-t from-pink-2000/60 via-transparent to-transparent"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: isHovered ? 1 : 0 }}
-              transition={{ duration: 0.3 }}
-            />
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-t from-pink-2000/60 via-transparent to-transparent"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: isHovered ? 1 : 0 }}
+                transition={{ duration: 0.3 }}
+              />
 
-            {/* Brilho no hover */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-tr from-transparent via-flash-photo/20 to-transparent"
-              initial={{ x: "-100%", opacity: 0 }}
-              animate={isHovered ? { x: "100%", opacity: 1 } : { x: "-100%", opacity: 0 }}
-              transition={{ duration: 0.6 }}
-            />
-          </div>
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-tr from-transparent via-flash-photo/20 to-transparent"
+                initial={{ x: "-100%", opacity: 0 }}
+                animate={isHovered ? { x: "100%", opacity: 1 } : { x: "-100%", opacity: 0 }}
+                transition={{ duration: 0.6 }}
+              />
+            </div>
+          </SparkleHoverSurface>
 
           {/* Info do produto */}
           <div className="p-3 bg-white">

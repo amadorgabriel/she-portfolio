@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Fredoka, VT323, Caveat, Inter } from "next/font/google";
 import { SiteShell } from "@/components/site/SiteShell";
+import { PersonJsonLd } from "@/components/seo/PersonJsonLd";
 import { defaultMetadataBase } from "@/lib/metadata-shared";
 import "./globals.css";
 
@@ -111,9 +112,18 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
+      suppressHydrationWarning
       className={`${fredoka.variable} ${vt323.variable} ${caveat.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-1 flex-col cursor-lipstick bg-stars bg-leopard">
+      {/* suppressHydrationWarning: extensões (ex. cz-shortcut-listen no body) alteram o DOM antes da hidratação */}
+      <body
+        suppressHydrationWarning
+        className="y2k-cursors flex min-h-full flex-1 flex-col bg-stars bg-leopard"
+      >
+        <a href="#conteudo-principal" className="skip-to-content">
+          Saltar para o conteúdo
+        </a>
+        <PersonJsonLd />
         <SiteShell>{children}</SiteShell>
       </body>
     </html>

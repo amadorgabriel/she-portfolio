@@ -5,6 +5,8 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Pin } from "lucide-react";
 import { useState } from "react";
+import { SparkleHoverSurface } from "@/components/interactive/SparkleHoverSurface";
+import { IMAGE_BLUR_DATA_URL } from "@/lib/image-blur";
 
 interface PolaroidFrameProps {
   src: string;
@@ -16,6 +18,10 @@ interface PolaroidFrameProps {
   hasPin?: boolean;
   pinColor?: "pink" | "gold" | "purple";
   priority?: boolean;
+  /** `sizes` para next/image (LCP acima da dobra). */
+  sizes?: string;
+  /** Desativar blur placeholder (ex.: SVG local). */
+  blurPlaceholder?: boolean;
 }
 
 export function PolaroidFrame({
@@ -28,19 +34,19 @@ export function PolaroidFrame({
   hasPin = true,
   pinColor = "pink",
   priority = false,
+  sizes,
+  blurPlaceholder = true,
 }: PolaroidFrameProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const isRemote = src.startsWith("http");
+  const resolvedSizes =
+    sizes ?? (size === "sm" ? "(max-width:768px) 40vw, 160px" : size === "lg" ? "(max-width:768px) 90vw, 360px" : "(max-width:768px) 55vw, 320px");
+  const useBlur = blurPlaceholder && isRemote;
 
   const sizeClasses = {
     sm: "w-40 p-2 pb-6",
     md: "w-56 md:w-64 p-3 pb-8",
     lg: "w-72 md:w-80 p-4 pb-10",
-  };
-
-  const imageSizes = {
-    sm: { width: 160, height: 200 },
-    md: { width: 280, height: 350 },
-    lg: { width: 320, height: 400 },
   };
 
   const pinColors = {
@@ -62,7 +68,7 @@ export function PolaroidFrame({
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
       className={cn(
-        "relative bg-polaroid-offwhite",
+        "relative overflow-hidden bg-polaroid-offwhite",
         "shadow-[3px_3px_10px_rgba(0,0,0,0.15)]",
         "transition-shadow duration-300",
         "hover:shadow-[5px_5px_20px_rgba(0,0,0,0.25)]",
@@ -92,32 +98,32 @@ export function PolaroidFrame({
         </motion.div>
       )}
 
-      {/* Container da imagem */}
-      <div
-        className={cn(
-          "relative overflow-hidden bg-gray-100",
-          "aspect-[4/5]"
-        )}
-      >
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          priority={priority}
-          sizes="(max-width: 768px) 50vw, 300px"
-          className={cn(
-            "object-cover transition-all duration-500",
-            isHovered && "scale-105 brightness-105"
-          )}
-        />
+      {/* Container da imagem + glitter no hover */}
+      <SparkleHoverSurface className="rounded-[inherit]">
+        <div className={cn("relative overflow-hidden bg-gray-100", "aspect-[4/5]")}>
+          <Image
+            src={src}
+            alt={alt}
+            fill
+            priority={priority}
+            loading={priority ? undefined : "lazy"}
+            sizes={resolvedSizes}
+            placeholder={useBlur ? "blur" : "empty"}
+            blurDataURL={useBlur ? IMAGE_BLUR_DATA_URL : undefined}
+            className={cn(
+              "object-cover transition-all duration-500",
+              isHovered && "scale-105 brightness-105"
+            )}
+            data-cursor-image="true"
+          />
 
-        {/* Overlay com brilho no hover */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-tr from-pink-2000/0 via-flash-photo/0 to-pink-2000/0"
-          animate={isHovered ? { opacity: [0, 0.3, 0] } : { opacity: 0 }}
-          transition={{ duration: 1, repeat: isHovered ? Infinity : 0 }}
-        />
-      </div>
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-tr from-pink-2000/0 via-flash-photo/0 to-pink-2000/0"
+            animate={isHovered ? { opacity: [0, 0.3, 0] } : { opacity: 0 }}
+            transition={{ duration: 1, repeat: isHovered ? Infinity : 0 }}
+          />
+        </div>
+      </SparkleHoverSurface>
 
       {/* Legenda estilo handwriting */}
       {caption && (

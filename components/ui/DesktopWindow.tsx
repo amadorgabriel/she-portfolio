@@ -109,10 +109,18 @@ export function DesktopWindow({
 
       {/* Menu Bar (decorativo, estilo Windows) */}
       <div className="flex items-center gap-4 px-3 py-1 bg-gray-200 border-b border-gray-300 text-xs font-[family-name:var(--font-vt323)]">
-        <button className="hover:bg-gray-300 px-2 py-0.5 underline">Arquivo</button>
-        <button className="hover:bg-gray-300 px-2 py-0.5">Editar</button>
-        <button className="hover:bg-gray-300 px-2 py-0.5">Ver</button>
-        <button className="hover:bg-gray-300 px-2 py-0.5">Ajuda</button>
+        <button type="button" className="hover:bg-gray-300 px-2 py-0.5 underline">
+          Arquivo
+        </button>
+        <button type="button" className="hover:bg-gray-300 px-2 py-0.5">
+          Editar
+        </button>
+        <button type="button" className="hover:bg-gray-300 px-2 py-0.5">
+          Ver
+        </button>
+        <button type="button" className="hover:bg-gray-300 px-2 py-0.5">
+          Ajuda
+        </button>
       </div>
 
       {/* Conteúdo */}

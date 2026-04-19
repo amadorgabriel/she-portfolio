@@ -196,6 +196,9 @@ export function ContactLetterForm({ contact, polaroidSrc, polaroidAlt }: Props) 
             caption={contact?.email ? "Me chama!" : "Portfolio"}
             size="md"
             rotation={4}
+            priority={false}
+            blurPlaceholder={Boolean(polaroidSrc?.startsWith("http"))}
+            sizes="(max-width:1024px) 70vw, 280px"
           />
 
           <div className="w-full max-w-xs rounded-xl border-2 border-night-purple/10 bg-white/90 p-4 font-[family-name:var(--font-vt323)] text-night-purple shadow-sm">

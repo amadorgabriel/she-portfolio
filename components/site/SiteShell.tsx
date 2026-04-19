@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { Home, Shirt, User, Mail } from "lucide-react";
 import { NavigationDock, MobileDock } from "@/components/ui/NavigationDock";
+import { SiteExperienceBar } from "@/components/interactive/SiteExperienceBar";
 import { cn } from "@/lib/utils";
 
 function activeForPath(pathname: string | null, href: string): boolean {
@@ -35,12 +36,15 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
   ];
 
   if (isStudio) {
-    return <>{children}</>;
+    return <main id="conteudo-principal">{children}</main>;
   }
 
   return (
     <>
-      <div className={cn("flex flex-1 flex-col min-h-0", "pb-28 md:pb-32")}>{children}</div>
+      <SiteExperienceBar />
+      <main id="conteudo-principal" tabIndex={-1} className={cn("flex flex-1 flex-col min-h-0 outline-none", "pb-28 md:pb-32")}>
+        {children}
+      </main>
       <div className="hidden md:block">
         <NavigationDock items={items} position="bottom" variant="floating" />
       </div>

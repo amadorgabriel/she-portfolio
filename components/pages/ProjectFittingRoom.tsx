@@ -12,6 +12,8 @@ import type { PortableTextBlock } from "@portabletext/types";
 import type { SanityImage } from "@/types/sanity";
 import { CATEGORY_LABELS, type ProjectCategory } from "@/types/sanity";
 import { imageUrlFromSanity } from "@/lib/sanity-image";
+import { IMAGE_BLUR_DATA_URL } from "@/lib/image-blur";
+import { SparkleHoverSurface } from "@/components/interactive/SparkleHoverSurface";
 import { Y2KBreadcrumbs } from "@/components/ui/NavigationDock";
 import { cn } from "@/lib/utils";
 
@@ -110,7 +112,17 @@ export function ProjectFittingRoom({
                       : "border-transparent opacity-70 hover:opacity-100"
                   )}
                 >
-                  <Image src={src} alt="" fill className="object-cover" sizes="112px" />
+                  <Image
+                    src={src}
+                    alt={img.alt ?? `${title} — miniatura ${i + 1}`}
+                    fill
+                    className="object-cover"
+                    sizes="112px"
+                    loading={i === 0 ? "eager" : "lazy"}
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
+                    data-cursor-image="true"
+                  />
                 </button>
               );
             })}
@@ -129,14 +141,19 @@ export function ProjectFittingRoom({
                 transition={{ duration: 0.2 }}
                 className="group relative aspect-[3/4] w-full max-h-[85vh] lg:aspect-auto lg:min-h-[480px]"
               >
-                <Image
-                  src={mainSrc}
-                  alt={title}
-                  fill
-                  priority
-                  className="object-contain transition-transform duration-500 ease-out group-hover:scale-[1.04]"
-                  sizes="(max-width: 1024px) 100vw, 70vw"
-                />
+                <SparkleHoverSurface className="h-full w-full rounded-2xl">
+                  <Image
+                    src={mainSrc}
+                    alt={main.alt ?? title}
+                    fill
+                    priority
+                    placeholder="blur"
+                    blurDataURL={IMAGE_BLUR_DATA_URL}
+                    className="object-contain transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                    sizes="(max-width: 1024px) 100vw, 70vw"
+                    data-cursor-image="true"
+                  />
+                </SparkleHoverSurface>
                 <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/20" />
               </motion.div>
             </AnimatePresence>

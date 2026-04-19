@@ -12,7 +12,10 @@ import type { About } from "@/types/sanity";
 import type { SiteConfig } from "@/types/sanity";
 import { SOCIAL_ICONS, type SocialLink } from "@/types/sanity";
 import { imageUrlFromSanity } from "@/lib/sanity-image";
+import { IMAGE_BLUR_DATA_URL } from "@/lib/image-blur";
 import { skillLabel, skillStatPercent } from "@/lib/skill-labels";
+import { DraggablePolaroidStrip } from "@/components/about/DraggablePolaroidStrip";
+import { RevealOnScroll } from "@/components/interactive/RevealOnScroll";
 
 type TimelineItem = { year: number; title: string; slug: string };
 
@@ -67,6 +70,9 @@ export function AboutRetroClient({ about, timeline, siteConfig }: Props) {
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 320px"
                 priority
+                placeholder={profileSrc.startsWith("http") ? "blur" : "empty"}
+                blurDataURL={profileSrc.startsWith("http") ? IMAGE_BLUR_DATA_URL : undefined}
+                data-cursor-image="true"
               />
             </div>
             <p className="mt-2 text-center font-[family-name:var(--font-vt323)] text-sm text-night-purple">
@@ -156,6 +162,16 @@ export function AboutRetroClient({ about, timeline, siteConfig }: Props) {
           )}
         </div>
       </div>
+
+      <RevealOnScroll as="section" className="my-14">
+        <h2 className="mb-2 text-center font-[family-name:var(--font-fredoka)] text-2xl text-night-purple">
+          Mesa de polaroids
+        </h2>
+        <p className="mb-6 text-center font-[family-name:var(--font-vt323)] text-sm text-night-purple/75">
+          Arrasta para reorganizar — vibe quarto Y2K ✂️
+        </p>
+        <DraggablePolaroidStrip top8={about.top8} />
+      </RevealOnScroll>
 
       <div className="my-12 flex flex-col items-center gap-3">
         <h2 className="font-[family-name:var(--font-fredoka)] text-2xl text-pink-2000">Currículo · timeline</h2>

@@ -93,6 +93,7 @@ export function ProjetosClosetClient({ projects }: Props) {
                 thumbnail={imageUrlFromSanity(p.thumbnail, { width: 640, height: 853 })}
                 href={`/projetos/${p.slug?.current ?? ""}`}
                 index={index}
+                imagePriority={index < 2}
               />
             </motion.div>
           ))}

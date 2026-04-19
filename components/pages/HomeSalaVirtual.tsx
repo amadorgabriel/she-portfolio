@@ -11,8 +11,12 @@ import type { ProjectCardData } from "@/types/sanity";
 import type { SiteConfig } from "@/types/sanity";
 import type { About } from "@/types/sanity";
 import { imageUrlFromSanity } from "@/lib/sanity-image";
+import { IMAGE_BLUR_DATA_URL } from "@/lib/image-blur";
 import { CATEGORY_LABELS, type ProjectCategory } from "@/types/sanity";
 import { Sparkles } from "lucide-react";
+import { ParallaxLayer } from "@/components/interactive/ParallaxLayer";
+import { RevealOnScroll } from "@/components/interactive/RevealOnScroll";
+import { SparkleHoverSurface } from "@/components/interactive/SparkleHoverSurface";
 
 type HomeSalaVirtualProps = {
   siteConfig: SiteConfig | null;
@@ -32,23 +36,28 @@ export function HomeSalaVirtual({ siteConfig, about, featuredProjects, sanityCon
   const tagline = siteConfig?.tagline || "Moda, brilho e atitude Y2K.";
   const profileSrc = about?.profileImage ? imageUrlFromSanity(about.profileImage, { width: 400, height: 400 }) : null;
 
+  const profileRemote = Boolean(profileSrc?.startsWith("http"));
+
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* Pattern xadrez + estrelas (sutil) */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.12]"
-        style={{
-          backgroundImage: `
+      <ParallaxLayer range={36} className="pointer-events-none absolute inset-0 z-0 opacity-[0.12]">
+        <div
+          className="min-h-screen w-full"
+          style={{
+            backgroundImage: `
             linear-gradient(45deg, #4B0082 25%, transparent 25%),
             linear-gradient(-45deg, #4B0082 25%, transparent 25%),
             linear-gradient(45deg, transparent 75%, #FF69B4 75%),
             linear-gradient(-45deg, transparent 75%, #FF69B4 75%)
           `,
-          backgroundSize: "24px 24px",
-          backgroundPosition: "0 0, 0 12px, 12px -12px, -12px 0",
-        }}
-      />
-      <div className="pointer-events-none absolute inset-0 bg-stars opacity-30" />
+            backgroundSize: "24px 24px",
+            backgroundPosition: "0 0, 0 12px, 12px -12px, -12px 0",
+          }}
+        />
+      </ParallaxLayer>
+      <ParallaxLayer range={64} className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <div className="min-h-screen w-full bg-stars opacity-30" />
+      </ParallaxLayer>
 
       <div className="relative z-10 mx-auto flex max-w-6xl flex-col gap-12 px-4 py-10 md:py-16">
         {!sanityConfigured && (
@@ -66,18 +75,30 @@ export function HomeSalaVirtual({ siteConfig, about, featuredProjects, sanityCon
         >
           <div className="relative shrink-0">
             <div className="absolute -top-6 left-1/2 z-20 -translate-x-1/2 text-3xl drop-shadow-md">👑</div>
-            <div
-              className="relative h-40 w-40 overflow-hidden rounded-full border-4 border-pink-2000 shadow-[0_0_0_6px_rgba(255,182,193,0.5),0_12px_30px_rgba(255,20,147,0.35)] md:h-48 md:w-48"
-              style={{ boxShadow: "0 0 0 6px #ffb7c5, 0 12px 32px rgba(255,20,147,0.4)" }}
-            >
-              {profileSrc ? (
-                <Image src={profileSrc} alt={about?.name ?? "Perfil"} fill className="object-cover" sizes="192px" priority />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-pink-2000 to-glitter-pink text-6xl">
-                  ✨
-                </div>
-              )}
-            </div>
+            <SparkleHoverSurface className="rounded-full">
+              <div
+                className="relative h-40 w-40 overflow-hidden rounded-full border-4 border-pink-2000 shadow-[0_0_0_6px_rgba(255,182,193,0.5),0_12px_30px_rgba(255,20,147,0.35)] md:h-48 md:w-48"
+                style={{ boxShadow: "0 0 0 6px #ffb7c5, 0 12px 32px rgba(255,20,147,0.4)" }}
+              >
+                {profileSrc ? (
+                  <Image
+                    src={profileSrc}
+                    alt={about?.profileImage?.alt ?? about?.name ?? "Retrato da designer"}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width:768px) 160px, 192px"
+                    priority
+                    placeholder={profileRemote ? "blur" : "empty"}
+                    blurDataURL={profileRemote ? IMAGE_BLUR_DATA_URL : undefined}
+                    data-cursor-image="true"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-pink-2000 to-glitter-pink text-6xl">
+                    ✨
+                  </div>
+                )}
+              </div>
+            </SparkleHoverSurface>
             <Sparkles className="absolute -right-2 bottom-2 h-8 w-8 text-flash-photo animate-pulse" />
           </div>
 
@@ -92,15 +113,15 @@ export function HomeSalaVirtual({ siteConfig, about, featuredProjects, sanityCon
           </div>
         </motion.section>
 
-        <div className="flex flex-col items-center gap-3">
+        <RevealOnScroll as="section" className="flex flex-col items-center gap-3">
           <h2 className="font-[family-name:var(--font-fredoka)] text-xl text-night-purple md:text-2xl">
             Em destaque no closet
           </h2>
           <StarDivider color="purple" className="max-w-md" sparkleCount={7} />
-        </div>
+        </RevealOnScroll>
 
         {/* Projetos em destaque */}
-        <section className="grid gap-8 pt-4 sm:grid-cols-2 lg:grid-cols-3">
+        <RevealOnScroll as="section" className="grid gap-8 pt-4 sm:grid-cols-2 lg:grid-cols-3">
           {featuredProjects.length === 0 ? (
             <p className="col-span-full text-center font-[family-name:var(--font-vt323)] text-lg text-night-purple/80">
               Nenhum projeto com <strong className="text-pink-2000">isFeatured</strong> ainda — marque no Studio Sanity.
@@ -116,28 +137,32 @@ export function HomeSalaVirtual({ siteConfig, about, featuredProjects, sanityCon
                 thumbnail={imageUrlFromSanity(p.thumbnail, { width: 600, height: 800 })}
                 href={`/projetos/${p.slug}`}
                 index={index}
+                imagePriority={index === 0}
               />
             ))
           )}
-        </section>
+        </RevealOnScroll>
 
-        <div className="flex flex-col items-center gap-3">
+        <RevealOnScroll as="section" className="flex flex-col items-center gap-3">
           <h2 className="font-[family-name:var(--font-fredoka)] text-xl text-night-purple md:text-2xl">
             Próximos passos
           </h2>
           <StarDivider color="pink" className="max-w-md" />
-        </div>
+        </RevealOnScroll>
 
-        <section className="flex flex-col flex-wrap items-center justify-center gap-4 sm:flex-row">
+        <RevealOnScroll
+          as="section"
+          className="flex flex-col flex-wrap items-center justify-center gap-4 sm:flex-row"
+        >
           <GlossyButton href="/projetos" size="lg" hasSparkle sparklePosition="both" variant="pink">
             Ver Closet de Projetos
           </GlossyButton>
           <GlossyButton href="/sobre" size="lg" variant="gold">
             Conheça a Estilista
           </GlossyButton>
-        </section>
+        </RevealOnScroll>
 
-        <footer className="pb-6 text-center font-[family-name:var(--font-caveat)] text-night-purple/70">
+        <RevealOnScroll as="footer" className="pb-6 text-center font-[family-name:var(--font-caveat)] text-night-purple/70">
           {siteConfig?.footerText ? (
             <p>{siteConfig.footerText}</p>
           ) : (
@@ -148,7 +173,7 @@ export function HomeSalaVirtual({ siteConfig, about, featuredProjects, sanityCon
               </Link>
             </p>
           )}
-        </footer>
+        </RevealOnScroll>
       </div>
     </div>
   );

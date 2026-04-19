@@ -185,4 +185,28 @@ Para ver drafts antes de publicar, você pode configurar Preview Mode. Veja a do
 
 ---
 
+## Variáveis de ambiente (Vercel / produção)
+
+| Variável | Obrigatória | Descrição |
+|----------|-------------|-----------|
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sim | ID do projeto Sanity |
+| `NEXT_PUBLIC_SANITY_DATASET` | Não (default `production`) | Dataset publicado |
+| `NEXT_PUBLIC_SANITY_API_VERSION` | Não | Versão da API GROQ |
+| `SANITY_API_READ_TOKEN` | Recomendada | Token só leitura para preview/drafts |
+| `NEXT_PUBLIC_SITE_URL` | **Recomendada** | URL canónica do site (ex. `https://seudominio.com`) — usada em `sitemap.xml`, `robots.txt`, Open Graph absoluto e schema Person |
+| `VERCEL_URL` | Automática na Vercel | Fallback quando `NEXT_PUBLIC_SITE_URL` não está definida |
+
+### Build e análise de bundle
+
+- **Build de produção:** `npm run build` (comando padrão na Vercel).
+- **Analisar tamanho dos bundles (local):** `npm run analyze` — abre relatório interativo após o build quando `ANALYZE=true` (via `cross-env`).
+
+### Domínio customizado (Vercel)
+
+1. No projeto Vercel: **Settings → Domains** → adicionar o domínio.
+2. Configure os registos DNS indicados (CNAME ou A para `cname.vercel-dns.com` / IPs da Vercel).
+3. Defina `NEXT_PUBLIC_SITE_URL` com o URL final (com `https://`) e redeploy.
+
+---
+
 **Pronto!** Seu portfólio Y2K está no ar! 🎀✨

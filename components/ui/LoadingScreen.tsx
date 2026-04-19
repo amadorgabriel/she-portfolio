@@ -300,8 +300,8 @@ export function LoadingScreen({
             key={i}
             className="absolute"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
+              left: `${((i * 37) % 100)}%`,
+              top: `${((i * 53 + 7) % 100)}%`,
             }}
             animate={{
               y: [0, -100],
@@ -309,9 +309,9 @@ export function LoadingScreen({
               rotate: [0, 360],
             }}
             transition={{
-              duration: 3 + Math.random() * 2,
+              duration: 3 + ((i * 13) % 20) / 10,
               repeat: Infinity,
-              delay: Math.random() * 2,
+              delay: ((i * 7) % 20) / 10,
             }}
           >
             {i % 3 === 0 ? <Star className="w-4 h-4 text-flash-photo" /> : i % 3 === 1 ? <Heart className="w-4 h-4 text-pink-2000" /> : <Sparkles className="w-4 h-4 text-glitter-pink" />}
