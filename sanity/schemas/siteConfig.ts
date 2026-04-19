@@ -55,30 +55,34 @@ export const siteConfig = defineType({
       name: "themeColors",
       title: "Cores do Tema Y2K",
       type: "object",
+      description: "Cores em formato HEX (ex: #FF1493)",
       fields: [
         defineField({
           name: "primary",
           title: "Cor Primária (Pink 2000)",
-          type: "color",
-          options: {
-            disableAlpha: true,
-          },
+          type: "string",
+          description: "Código HEX (ex: #FF1493)",
+          initialValue: "#FF1493",
+          validation: (Rule) =>
+            Rule.regex(/^#[0-9A-Fa-f]{6}$/).error("Use formato HEX válido (#FF1493)"),
         }),
         defineField({
           name: "secondary",
           title: "Cor Secundária (Glitter Pink)",
-          type: "color",
-          options: {
-            disableAlpha: true,
-          },
+          type: "string",
+          description: "Código HEX (ex: #FF69B4)",
+          initialValue: "#FF69B4",
+          validation: (Rule) =>
+            Rule.regex(/^#[0-9A-Fa-f]{6}$/).error("Use formato HEX válido (#FF69B4)"),
         }),
         defineField({
           name: "accent",
           title: "Cor de Destaque (Flash Photo)",
-          type: "color",
-          options: {
-            disableAlpha: true,
-          },
+          type: "string",
+          description: "Código HEX (ex: #FFE55C)",
+          initialValue: "#FFE55C",
+          validation: (Rule) =>
+            Rule.regex(/^#[0-9A-Fa-f]{6}$/).error("Use formato HEX válido (#FFE55C)"),
         }),
       ],
     }),

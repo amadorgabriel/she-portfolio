@@ -130,9 +130,9 @@ export interface Contact {
 // ============== SITE CONFIG ==============
 
 export interface ThemeColors {
-  primary?: { hex: string };
-  secondary?: { hex: string };
-  accent?: { hex: string };
+  primary?: string;
+  secondary?: string;
+  accent?: string;
 }
 
 export interface SiteFeatures {
