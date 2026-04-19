@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Fredoka, VT323, Caveat, Inter } from "next/font/google";
+import { SiteShell } from "@/components/site/SiteShell";
+import { defaultMetadataBase } from "@/lib/metadata-shared";
 import "./globals.css";
 
 // Display font for titles - Y2K Glam style
@@ -41,6 +43,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: defaultMetadataBase(),
   title: {
     default: "Portfólio Y2K | Fashion Designer",
     template: "%s | Portfólio Y2K",
@@ -110,8 +113,8 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${fredoka.variable} ${vt323.variable} ${caveat.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col cursor-lipstick bg-stars bg-leopard">
-        {children}
+      <body className="flex min-h-full flex-1 flex-col cursor-lipstick bg-stars bg-leopard">
+        <SiteShell>{children}</SiteShell>
       </body>
     </html>
   );

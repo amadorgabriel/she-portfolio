@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Sparkles } from "lucide-react";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -65,6 +66,8 @@ const glossyButtonVariants = cva(
 
 export interface GlossyButtonProps
   extends VariantProps<typeof glossyButtonVariants> {
+  /** Quando definido, renderiza como link (navegação acessível + SEO). */
+  href?: string;
   sparklePosition?: "left" | "right" | "both";
   isLoading?: boolean;
   className?: string;
@@ -79,6 +82,7 @@ export function GlossyButton({
   variant,
   size,
   hasSparkle,
+  href,
   sparklePosition = "right",
   isLoading,
   children,
@@ -89,19 +93,12 @@ export function GlossyButton({
   const showSparkleLeft = hasSparkle && (sparklePosition === "left" || sparklePosition === "both");
   const showSparkleRight = hasSparkle && (sparklePosition === "right" || sparklePosition === "both");
 
-  return (
-    <motion.button
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98, y: 2 }}
-      className={cn(glossyButtonVariants({ variant, size, hasSparkle }), className)}
-      disabled={disabled || isLoading}
-      onClick={onClick}
-      type={type}
-    >
-      {/* Efeito de brilho/glossy overlay */}
+  const buttonClass = cn(glossyButtonVariants({ variant, size, hasSparkle }), className);
+
+  const inner = (
+    <>
       <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/30 to-transparent pointer-events-none" />
 
-      {/* Pattern de leopard para variante leopard */}
       {variant === "leopard" && (
         <span
           className="absolute inset-0 opacity-20"
@@ -111,7 +108,6 @@ export function GlossyButton({
         />
       )}
 
-      {/* Sparkle esquerdo */}
       {showSparkleLeft && (
         <motion.span
           animate={{ rotate: [0, 20, -20, 0], scale: [1, 1.2, 1] }}
@@ -121,7 +117,6 @@ export function GlossyButton({
         </motion.span>
       )}
 
-      {/* Conteúdo */}
       <span className="relative z-10 flex items-center gap-2">
         {isLoading ? (
           <motion.span
@@ -135,7 +130,6 @@ export function GlossyButton({
         )}
       </span>
 
-      {/* Sparkle direito */}
       {showSparkleRight && (
         <motion.span
           animate={{ rotate: [0, -20, 20, 0], scale: [1, 1.2, 1] }}
@@ -144,6 +138,36 @@ export function GlossyButton({
           <Sparkles className="w-4 h-4 text-flash-photo" />
         </motion.span>
       )}
+    </>
+  );
+
+  if (href && !disabled && !isLoading) {
+    return (
+      <motion.span whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98, y: 2 }} className="inline-block">
+        <Link
+          href={href}
+          className={cn(
+            buttonClass,
+            "no-underline text-inherit cursor-pointer",
+            "relative inline-flex items-center justify-center"
+          )}
+        >
+          {inner}
+        </Link>
+      </motion.span>
+    );
+  }
+
+  return (
+    <motion.button
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98, y: 2 }}
+      className={buttonClass}
+      disabled={disabled || isLoading}
+      onClick={onClick}
+      type={type}
+    >
+      {inner}
     </motion.button>
   );
 }
