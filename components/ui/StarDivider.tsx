@@ -39,11 +39,11 @@ export function StarDivider({
     lg: 28,
   };
 
-  // Gera posições aleatórias para as estrelas
+  /* Variação pseudo-aleatória determinística (evita Math.random no render / ESLint purity) */
   const stars = Array.from({ length: sparkleCount }, (_, i) => ({
     id: i,
     delay: i * 0.2,
-    scale: 0.8 + Math.random() * 0.4,
+    scale: 0.8 + ((i * 23 + sparkleCount) % 5) * 0.08,
   }));
 
   const StarSVG = ({ className }: { className?: string }) => (
@@ -211,8 +211,8 @@ export function GlitterDivider({
           className="absolute w-1 h-1 rounded-full"
           style={{
             backgroundColor: colors[color],
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
+            left: `${((i * 41) % 100)}%`,
+            top: `${((i * 29 + 3) % 100)}%`,
           }}
           animate={{
             opacity: [0, 1, 0],
@@ -220,9 +220,9 @@ export function GlitterDivider({
             y: [0, -10, 0],
           }}
           transition={{
-            duration: 2 + Math.random() * 2,
+            duration: 2 + ((i * 11) % 20) / 10,
             repeat: Infinity,
-            delay: Math.random() * 2,
+            delay: ((i * 5) % 20) / 10,
             ease: "easeInOut",
           }}
         />

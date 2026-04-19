@@ -104,6 +104,8 @@ export interface About {
   socialLinks?: SocialLink[];
   top8?: Top8Item[];
   resumeFile?: SanityFile;
+  /** URL pública do PDF (GROQ: asset->url) */
+  resumeUrl?: string;
   playlistUrl?: string;
 }
 

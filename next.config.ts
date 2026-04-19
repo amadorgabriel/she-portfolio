@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
+import bundleAnalyzer from "@next/bundle-analyzer";
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
 
 const nextConfig: NextConfig = {
-  // Configuração para imagens do Sanity
   images: {
     remotePatterns: [
       {
@@ -11,12 +15,11 @@ const nextConfig: NextConfig = {
         pathname: "/images/**",
       },
     ],
+    formats: ["image/webp", "image/avif"],
   },
 
-  // Configurações para o Sanity Studio
   transpilePackages: ["sanity"],
 
-  // Headers de segurança (opcional)
   async headers() {
     return [
       {
@@ -32,4 +35,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);

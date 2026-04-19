@@ -1,6 +1,5 @@
 import { cache } from "react";
-import { client } from "@/sanity/client";
-import type { QueryParams } from "next-sanity";
+import { client, isSanityConfigured } from "@/sanity/client";
 import type {
   Project,
   ProjectCardData,
@@ -107,6 +106,7 @@ const aboutFields = `
     ..., 
     asset->
   },
+  "resumeUrl": resumeFile.asset->url,
   playlistUrl
 `;
 
@@ -154,6 +154,7 @@ const siteConfigFields = `
  * Busca todos os projetos
  */
 export const getProjects = cache(async (options?: QueryOptions): Promise<Project[]> => {
+  if (!isSanityConfigured()) return [];
   const query = `*[_type == "project"] | order(order asc, year desc) { ${projectFields} }`;
   return client.fetch(query, {}, getFetchOptions(options));
 });
@@ -163,6 +164,7 @@ export const getProjects = cache(async (options?: QueryOptions): Promise<Project
  */
 export const getProjectBySlug = cache(
   async (slug: string, options?: QueryOptions): Promise<Project | null> => {
+    if (!isSanityConfigured()) return null;
     const query = `*[_type == "project" && slug.current == $slug][0] { ${projectFields} }`;
     return client.fetch(query, { slug }, getFetchOptions(options));
   }
@@ -173,6 +175,7 @@ export const getProjectBySlug = cache(
  */
 export const getFeaturedProjects = cache(
   async (limit = 3, options?: QueryOptions): Promise<ProjectCardData[]> => {
+    if (!isSanityConfigured()) return [];
     const query = `*[_type == "project" && isFeatured == true] | order(order asc) [0...$limit] { ${projectCardFields} }`;
     return client.fetch(query, { limit }, getFetchOptions(options));
   }
@@ -183,6 +186,7 @@ export const getFeaturedProjects = cache(
  */
 export const getProjectsByCategory = cache(
   async (category: string, options?: QueryOptions): Promise<ProjectCardData[]> => {
+    if (!isSanityConfigured()) return [];
     const query = `*[_type == "project" && $category in category] | order(order asc, year desc) { ${projectCardFields} }`;
     return client.fetch(query, { category }, getFetchOptions(options));
   }
@@ -193,6 +197,7 @@ export const getProjectsByCategory = cache(
  */
 export const getRecentProjects = cache(
   async (limit = 6, options?: QueryOptions): Promise<ProjectCardData[]> => {
+    if (!isSanityConfigured()) return [];
     const query = `*[_type == "project"] | order(publishedAt desc) [0...$limit] { ${projectCardFields} }`;
     return client.fetch(query, { limit }, getFetchOptions(options));
   }
@@ -203,7 +208,34 @@ export const getRecentProjects = cache(
  */
 export const getProjectCategories = cache(
   async (options?: QueryOptions): Promise<string[]> => {
+    if (!isSanityConfigured()) return [];
     const query = `array::unique(*[_type == "project"].category[])`;
+    return client.fetch(query, {}, getFetchOptions(options));
+  }
+);
+
+/** Slugs ordenados (mesma ordem da listagem / vizinhos). */
+export const getAllProjectSlugs = cache(async (options?: QueryOptions): Promise<string[]> => {
+  if (!isSanityConfigured()) return [];
+  const query = `*[_type == "project" && defined(slug.current)] | order(order asc, year desc) { "slug": slug.current }`;
+  const rows = await client.fetch<Array<{ slug: string }>>(query, {}, getFetchOptions(options));
+  return rows.map((r) => r.slug).filter(Boolean);
+});
+
+/** Lista para navegação anterior/próximo. */
+export const getProjectsNavList = cache(
+  async (options?: QueryOptions): Promise<Array<{ slug: string; title: string }>> => {
+    if (!isSanityConfigured()) return [];
+    const query = `*[_type == "project" && defined(slug.current)] | order(order asc, year desc) { "slug": slug.current, title }`;
+    return client.fetch(query, {}, getFetchOptions(options));
+  }
+);
+
+/** Timeline leve (currículo visual) a partir dos projetos. */
+export const getProjectsTimeline = cache(
+  async (options?: QueryOptions): Promise<Array<{ year: number; title: string; slug: string }>> => {
+    if (!isSanityConfigured()) return [];
+    const query = `*[_type == "project" && defined(slug.current)] | order(year desc) { year, title, "slug": slug.current }`;
     return client.fetch(query, {}, getFetchOptions(options));
   }
 );
@@ -212,6 +244,7 @@ export const getProjectCategories = cache(
  * Busca dados do About (Perfil MySpace)
  */
 export const getAbout = cache(async (options?: QueryOptions): Promise<About | null> => {
+  if (!isSanityConfigured()) return null;
   const query = `*[_type == "about"][0] { ${aboutFields} }`;
   return client.fetch(query, {}, getFetchOptions(options));
 });
@@ -220,6 +253,7 @@ export const getAbout = cache(async (options?: QueryOptions): Promise<About | nu
  * Busca dados de Contato
  */
 export const getContact = cache(async (options?: QueryOptions): Promise<Contact | null> => {
+  if (!isSanityConfigured()) return null;
   const query = `*[_type == "contact"][0] { ${contactFields} }`;
   return client.fetch(query, {}, getFetchOptions(options));
 });
@@ -228,6 +262,7 @@ export const getContact = cache(async (options?: QueryOptions): Promise<Contact 
  * Busca configurações do site
  */
 export const getSiteConfig = cache(async (options?: QueryOptions): Promise<SiteConfig | null> => {
+  if (!isSanityConfigured()) return null;
   const query = `*[_type == "siteConfig"][0] { ${siteConfigFields} }`;
   return client.fetch(query, {}, getFetchOptions(options));
 });

@@ -44,9 +44,9 @@ const components: Partial<PortableTextReactComponents> = {
     ),
     blockquote: ({ children }) => (
       <blockquote className="font-[family-name:var(--font-caveat)] text-2xl text-night-purple border-l-4 border-pink-2000 pl-6 py-2 my-6 bg-polaroid-offwhite/50 rounded-r-lg">
-        <span className="text-4xl text-glitter-pink">"</span>
+        <span className="text-4xl text-glitter-pink">{"\u201C"}</span>
         {children}
-        <span className="text-4xl text-glitter-pink">"</span>
+        <span className="text-4xl text-glitter-pink">{"\u201D"}</span>
       </blockquote>
     ),
   },
