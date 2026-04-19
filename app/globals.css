@@ -218,3 +218,152 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--cyber-pink);
 }
+
+/* ============== UTILITÁRIOS Y2K ============== */
+
+/* Texto com efeito glitter/brilho */
+.text-glitter {
+  background: linear-gradient(90deg, var(--pink-2000), var(--glitter-pink), var(--flash-photo), var(--glitter-pink), var(--pink-2000));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glossy-shine 3s linear infinite;
+}
+
+/* Borda glossy */
+.border-glossy {
+  border: 2px solid transparent;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(180deg, var(--glitter-pink), var(--pink-2000)) border-box;
+}
+
+/* Background leopard print */
+.bg-leopard {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4A373' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Sombra Y2K característica */
+.shadow-y2k {
+  box-shadow: 
+    0 4px 0 0 rgba(255, 20, 147, 0.3),
+    0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.shadow-y2k-hover:hover {
+  box-shadow: 
+    0 6px 0 0 rgba(255, 20, 147, 0.4),
+    0 8px 15px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Safe area padding para dispositivos com notch */
+.safe-area-pt {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Prose para conteúdo rico */
+.prose-y2k {
+  color: var(--dark-text);
+}
+
+.prose-y2k h1 {
+  font-family: var(--font-display);
+  color: var(--pink-2000);
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.prose-y2k h2 {
+  font-family: var(--font-display);
+  color: var(--night-purple);
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-y2k p {
+  font-family: var(--font-body);
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+
+.prose-y2k strong {
+  color: var(--pink-2000);
+  font-weight: 600;
+}
+
+.prose-y2k a {
+  color: var(--pink-2000);
+  text-decoration: underline;
+  text-decoration-color: var(--glitter-pink);
+  text-underline-offset: 4px;
+  transition: color 0.2s;
+}
+
+.prose-y2k a:hover {
+  color: var(--cyber-pink);
+}
+
+.prose-y2k ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.prose-y2k ul li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose-y2k ul li::before {
+  content: "⭐";
+  position: absolute;
+  left: 0;
+  color: var(--glitter-pink);
+}
+
+/* Efeito de scanline para TVs */
+.scanlines {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.1)
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+}
+
+/* Efeito CRT/vintage */
+.crt-effect {
+  position: relative;
+}
+
+.crt-effect::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.1) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Classe para gradiente de texto */
+.gradient-text {
+  background: linear-gradient(135deg, var(--pink-2000), var(--glitter-pink), var(--flash-photo));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
