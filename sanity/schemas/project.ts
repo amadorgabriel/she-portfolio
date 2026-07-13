@@ -22,21 +22,13 @@ export const project = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "category",
-      title: "Categoria",
+      name: "categories",
+      title: "Categorias",
       type: "array",
       of: [
         {
-          type: "string",
-          options: {
-            list: [
-              { title: "Coleção", value: "coleção" },
-              { title: "Ilustração", value: "ilustração" },
-              { title: "Styling", value: "styling" },
-              { title: "Collage", value: "collage" },
-              { title: "Making Of", value: "making of" },
-            ],
-          },
+          type: "reference",
+          to: [{ type: "category" }],
         },
       ],
       validation: (Rule) => Rule.required().min(1),
@@ -57,9 +49,8 @@ export const project = defineType({
         }),
         defineField({
           name: "caption",
-          title: "Legenda (estilo Polaroid)",
+          title: "Legenda",
           type: "string",
-          description: "Texto que aparece abaixo da imagem estilo Polaroid",
         }),
       ],
       validation: (Rule) => Rule.required(),
@@ -125,23 +116,6 @@ export const project = defineType({
       title: "Ferramentas/Softwares",
       type: "array",
       of: [{ type: "string" }],
-      options: {
-        list: [
-          { title: "Photoshop", value: "photoshop" },
-          { title: "Illustrator", value: "illustrator" },
-          { title: "Figma", value: "figma" },
-          { title: "Clo3D", value: "clo3d" },
-          { title: "Marvelous Designer", value: "marvelous-designer" },
-          { title: "InDesign", value: "indesign" },
-          { title: "Procreate", value: "procreate" },
-        ],
-      },
-    }),
-    defineField({
-      name: "isFeatured",
-      title: "Destaque (Mostrar no Manequim Central)",
-      type: "boolean",
-      initialValue: false,
     }),
     defineField({
       name: "order",
@@ -160,13 +134,13 @@ export const project = defineType({
     select: {
       title: "title",
       media: "thumbnail",
-      category: "category",
       year: "year",
+      category0: "categories.0->title",
     },
-    prepare({ title, media, category, year }) {
+    prepare({ title, media, year, category0 }) {
       return {
         title,
-        subtitle: `${category?.[0] || "Sem categoria"} • ${year || "Sem ano"}`,
+        subtitle: `${category0 || "Sem categoria"} • ${year || "Sem ano"}`,
         media,
       };
     },
