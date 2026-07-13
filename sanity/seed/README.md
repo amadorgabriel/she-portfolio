@@ -5,8 +5,33 @@ Guia para popular o dataset com a estrutura da referência Marina Catelli e a ma
 ## Pré-requisitos
 
 1. Variáveis `NEXT_PUBLIC_SANITY_PROJECT_ID` e `NEXT_PUBLIC_SANITY_DATASET` configuradas
-2. Studio em `/studio` rodando (`npm run dev`)
-3. Login com permissão de escrita no projeto Sanity
+2. Token de **escrita** `SANITY_API_TOKEN` (Editor ou Admin) em `.env.local`  
+   — `SANITY_API_READ_TOKEN` (Viewer) **não** basta para o seed
+3. Studio em `/studio` opcional para revisão visual após o seed
+
+## Seed automático (recomendado)
+
+```bash
+# 1. Crie um token Editor em https://www.sanity.io/manage → API → Tokens
+# 2. Adicione em .env.local:
+#    SANITY_API_TOKEN=sk...
+
+npm run sanity:seed
+```
+
+O script `sanity/seed/seed.mjs` é **idempotente** (`createOrReplace` com IDs fixos):
+
+| ID | Tipo |
+|----|------|
+| `siteConfig` | Configurações do Site |
+| `category-estilo` … `category-modelagem` | 5 categorias |
+| `project-floral` … `project-modelagem-prototipo` | 6 projetos |
+
+Uploads usam SVGs em `public/placeholders/`. Pode reexecutar sem duplicar documentos.
+
+## Seed manual (alternativa)
+
+Se preferir criar no Studio (`/studio`):
 
 ## 1. Site Config (singleton)
 
