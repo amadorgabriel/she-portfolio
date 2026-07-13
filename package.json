@@ -9,7 +9,9 @@
     "lint": "eslint",
     "analyze": "cross-env ANALYZE=true next build",
     "sanity:seed": "node sanity/seed/seed.mjs",
-    "sanity:verify": "node sanity/seed/verify.mjs"
+    "sanity:verify": "node sanity/seed/verify.mjs",
+    "sanity:purge": "node sanity/seed/purge.mjs",
+    "sanity:purge:apply": "node sanity/seed/purge.mjs --apply"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
