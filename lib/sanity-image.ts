@@ -1,7 +1,7 @@
 import { urlFor } from "@/sanity/client";
 import type { SanityImage } from "@/types/sanity";
 
-export const PLACEHOLDER_IMAGE = "/placeholder-y2k.svg";
+export const PLACEHOLDER_IMAGE = "/placeholders/project.svg";
 
 export function imageUrlFromSanity(
   image: SanityImage | undefined | null,

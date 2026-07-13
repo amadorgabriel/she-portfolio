@@ -1,156 +1,109 @@
-# 🎀 Portfólio Y2K - Fashion Designer
+# Karina Reis — Portfólio v2
 
-Um portfólio interativo de designer de moda com estética Y2K/jogos de dress-up dos anos 2000.
+Portfólio editorial de moda (placeholder brand **Karina Reis**), com conteúdo no Sanity CMS e front em Next.js App Router.
 
-## ✨ Conceito
+Referência de layout: clone estrutural Marina Catelli (`/`, `/menu`, `/c/[category]`, `/p/[slug]`).
 
-> **"Meu Closet Virtual, Meu Mundo"**
+## Stack
 
-Este não é um portfólio linear — é um quarto/jogo de moda onde cada peça do trabalho da designer é um item de roupa ou acessório customizável. A navegação simula abrir gavetas, trocar manequins, colar polaroids na parede e abrir janelas pop-up estilo Windows 2000.
+- **Next.js 16** (App Router) + TypeScript + Tailwind CSS 4
+- **Sanity** (schemas `siteConfig`, `category`, `project`) + Studio embutido em `/studio`
+- **Framer Motion** para motion editorial leve
 
-## 🚀 Tecnologias
-
-- **Next.js 14+** - Framework React com App Router
-- **TypeScript** - Tipagem estática
-- **Tailwind CSS** - Estilização utilitária
-- **Framer Motion** - Animações
-- **Lucide React** - Ícones
-- **clsx + tailwind-merge** - Gerenciamento de classes
-
-## 📦 Instalação
+## Setup local
 
 ```bash
-# Clone o repositório
-git clone <url-do-repositório>
-
-# Entre na pasta do projeto
-cd y2k-fashion-portfolio
-
-# Instale as dependências
 npm install
-
-# Execute o servidor de desenvolvimento
+cp .env.local.example .env.local
+# Preencha NEXT_PUBLIC_SANITY_* e, para seed, SANITY_API_TOKEN (write)
 npm run dev
 ```
 
-Acesse [http://localhost:3000](http://localhost:3000) no navegador.
+Abra [http://localhost:3000](http://localhost:3000). Studio: [http://localhost:3000/studio](http://localhost:3000/studio).
 
-## 🎨 Paleta de Cores Y2K
+## Variáveis de ambiente
 
-| Nome | Hex | Uso |
-|------|-----|-----|
-| Pink 2000 | `#FF1493` | Fundo de botões, destaques |
-| Glitter Pink | `#FF69B4` | Hover, brilhos, bordas |
-| Cyber Pink | `#FF1493` | Cursores, acentos |
-| Soft White | `#FFF0F5` | Fundos principais |
-| Night Purple | `#4B0082` | Textos secundários, pop-ups |
-| Flash Photo | `#FFE55C` | Destaque de fotos |
-| Leopard Brown | `#D4A373` | Padrões, texturas |
-| Polaroid Off-white | `#FDF5E6` | Cards, legendas |
+| Variável | Onde | Notas |
+|----------|------|--------|
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | local + Vercel | Obrigatório |
+| `NEXT_PUBLIC_SANITY_DATASET` | local + Vercel | `production` |
+| `NEXT_PUBLIC_SANITY_API_VERSION` | local + Vercel | ex. `2024-01-01` |
+| `NEXT_PUBLIC_SITE_URL` | local + Vercel | URL canónica (`https://….vercel.app` por agora) |
+| `SANITY_API_TOKEN` | **só local / CI seed** | Write — **não** no runtime Vercel |
+| `SANITY_API_READ_TOKEN` | opcional local | Preview drafts |
+| `SANITY_PREVIEW_SECRET` | opcional local | Preview mode |
 
-## 🔤 Tipografia
+Modelo: `.env.local.example`.
 
-| Tipo | Fonte | Uso |
-|------|-------|-----|
-| Display | **Fredoka One** | Títulos, nome da designer |
-| Terminal | **VT323** | Pop-ups, textos técnicos |
-| Handwriting | **Caveat** | Legendas, post-its |
-| Body | **Inter** | Texto corrido |
-
-## 🗂️ Estrutura de Pastas
-
-```
-y2k-fashion-portfolio/
-├── app/
-│   ├── layout.tsx          # Layout raiz com fontes e metadados
-│   ├── page.tsx            # Página inicial
-│   ├── globals.css         # Estilos globais e tema Y2K
-│   ├── lookbook/           # Seção de coleções
-│   ├── styling-lab/        # Projetos de styling
-│   ├── sketchbook/         # Ilustrações e croquis
-│   ├── runway/             # Vídeos de desfiles
-│   ├── about/              # Página sobre (estilo MySpace)
-│   └── contact/            # Formulário de contato
-├── components/
-│   ├── ui/                 # Componentes reutilizáveis
-│   ├── mannequin/          # Componente do manequim
-│   ├── polaroid/           # Cards estilo polaroid
-│   └── windows/            # Janelas estilo Windows 2000
-├── lib/
-│   └── utils.ts            # Utilitários (cn, etc)
-├── public/
-│   ├── cursors/            # Cursores personalizados
-│   ├── patterns/           # Texturas e padrões
-│   └── sounds/             # Efeitos sonoros (opcional)
-└── types/
-    └── index.ts            # Tipos TypeScript
-```
-
-## 🎮 Funcionalidades Planejadas
-
-### MVP (Sprint Atual)
-- [x] Estrutura base com Next.js + Tailwind
-- [x] Configuração de tema Y2K (cores, fontes, animações)
-- [ ] Manequim central + 4 gavetas principais
-- [ ] Galeria com polaroid + modal pop-up
-- [ ] CMS para projetos, imagens, textos
-- [ ] Formulário de contato funcional
-- [ ] Responsividade básica
-
-### Futuro (v2)
-- [ ] Drag & drop de acessórios
-- [ ] Sistema de favoritos (localStorage)
-- [ ] Sons de interação (toggle)
-- [ ] Blog
-- [ ] Versão em inglês
-
-## 🎨 Diretrizes de Design
-
-- ❌ Nada de design "flat" ou minimalista
-- ❌ Evitar glassmorphism genérico
-- ✅ Cursores personalizados (💄, ⭐, ✂️)
-- ✅ Botões glossy com gradiente e sombra
-- ✅ Padrões de leopard print e xadrez
-- ✅ Polaroids com bordas brancas
-- ✅ Janelas pop-up estilo Windows 2000
-- ✅ Animações: float, sparkle, wiggle, glossy-shine
-
-## 🔧 Variáveis de Ambiente
-
-Crie um arquivo `.env.local` na raiz:
-
-```env
-# Exemplo de variáveis (ajuste conforme necessário)
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-NEXT_PUBLIC_CMS_API_URL=your-cms-url
-```
-
-## 📱 Responsividade
-
-- **Desktop**: Experiência completa Y2K com manequim central e gavetas laterais
-- **Tablet**: Layout adaptativo mantendo a estética
-- **Mobile**: Modo "closet compacto" com menu hambúrguer
-
-## 🌟 Scripts Disponíveis
+## Seed / higiene Sanity
 
 ```bash
-npm run dev      # Servidor de desenvolvimento
-npm run build    # Build de produção
-npm run start    # Inicia servidor de produção
-npm run lint     # Executa ESLint
+npm run sanity:seed          # cria/atualiza docs v2 (idempotente)
+npm run sanity:verify        # conta categorias/projetos + slugs
+npm run sanity:purge         # dry-run: lista órfãos (about/contact / fora do seed)
+npm run sanity:purge:apply   # apaga órfãos listados
 ```
 
-## 📝 Notas de Desenvolvimento
+Guia detalhado: `sanity/seed/README.md`.
 
-- O projeto usa Tailwind CSS v4 com configuração via CSS
-- Animações customizadas estão definidas em `globals.css`
-- Cursores personalizados usam emojis via data URI SVG
-- Fontes são carregadas via `next/font/google`
+## Rotas
 
-## 👩‍💻 Autor
+| Rota | Conteúdo |
+|------|----------|
+| `/` | Splash + CTA |
+| `/menu` | Lista de categorias |
+| `/c/[category]` | Grid de projetos da categoria |
+| `/p/[slug]` | Detalhe do projeto |
+| `/studio` | Sanity Studio |
 
-Fashion Designer - [Instagram](https://instagram.com) | [Behance](https://behance.net)
+## Deploy (Vercel)
 
----
+Decisões (change `002`): host **Vercel**, URL `*.vercel.app`, merge em **`main`**, envs só públicos Sanity + `NEXT_PUBLIC_SITE_URL`.
 
-💖 Feito com muito amor e glitter no ano 2000 (e alguns anos depois).
+### Checklist
+
+1. [ ] Login: `npx vercel login`
+2. [ ] Na pasta do repo: `npx vercel link` (criar projeto ou ligar existente)
+3. [ ] Envs de Production (e Preview se quiser):
+   - `NEXT_PUBLIC_SANITY_PROJECT_ID`
+   - `NEXT_PUBLIC_SANITY_DATASET=production`
+   - `NEXT_PUBLIC_SANITY_API_VERSION=2024-01-01`
+   - `NEXT_PUBLIC_SITE_URL=https://<projeto>.vercel.app` (atualizar após primeira URL)
+4. [ ] Conectar o repo no dashboard Vercel com branch de produção = `main`
+5. [ ] Merge `feat/v2-marina-clone` → `main` (PR) e aguardar deploy
+6. [ ] Smoke: `/`, `/menu`, `/c/estilo`, `/p/floral`, `/studio`
+
+CLI alternativa após login:
+
+```bash
+npx vercel env add NEXT_PUBLIC_SANITY_PROJECT_ID production
+npx vercel env add NEXT_PUBLIC_SANITY_DATASET production
+npx vercel env add NEXT_PUBLIC_SANITY_API_VERSION production
+npx vercel env add NEXT_PUBLIC_SITE_URL production
+npx vercel --prod
+```
+
+## Scripts
+
+```bash
+npm run dev
+npm run build
+npm run start
+npm run lint
+npm run sanity:seed
+npm run sanity:verify
+npm run sanity:purge
+```
+
+## Branches
+
+| Branch | Papel |
+|--------|--------|
+| `main` | Produção (Vercel) |
+| `feat/v2-marina-clone` | Trabalho v2 / cleanup |
+| `develop` | Snapshot Y2K congelado (não misturar na UI v2) |
+
+## Notas
+
+- Brand final do cliente substitui “Karina Reis” numa change futura.
+- Y2K legado permanece só em `develop`.

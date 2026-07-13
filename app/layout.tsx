@@ -1,37 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Fredoka, VT323, Caveat, Inter } from "next/font/google";
-import { SiteShell } from "@/components/site/SiteShell";
+import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import { PersonJsonLd } from "@/components/seo/PersonJsonLd";
 import { defaultMetadataBase } from "@/lib/metadata-shared";
 import "./globals.css";
 
-// Display font for titles - Y2K Glam style
-const fredoka = Fredoka({
-  variable: "--font-fredoka",
+const display = Cormorant_Garamond({
+  variable: "--font-display-family",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
-// Terminal-style font for pop-ups and technical text
-const vt323 = VT323({
-  variable: "--font-vt323",
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
-
-// Handwriting font for captions and scrapbook elements
-const caveat = Caveat({
-  variable: "--font-caveat",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-// Body text font
-const inter = Inter({
-  variable: "--font-inter",
+const body = DM_Sans({
+  variable: "--font-body-family",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
@@ -40,30 +21,28 @@ const inter = Inter({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#FF69B4",
+  themeColor: "#1a1a1a",
 };
 
 export const metadata: Metadata = {
   metadataBase: defaultMetadataBase(),
   title: {
-    default: "Portfólio Y2K | Fashion Designer",
-    template: "%s | Portfólio Y2K",
+    default: "Karina Reis",
+    template: "%s | Karina Reis",
   },
-  description:
-    "Portfólio de designer de moda com estética Y2K. Lookbook, styling, ilustrações e coleções em uma experiência interativa de dress-up game.",
+  description: "Portfólio de Karina Reis — design, estilo e direção criativa.",
   keywords: [
-    "designer de moda",
+    "Karina Reis",
     "portfólio",
-    "Y2K",
-    "fashion",
-    "lookbook",
-    "styling",
+    "design",
+    "estilo",
+    "estamparia",
+    "direção criativa",
     "moda",
-    "coleções",
   ],
-  authors: [{ name: "Fashion Designer" }],
-  creator: "Fashion Designer",
-  publisher: "Fashion Designer",
+  authors: [{ name: "Karina Reis" }],
+  creator: "Karina Reis",
+  publisher: "Karina Reis",
   robots: {
     index: true,
     follow: true,
@@ -78,19 +57,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    siteName: "Portfólio Y2K Fashion Designer",
-    title: "Portfólio Y2K | Fashion Designer",
-    description:
-      "Portfólio de designer de moda com estética Y2K. Lookbook, styling, ilustrações e coleções.",
+    siteName: "Karina Reis",
+    title: "Karina Reis",
+    description: "Portfólio de Karina Reis — design, estilo e direção criativa.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Portfólio Y2K | Fashion Designer",
-    description:
-      "Portfólio de designer de moda com estética Y2K. Lookbook, styling, ilustrações e coleções.",
-  },
-  verification: {
-    google: "your-google-verification-code",
+    title: "Karina Reis",
+    description: "Portfólio de Karina Reis — design, estilo e direção criativa.",
   },
   alternates: {
     canonical: "/",
@@ -113,18 +87,19 @@ export default function RootLayout({
     <html
       lang="pt-BR"
       suppressHydrationWarning
-      className={`${fredoka.variable} ${vt323.variable} ${caveat.variable} ${inter.variable} h-full antialiased`}
+      className={`${display.variable} ${body.variable} h-full antialiased`}
     >
-      {/* suppressHydrationWarning: extensões (ex. cz-shortcut-listen no body) alteram o DOM antes da hidratação */}
       <body
         suppressHydrationWarning
-        className="y2k-cursors flex min-h-full flex-1 flex-col bg-stars bg-leopard"
+        className="flex min-h-full flex-1 flex-col bg-[var(--color-bg)] text-[var(--color-ink)]"
       >
         <a href="#conteudo-principal" className="skip-to-content">
           Saltar para o conteúdo
         </a>
         <PersonJsonLd />
-        <SiteShell>{children}</SiteShell>
+        <main id="conteudo-principal" className="flex min-h-full flex-1 flex-col">
+          {children}
+        </main>
       </body>
     </html>
   );

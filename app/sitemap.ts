@@ -1,26 +1,42 @@
 import type { MetadataRoute } from "next";
-import { getAllProjectSlugs } from "@/lib/cms";
+import { getAllCategorySlugs, getAllProjectSlugs } from "@/lib/cms";
 import { getSiteBaseUrl } from "@/lib/site-url";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = getSiteBaseUrl() || "http://localhost:3000";
-  const slugs = await getAllProjectSlugs();
+  const [categorySlugs, projectSlugs] = await Promise.all([
+    getAllCategorySlugs(),
+    getAllProjectSlugs(),
+  ]);
 
-  const staticPaths = ["", "/projetos", "/sobre", "/contato"] as const;
+  const staticEntries: MetadataRoute.Sitemap = [
+    {
+      url: `${base}/`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 1,
+    },
+    {
+      url: `${base}/menu`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+  ];
 
-  const staticEntries: MetadataRoute.Sitemap = staticPaths.map((path) => ({
-    url: `${base}${path}`,
+  const categoryEntries: MetadataRoute.Sitemap = categorySlugs.map((slug) => ({
+    url: `${base}/c/${slug}`,
     lastModified: new Date(),
-    changeFrequency: path === "" ? "weekly" : "weekly",
-    priority: path === "" ? 1 : 0.85,
+    changeFrequency: "weekly",
+    priority: 0.8,
   }));
 
-  const projectEntries: MetadataRoute.Sitemap = slugs.map((slug) => ({
-    url: `${base}/projetos/${slug}`,
+  const projectEntries: MetadataRoute.Sitemap = projectSlugs.map((slug) => ({
+    url: `${base}/p/${slug}`,
     lastModified: new Date(),
     changeFrequency: "weekly",
     priority: 0.7,
   }));
 
-  return [...staticEntries, ...projectEntries];
+  return [...staticEntries, ...categoryEntries, ...projectEntries];
 }
