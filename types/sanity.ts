@@ -84,65 +84,6 @@ export interface ProjectCardData {
   categories?: string[];
 }
 
-// ============== ABOUT ==============
-
-export interface InterestItem {
-  category: string;
-  items: string[];
-}
-
-export interface SocialLink {
-  platform: "instagram" | "linkedin" | "behance" | "pinterest" | "youtube" | "tiktok" | "email" | "website";
-  url: string;
-  label?: string;
-}
-
-export interface Top8Item {
-  name: string;
-  image?: SanityImage;
-  url?: string;
-  description?: string;
-}
-
-export interface About {
-  _id: string;
-  _type: "about";
-  _createdAt: string;
-  _updatedAt: string;
-  name: string;
-  nickname?: string;
-  bio: PortableTextBlock[];
-  profileImage: SanityImage;
-  skills?: string[];
-  interests?: InterestItem[];
-  socialLinks?: SocialLink[];
-  top8?: Top8Item[];
-  resumeFile?: SanityFile;
-  /** URL pública do PDF (GROQ: asset->url) */
-  resumeUrl?: string;
-  playlistUrl?: string;
-}
-
-// ============== CONTACT ==============
-
-export type AvailabilityStatus = "available" | "busy" | "unavailable";
-
-export interface Contact {
-  _id: string;
-  _type: "contact";
-  _createdAt: string;
-  _updatedAt: string;
-  email: string;
-  instagram?: string;
-  linkedin?: string;
-  behance?: string;
-  pinterest?: string;
-  whatsapp?: string;
-  location?: string;
-  availability: AvailabilityStatus;
-  responseTime: string;
-}
-
 // ============== SITE CONFIG (v2) ==============
 
 export interface SiteSocialLinks {
@@ -180,20 +121,3 @@ export interface QueryOptions {
   revalidate?: number | false;
   tags?: string[];
 }
-
-export const SOCIAL_ICONS: Record<SocialLink["platform"], string> = {
-  instagram: "Instagram",
-  linkedin: "LinkedIn",
-  behance: "Behance",
-  pinterest: "Pinterest",
-  youtube: "YouTube",
-  tiktok: "TikTok",
-  email: "Email",
-  website: "Website",
-};
-
-export const AVAILABILITY_LABELS: Record<AvailabilityStatus, string> = {
-  available: "Disponível para projetos",
-  busy: "Ocupado (lista de espera)",
-  unavailable: "Não disponível",
-};
