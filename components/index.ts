@@ -2,10 +2,10 @@
 
 // Cards e Galerias
 export { ProjectCard, ProjectCardSkeleton } from "./ProjectCard";
-export { ProjectGallery, ProjectCarousel } from "./ProjectGallery";
+export { ProjectGallery } from "./ProjectGallery";
 
 // Texto
-export { RichText, RichTextSimple, RichTextTerminal } from "./RichText";
+export { RichText, RichTextSimple } from "./RichText";
 
 // ============== UI Design System ==============
 
