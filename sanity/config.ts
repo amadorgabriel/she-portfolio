@@ -20,7 +20,7 @@ if (!projectId) {
 
 export default defineConfig({
   name: "default",
-  title: "Y2K Fashion Portfolio",
+  title: "Karina Reis Portfolio",
   projectId,
   dataset,
   apiVersion,
