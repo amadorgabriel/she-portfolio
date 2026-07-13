@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000" role="img" aria-label="Placeholder">
+  <rect width="800" height="1000" fill="#e8e6e1"/>
+  <rect x="40" y="40" width="720" height="920" fill="none" stroke="#c4c1b8" stroke-width="2"/>
+  <text x="400" y="490" text-anchor="middle" font-family="Georgia, serif" font-size="28" fill="#6b6b6b">Karina Reis</text>
+  <text x="400" y="530" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" fill="#9a9790">placeholder</text>
+</svg>
