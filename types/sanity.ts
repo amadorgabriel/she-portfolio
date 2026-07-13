@@ -9,7 +9,7 @@ export interface SanityAsset {
 
 export interface SanityImage {
   _type: "image";
-  _key?: string; // Para imagens em arrays
+  _key?: string;
   asset: SanityAsset;
   hotspot?: {
     x: number;
@@ -37,16 +37,32 @@ export interface SanitySlug {
   _type: "slug";
 }
 
+export interface SanityReference {
+  _type: "reference";
+  _ref: string;
+}
+
+// ============== CATEGORY ==============
+
+export interface Category {
+  _id: string;
+  _type: "category";
+  title: string;
+  slug: SanitySlug;
+  order: number;
+  description?: string;
+}
+
 // ============== PROJECT ==============
 
 export interface Project {
   _id: string;
   _type: "project";
-  _createdAt: string;
-  _updatedAt: string;
+  _createdAt?: string;
+  _updatedAt?: string;
   title: string;
   slug: SanitySlug;
-  category: string[];
+  categories: Category[];
   thumbnail: SanityImage;
   gallery?: SanityImage[];
   description: PortableTextBlock[];
@@ -55,19 +71,17 @@ export interface Project {
   materials?: string[];
   team?: string[];
   tools?: string[];
-  isFeatured: boolean;
   order: number;
-  publishedAt: string;
+  publishedAt?: string;
 }
 
 export interface ProjectCardData {
   _id: string;
   title: string;
   slug: string;
-  category: string[];
-  thumbnail: SanityImage;
   year: number;
-  isFeatured: boolean;
+  thumbnail: SanityImage;
+  categories?: string[];
 }
 
 // ============== ABOUT ==============
@@ -129,18 +143,12 @@ export interface Contact {
   responseTime: string;
 }
 
-// ============== SITE CONFIG ==============
+// ============== SITE CONFIG (v2) ==============
 
-export interface ThemeColors {
-  primary?: string;
-  secondary?: string;
-  accent?: string;
-}
-
-export interface SiteFeatures {
-  enableSounds: boolean;
-  enableCustomCursor: boolean;
-  showFavorites: boolean;
+export interface SiteSocialLinks {
+  linkedin?: string;
+  instagram?: string;
+  email?: string;
 }
 
 export interface SiteAnalytics {
@@ -150,35 +158,28 @@ export interface SiteAnalytics {
 export interface SiteConfig {
   _id: string;
   _type: "siteConfig";
-  _createdAt: string;
-  _updatedAt: string;
+  _createdAt?: string;
+  _updatedAt?: string;
   siteTitle: string;
-  tagline: string;
+  brandName: string;
   metaDescription?: string;
-  footerText: string;
+  splashLogo?: SanityImage;
+  ctaLabel: string;
+  socialLinks?: SiteSocialLinks;
   favicon?: SanityImage;
   ogImage?: SanityImage;
-  themeColors?: ThemeColors;
-  features?: SiteFeatures;
   analytics?: SiteAnalytics;
 }
+
+/** Alias explícito do modelo v2 (design). */
+export type SiteConfigV2 = SiteConfig;
 
 // ============== UTILITÁRIOS ==============
 
 export interface QueryOptions {
-  revalidate?: number | false; // Segundos para ISR, false para no-store
-  tags?: string[]; // Tags para cache
+  revalidate?: number | false;
+  tags?: string[];
 }
-
-export type ProjectCategory = "coleção" | "ilustração" | "styling" | "collage" | "making of";
-
-export const CATEGORY_LABELS: Record<ProjectCategory, string> = {
-  coleção: "Coleção",
-  ilustração: "Ilustração",
-  styling: "Styling",
-  collage: "Collage",
-  "making of": "Making Of",
-};
 
 export const SOCIAL_ICONS: Record<SocialLink["platform"], string> = {
   instagram: "Instagram",
