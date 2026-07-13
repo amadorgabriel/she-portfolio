@@ -1,188 +1,58 @@
 @import "tailwindcss";
 
 :root {
-  /* Y2K Color Palette */
-  --pink-2000: #FF1493;
-  --glitter-pink: #FF69B4;
-  --leopard-brown: #D4A373;
-  --cyber-pink: #FF1493;
-  --soft-white: #FFF0F5;
-  --night-purple: #4B0082;
-  --flash-photo: #FFE55C;
-  --polaroid-offwhite: #FDF5E6;
-  --plaid-blue: #3A5A9A;
-  --dark-text: #1A1A1A;
+  --color-bg: #f7f6f3;
+  --color-ink: #1a1a1a;
+  --color-muted: #6b6b6b;
+  --color-line: #d8d6d1;
+  --color-surface: #ffffff;
+  --font-display: var(--font-display-family);
+  --font-body: var(--font-body-family);
 
-  /* Theme Variables */
-  --background: var(--soft-white);
-  --foreground: var(--dark-text);
-  --primary: var(--pink-2000);
-  --secondary: var(--glitter-pink);
-  --accent: var(--flash-photo);
-  --muted: var(--polaroid-offwhite);
+  --background: var(--color-bg);
+  --foreground: var(--color-ink);
 }
 
 @theme inline {
-  /* Colors */
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-pink-2000: var(--pink-2000);
-  --color-glitter-pink: var(--glitter-pink);
-  --color-leopard-brown: var(--leopard-brown);
-  --color-cyber-pink: var(--cyber-pink);
-  --color-soft-white: var(--soft-white);
-  --color-night-purple: var(--night-purple);
-  --color-flash-photo: var(--flash-photo);
-  --color-polaroid-offwhite: var(--polaroid-offwhite);
-  --color-plaid-blue: var(--plaid-blue);
-  --color-dark-text: var(--dark-text);
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-ink);
+  --color-muted: var(--color-muted);
+  --color-line: var(--color-line);
+  --color-surface: var(--color-surface);
 
-  /* Font Families */
-  --font-display: var(--font-fredoka);
-  --font-terminal: var(--font-vt323);
-  --font-handwriting: var(--font-caveat);
-  --font-body: var(--font-inter);
+  --font-display: var(--font-display-family), Georgia, serif;
+  --font-body: var(--font-body-family), system-ui, sans-serif;
 
-  /* Animations */
-  --animate-float: float 3s ease-in-out infinite;
-  --animate-sparkle: sparkle 2s ease-in-out infinite;
-  --animate-wiggle: wiggle 1s ease-in-out infinite;
-  --animate-glossy-shine: glossy-shine 2s ease-in-out infinite;
-  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+  --animate-fade-in: fade-in 0.6s ease-out both;
+  --animate-fade-up: fade-up 0.7s ease-out both;
 }
 
-/* Custom Animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-@keyframes sparkle {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.2); }
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-@keyframes wiggle {
-  0%, 100% { transform: rotate(-3deg); }
-  50% { transform: rotate(3deg); }
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out both;
 }
 
-@keyframes glossy-shine {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 5px var(--glitter-pink), 0 0 10px var(--glitter-pink); }
-  50% { box-shadow: 0 0 15px var(--glitter-pink), 0 0 25px var(--glitter-pink); }
-}
-
-/* Utility Classes for Animations */
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.animate-sparkle {
-  animation: sparkle 2s ease-in-out infinite;
-}
-
-.animate-wiggle {
-  animation: wiggle 1s ease-in-out infinite;
-}
-
-.animate-glossy-shine {
-  animation: glossy-shine 2s ease-in-out infinite;
-  background-size: 200% 200%;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glossy-shine 2s ease-in-out infinite;
-}
-
-/* Custom Cursor */
-.cursor-lipstick {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext y='24' font-size='20'%3E💄%3C/text%3E%3C/svg%3E"), auto;
-}
-
-.cursor-star {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext y='24' font-size='20'%3E⭐%3C/text%3E%3C/svg%3E"), auto;
-}
-
-.cursor-scissors {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext y='24' font-size='20'%3E✂️%3C/text%3E%3C/svg%3E"), auto;
-}
-
-/* Background Patterns */
-.bg-stars {
-  background-image: 
-    radial-gradient(2px 2px at 20px 30px, var(--glitter-pink), transparent),
-    radial-gradient(2px 2px at 40px 70px, var(--flash-photo), transparent),
-    radial-gradient(2px 2px at 50px 160px, var(--glitter-pink), transparent),
-    radial-gradient(2px 2px at 90px 40px, var(--flash-photo), transparent),
-    radial-gradient(2px 2px at 130px 80px, var(--glitter-pink), transparent);
-  background-size: 200px 200px;
-}
-
-.bg-leopard {
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4A373' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-}
-
-.bg-radial-pink {
-  background: radial-gradient(ellipse at center, var(--soft-white) 0%, var(--glitter-pink) 100%);
-}
-
-/* Y2K Glossy Button Style */
-.btn-glossy {
-  background: linear-gradient(180deg, var(--pink-2000) 0%, var(--glitter-pink) 100%);
-  border-radius: 20px;
-  box-shadow: 
-    inset 0 1px 0 rgba(255, 255, 255, 0.4),
-    0 4px 8px rgba(255, 20, 147, 0.3);
-  transition: all 0.2s ease;
-}
-
-.btn-glossy:hover {
-  transform: scale(1.02);
-  box-shadow: 
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    0 6px 12px rgba(255, 20, 147, 0.4);
-}
-
-/* Polaroid Card Style */
-.polaroid {
-  background: var(--polaroid-offwhite);
-  padding: 8px 8px 24px 8px;
-  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.15);
-  transform: rotate(-2deg);
-  transition: transform 0.3s ease;
-}
-
-.polaroid:hover {
-  transform: rotate(0deg) scale(1.02);
-}
-
-/* Windows 2000 Style Window */
-.win95-window {
-  background: var(--polaroid-offwhite);
-  border: 2px solid;
-  border-color: #ffffff #808080 #808080 #ffffff;
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
-}
-
-.win95-titlebar {
-  background: linear-gradient(90deg, var(--plaid-blue) 0%, var(--night-purple) 100%);
-  color: white;
-  padding: 4px 8px;
-  font-family: var(--font-terminal);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* Base Styles */
-* {
-  box-sizing: border-box;
+.animate-fade-up {
+  animation: fade-up 0.7s ease-out both;
 }
 
 html {
@@ -190,276 +60,52 @@ html {
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--color-bg);
+  color: var(--color-ink);
   font-family: var(--font-body), system-ui, sans-serif;
+  min-height: 100%;
 }
 
-/* Selection Style */
-::selection {
-  background: var(--glitter-pink);
-  color: white;
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
 }
 
-/* Scrollbar Style (Webkit) */
-::-webkit-scrollbar {
-  width: 12px;
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--soft-white);
+a:hover {
+  opacity: 0.72;
 }
 
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(var(--pink-2000), var(--glitter-pink));
-  border-radius: 6px;
+img {
+  max-width: 100%;
+  height: auto;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--cyber-pink);
-}
-
-/* ============== UTILITÁRIOS Y2K ============== */
-
-/* Texto com efeito glitter/brilho */
-.text-glitter {
-  background: linear-gradient(90deg, var(--pink-2000), var(--glitter-pink), var(--flash-photo), var(--glitter-pink), var(--pink-2000));
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: glossy-shine 3s linear infinite;
-}
-
-/* Borda glossy */
-.border-glossy {
-  border: 2px solid transparent;
-  background: linear-gradient(white, white) padding-box,
-              linear-gradient(180deg, var(--glitter-pink), var(--pink-2000)) border-box;
-}
-
-/* Background leopard print */
-.bg-leopard {
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4A373' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-}
-
-/* Sombra Y2K característica */
-.shadow-y2k {
-  box-shadow: 
-    0 4px 0 0 rgba(255, 20, 147, 0.3),
-    0 6px 10px rgba(0, 0, 0, 0.15);
-}
-
-.shadow-y2k-hover:hover {
-  box-shadow: 
-    0 6px 0 0 rgba(255, 20, 147, 0.4),
-    0 8px 15px rgba(0, 0, 0, 0.2);
-  transform: translateY(-2px);
-}
-
-/* Safe area padding para dispositivos com notch */
-.safe-area-pt {
-  padding-top: env(safe-area-inset-top);
-}
-
-.safe-area-pb {
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-/* Prose para conteúdo rico */
-.prose-y2k {
-  color: var(--dark-text);
-}
-
-.prose-y2k h1 {
-  font-family: var(--font-display);
-  color: var(--pink-2000);
-  font-size: 2.25rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
-
-.prose-y2k h2 {
-  font-family: var(--font-display);
-  color: var(--night-purple);
-  font-size: 1.75rem;
-  font-weight: 600;
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
-}
-
-.prose-y2k p {
-  font-family: var(--font-body);
-  line-height: 1.75;
-  margin-bottom: 1rem;
-}
-
-.prose-y2k strong {
-  color: var(--pink-2000);
-  font-weight: 600;
-}
-
-.prose-y2k a {
-  color: var(--pink-2000);
-  text-decoration: underline;
-  text-decoration-color: var(--glitter-pink);
-  text-underline-offset: 4px;
-  transition: color 0.2s;
-}
-
-.prose-y2k a:hover {
-  color: var(--cyber-pink);
-}
-
-.prose-y2k ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-.prose-y2k ul li {
-  position: relative;
-  padding-left: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.prose-y2k ul li::before {
-  content: "⭐";
-  position: absolute;
-  left: 0;
-  color: var(--glitter-pink);
-}
-
-/* Efeito de scanline para TVs */
-.scanlines {
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0),
-    rgba(255, 255, 255, 0) 50%,
-    rgba(0, 0, 0, 0.1) 50%,
-    rgba(0, 0, 0, 0.1)
-  );
-  background-size: 100% 4px;
-  pointer-events: none;
-}
-
-/* Efeito CRT/vintage */
-.crt-effect {
-  position: relative;
-}
-
-.crt-effect::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    rgba(18, 16, 16, 0) 50%,
-    rgba(0, 0, 0, 0.1) 50%
-  );
-  background-size: 100% 4px;
-  pointer-events: none;
-  z-index: 10;
-}
-
-/* Classe para gradiente de texto */
-.gradient-text {
-  background: linear-gradient(135deg, var(--pink-2000), var(--glitter-pink), var(--flash-photo));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* ============== Cursores Y2K (mouse fino; touch mantém padrão) ============== */
-@media (hover: hover) and (pointer: fine) {
-  :root {
-    --cursor-default: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Ctext x='2' y='22' font-size='18'%3E💄%3C/text%3E%3C/svg%3E"), auto;
-    --cursor-link: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Ctext x='2' y='22' font-size='18'%3E👆%3C/text%3E%3C/svg%3E"), pointer;
-    --cursor-button: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Ctext x='2' y='22' font-size='18'%3E✨%3C/text%3E%3C/svg%3E"), pointer;
-    --cursor-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Ctext x='2' y='22' font-size='18'%3E🔍%3C/text%3E%3C/svg%3E"), zoom-in;
-  }
-
-  body.y2k-cursors {
-    cursor: var(--cursor-default);
-  }
-
-  body.y2k-cursors a[href]:not([aria-disabled="true"]):not([tabindex="-1"]) {
-    cursor: var(--cursor-link);
-  }
-
-  body.y2k-cursors button:not(:disabled),
-  body.y2k-cursors [role="button"]:not([aria-disabled="true"]),
-  body.y2k-cursors input[type="submit"]:not(:disabled),
-  body.y2k-cursors input[type="button"]:not(:disabled),
-  body.y2k-cursors input[type="reset"]:not(:disabled),
-  body.y2k-cursors summary {
-    cursor: var(--cursor-button);
-  }
-
-  body.y2k-cursors img,
-  body.y2k-cursors [data-cursor-image="true"],
-  body.y2k-cursors picture img {
-    cursor: var(--cursor-image);
-  }
-}
-
-@media (pointer: coarse) {
-  body.y2k-cursors,
-  body.y2k-cursors a[href],
-  body.y2k-cursors button,
-  body.y2k-cursors img {
-    cursor: auto;
-  }
-}
-
-/* Foco: outline só quando navegação por teclado (não remove o anel em cliques de rato) */
-:focus:not(:focus-visible) {
-  outline: none;
-}
-
-:focus-visible {
-  outline: 3px solid var(--glitter-pink);
-  outline-offset: 3px;
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--pink-2000) 35%, transparent);
-}
-
-/* Skip link */
 .skip-to-content {
   position: absolute;
-  left: 0.75rem;
-  top: 0.75rem;
+  left: 1rem;
+  top: -100%;
   z-index: 100;
+  background: var(--color-ink);
+  color: var(--color-bg);
   padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  background: var(--pink-2000);
-  color: white;
-  font-family: var(--font-terminal);
-  font-size: 0.95rem;
-  transform: translateY(-200%);
-  transition: transform 0.2s ease;
+  border-radius: 0.25rem;
 }
 
-.skip-to-content:focus,
-.skip-to-content:focus-visible {
-  transform: translateY(0);
-  outline: 3px solid var(--glitter-pink);
-  outline-offset: 2px;
+.skip-to-content:focus {
+  top: 1rem;
 }
 
-/* Reduzir movimento (acessibilidade + performance) */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-
-  .animate-float,
-  .animate-sparkle,
-  .animate-wiggle,
-  .animate-glossy-shine,
-  .animate-pulse-glow {
-    animation: none !important;
-  }
+::selection {
+  background: var(--color-ink);
+  color: var(--color-bg);
 }
