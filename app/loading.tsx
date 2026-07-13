@@ -1,5 +1,7 @@
-import { LoadingScreen } from "@/components/ui/LoadingScreen";
-
 export default function Loading() {
-  return <LoadingScreen message="Carregando a experiência Y2K…" />;
+  return (
+    <div className="flex min-h-[50vh] items-center justify-center text-[var(--color-muted)]">
+      <p className="text-sm uppercase tracking-[0.25em]">Carregando…</p>
+    </div>
+  );
 }
