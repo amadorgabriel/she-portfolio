@@ -10,6 +10,7 @@
 
 import { createClient } from "@sanity/client";
 import { createHash } from "node:crypto";
+import { deflateSync } from "node:zlib";
 import { readFileSync, existsSync } from "node:fs";
 import { resolve, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -65,10 +66,82 @@ const client = createClient({
   useCdn: false,
 });
 
-const placeholdersDir = join(root, "public", "placeholders");
+/** Solid RGB PNG (Sanity image pipeline rejects most SVGs). */
+function solidPng(r, g, b, width = 800, height = 1000) {
+  const raw = Buffer.alloc((width * 3 + 1) * height);
+  for (let y = 0; y < height; y++) {
+    const row = y * (width * 3 + 1);
+    raw[row] = 0;
+    for (let x = 0; x < width; x++) {
+      const i = row + 1 + x * 3;
+      raw[i] = r;
+      raw[i + 1] = g;
+      raw[i + 2] = b;
+    }
+  }
+
+  const crcTable = (() => {
+    const table = new Uint32Array(256);
+    for (let n = 0; n < 256; n++) {
+      let c = n;
+      for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+      table[n] = c;
+    }
+    return table;
+  })();
+
+  function crc32(buf) {
+    let c = 0xffffffff;
+    for (let i = 0; i < buf.length; i++) {
+      c = crcTable[(c ^ buf[i]) & 0xff] ^ (c >>> 8);
+    }
+    return (c ^ 0xffffffff) >>> 0;
+  }
+
+  function chunk(type, data) {
+    const typeBuf = Buffer.from(type, "ascii");
+    const len = Buffer.alloc(4);
+    len.writeUInt32BE(data.length, 0);
+    const crcBuf = Buffer.alloc(4);
+    crcBuf.writeUInt32BE(crc32(Buffer.concat([typeBuf, data])), 0);
+    return Buffer.concat([len, typeBuf, data, crcBuf]);
+  }
+
+  const ihdr = Buffer.alloc(13);
+  ihdr.writeUInt32BE(width, 0);
+  ihdr.writeUInt32BE(height, 4);
+  ihdr[8] = 8;
+  ihdr[9] = 2;
+  ihdr[10] = 0;
+  ihdr[11] = 0;
+  ihdr[12] = 0;
+
+  return Buffer.concat([
+    Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+    chunk("IHDR", ihdr),
+    chunk("IDAT", deflateSync(raw, { level: 9 })),
+    chunk("IEND", Buffer.alloc(0)),
+  ]);
+}
+
+const PLACEHOLDER_COLORS = {
+  "project.png": [232, 230, 225],
+  "project-1.png": [210, 200, 190],
+  "project-2.png": [190, 205, 210],
+  "project-3.png": [220, 205, 195],
+};
 
 function readPlaceholder(name) {
-  const path = join(placeholdersDir, name);
+  const pngName = name.replace(/\.svg$/i, ".png");
+  const rgb = PLACEHOLDER_COLORS[pngName];
+  if (rgb) {
+    return {
+      buffer: solidPng(...rgb),
+      contentType: "image/png",
+      filename: pngName,
+    };
+  }
+  const path = join(root, "public", "placeholders", name);
   if (!existsSync(path)) {
     throw new Error(`Placeholder não encontrado: ${path}`);
   }
@@ -162,8 +235,8 @@ const PROJECTS = [
     categoryId: "category-estilo",
     year: 2023,
     order: 1,
-    thumb: "project-1.svg",
-    gallery: ["project-1.svg", "project-2.svg"],
+    thumb: "project-1.png",
+    gallery: ["project-1.png", "project-2.png"],
     description:
       "Projeto de estilo com referências florais — placeholder para demo.",
   },
@@ -174,8 +247,8 @@ const PROJECTS = [
     categoryId: "category-estilo",
     year: 2022,
     order: 2,
-    thumb: "project-2.svg",
-    gallery: ["project-2.svg", "project-3.svg"],
+    thumb: "project-2.png",
+    gallery: ["project-2.png", "project-3.png"],
     description: "Série Besora — lookbook de estilo (seed).",
   },
   {
@@ -185,8 +258,8 @@ const PROJECTS = [
     categoryId: "category-estamparia",
     year: 2023,
     order: 1,
-    thumb: "project-3.svg",
-    gallery: ["project-3.svg", "project.svg"],
+    thumb: "project-3.png",
+    gallery: ["project-3.png", "project.png"],
     description: "Estampa experimental I — placeholder.",
   },
   {
@@ -196,8 +269,8 @@ const PROJECTS = [
     categoryId: "category-direcao",
     year: 2024,
     order: 1,
-    thumb: "project.svg",
-    gallery: ["project.svg", "project-1.svg"],
+    thumb: "project.png",
+    gallery: ["project.png", "project-1.png"],
     description: "Direção de arte para lookbook (seed).",
   },
   {
@@ -207,8 +280,8 @@ const PROJECTS = [
     categoryId: "category-desenho",
     year: 2021,
     order: 1,
-    thumb: "project-1.svg",
-    gallery: ["project-1.svg"],
+    thumb: "project-1.png",
+    gallery: ["project-1.png"],
     description: "Seleção de desenhos — placeholder.",
   },
   {
@@ -218,8 +291,8 @@ const PROJECTS = [
     categoryId: "category-modelagem",
     year: 2022,
     order: 1,
-    thumb: "project-2.svg",
-    gallery: ["project-2.svg", "project-3.svg"],
+    thumb: "project-2.png",
+    gallery: ["project-2.png", "project-3.png"],
     description: "Protótipo de modelagem (seed).",
   },
 ];
@@ -249,10 +322,10 @@ async function main() {
   }
 
   for (const name of [
-    "project.svg",
-    "project-1.svg",
-    "project-2.svg",
-    "project-3.svg",
+    "project.png",
+    "project-1.png",
+    "project-2.png",
+    "project-3.png",
   ]) {
     await getAsset(name);
   }
