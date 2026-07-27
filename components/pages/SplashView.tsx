@@ -1,20 +1,41 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { SiteConfig } from "@/types/sanity";
+import { brandArtUrl } from "@/lib/sanity-image";
 
 interface SplashViewProps {
   config?: SiteConfig | null;
+}
+
+function isGifUrl(url: string): boolean {
+  return /\.gif(\?|$)/i.test(url);
 }
 
 export function SplashView({ config }: SplashViewProps) {
   const brandName = config?.brandName || config?.siteTitle || "Karina Reis";
   const ctaLabel = config?.ctaLabel || "ABRIR";
   const social = config?.socialLinks;
+  const artUrl = config?.splashLogo?.asset
+    ? brandArtUrl(config.splashLogo, { width: 960 })
+    : undefined;
 
   return (
     <section className="relative flex min-h-[100dvh] flex-col items-center justify-center px-6 py-16 animate-fade-in">
       <div className="flex max-w-3xl flex-col items-center text-center">
         <h1 className="font-display text-5xl leading-none tracking-tight sm:text-7xl md:text-8xl">
-          {brandName}
+          {artUrl ? (
+            <Image
+              src={artUrl}
+              alt={brandName}
+              width={480}
+              height={160}
+              className="mx-auto h-auto max-h-24 w-auto max-w-[min(90vw,28rem)] object-contain sm:max-h-32 md:max-h-40"
+              priority
+              unoptimized={isGifUrl(artUrl)}
+            />
+          ) : (
+            brandName
+          )}
         </h1>
 
         <Link

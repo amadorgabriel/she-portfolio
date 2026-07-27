@@ -7,7 +7,7 @@ import {
 import { SiteChrome } from "@/components/site/SiteChrome";
 import { CategoryMenu } from "@/components/nav/CategoryMenu";
 import { BackToTop } from "@/components/ui/BackToTop";
-import { imageUrlFromSanity } from "@/lib/sanity-image";
+import { brandArtUrl } from "@/lib/sanity-image";
 
 export async function generateMetadata(): Promise<Metadata> {
   const config = (await getSiteConfig()) ?? DEFAULT_SITE_CONFIG;
@@ -24,8 +24,8 @@ export default async function MenuPage() {
     getCategories(),
   ]);
   const site = config ?? DEFAULT_SITE_CONFIG;
-  const logoUrl = site.splashLogo
-    ? imageUrlFromSanity(site.splashLogo, { width: 240 })
+  const logoUrl = site.splashLogo?.asset
+    ? brandArtUrl(site.splashLogo, { width: 240 })
     : undefined;
 
   const items = categories.map((c) => ({

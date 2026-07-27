@@ -14,9 +14,9 @@ export const siteConfig = defineType({
     }),
     defineField({
       name: "brandName",
-      title: "Nome da Marca",
+      title: "Marca",
       type: "string",
-      description: "Nome exibido na splash e no header",
+      description: "Nome exibido na splash e no header quando não há arte",
       validation: (Rule) => Rule.required().min(2).max(80),
       initialValue: "Karina Reis",
     }),
@@ -30,8 +30,9 @@ export const siteConfig = defineType({
     }),
     defineField({
       name: "splashLogo",
-      title: "Logo / Marca (Splash)",
+      title: "Arte da Marca",
       type: "image",
+      description: "Imagem ou GIF exibido na splash e no header no lugar do texto",
       options: {
         hotspot: true,
       },

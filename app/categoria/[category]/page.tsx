@@ -10,7 +10,7 @@ import {
 import { SiteChrome } from "@/components/site/SiteChrome";
 import { ProjectGrid } from "@/components/project/ProjectGrid";
 import { BackToTop } from "@/components/ui/BackToTop";
-import { imageUrlFromSanity } from "@/lib/sanity-image";
+import { brandArtUrl } from "@/lib/sanity-image";
 
 interface CategoryPageProps {
   params: Promise<{ category: string }>;
@@ -44,8 +44,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   if (!category) notFound();
 
   const site = config ?? DEFAULT_SITE_CONFIG;
-  const logoUrl = site.splashLogo
-    ? imageUrlFromSanity(site.splashLogo, { width: 240 })
+  const logoUrl = site.splashLogo?.asset
+    ? brandArtUrl(site.splashLogo, { width: 240 })
     : undefined;
 
   return (

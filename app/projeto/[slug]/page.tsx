@@ -9,7 +9,7 @@ import {
 import { SiteChrome } from "@/components/site/SiteChrome";
 import { ProjectDetail } from "@/components/project/ProjectDetail";
 import { BackToTop } from "@/components/ui/BackToTop";
-import { imageUrlFromSanity } from "@/lib/sanity-image";
+import { brandArtUrl, imageUrlFromSanity } from "@/lib/sanity-image";
 import { portableTextToPlain } from "@/lib/portable-plain";
 
 interface ProjectPageProps {
@@ -64,8 +64,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   if (!project) notFound();
 
   const site = config ?? DEFAULT_SITE_CONFIG;
-  const logoUrl = site.splashLogo
-    ? imageUrlFromSanity(site.splashLogo, { width: 240 })
+  const logoUrl = site.splashLogo?.asset
+    ? brandArtUrl(site.splashLogo, { width: 240 })
     : undefined;
 
   return (
