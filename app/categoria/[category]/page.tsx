@@ -8,6 +8,7 @@ import {
   DEFAULT_SITE_CONFIG,
 } from "@/lib/cms";
 import { SiteChrome } from "@/components/site/SiteChrome";
+import { CategoryBackground } from "@/components/site/CategoryBackground";
 import { ProjectGrid } from "@/components/project/ProjectGrid";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { brandArtUrl } from "@/lib/sanity-image";
@@ -49,15 +50,18 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     : undefined;
 
   return (
-    <div className="flex min-h-[100dvh] flex-col">
-      <SiteChrome brandName={site.brandName || "Karina Reis"} logoUrl={logoUrl} />
-      <div className="mx-auto w-full max-w-6xl flex-1 px-6 pb-8 md:px-10">
-        <h1 className="font-display mb-10 text-4xl uppercase tracking-[0.06em] md:mb-14 md:text-5xl">
-          {category.title}
-        </h1>
-        <ProjectGrid projects={projects} />
+    <>
+      <CategoryBackground image={category.backgroundImage} />
+      <div className="relative z-10 flex min-h-[100dvh] flex-col">
+        <SiteChrome brandName={site.brandName || "Karina Reis"} logoUrl={logoUrl} />
+        <div className="mx-auto w-full max-w-6xl flex-1 px-6 pb-8 md:px-10">
+          <h1 className="font-display mb-10 text-4xl uppercase tracking-[0.06em] md:mb-14 md:text-5xl">
+            {category.title}
+          </h1>
+          <ProjectGrid projects={projects} />
+        </div>
+        <BackToTop />
       </div>
-      <BackToTop />
-    </div>
+    </>
   );
 }

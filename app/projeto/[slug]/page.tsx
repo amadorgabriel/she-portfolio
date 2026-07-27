@@ -7,6 +7,7 @@ import {
   DEFAULT_SITE_CONFIG,
 } from "@/lib/cms";
 import { SiteChrome } from "@/components/site/SiteChrome";
+import { CategoryBackground } from "@/components/site/CategoryBackground";
 import { ProjectDetail } from "@/components/project/ProjectDetail";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { brandArtUrl, imageUrlFromSanity } from "@/lib/sanity-image";
@@ -67,12 +68,17 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const logoUrl = site.splashLogo?.asset
     ? brandArtUrl(site.splashLogo, { width: 240 })
     : undefined;
+  // Only first category — no fallback to later categories (DEC-003-03)
+  const backgroundImage = project.categories?.[0]?.backgroundImage;
 
   return (
-    <div className="flex min-h-[100dvh] flex-col">
-      <SiteChrome brandName={site.brandName || "Karina Reis"} logoUrl={logoUrl} />
-      <ProjectDetail project={project} />
-      <BackToTop />
-    </div>
+    <>
+      <CategoryBackground image={backgroundImage} />
+      <div className="relative z-10 flex min-h-[100dvh] flex-col">
+        <SiteChrome brandName={site.brandName || "Karina Reis"} logoUrl={logoUrl} />
+        <ProjectDetail project={project} />
+        <BackToTop />
+      </div>
+    </>
   );
 }
