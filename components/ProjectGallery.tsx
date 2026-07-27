@@ -48,15 +48,28 @@ export function ProjectGallery({ images, projectTitle, className }: ProjectGalle
     if (e.key === "Escape") setSelectedIndex(null);
   };
 
+  const fewImages = images.length < 3;
+
   return (
     <div className={cn("space-y-4", className)}>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div
+        className={cn(
+          "gap-4",
+          fewImages
+            ? "flex flex-wrap justify-center"
+            : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+        )}
+      >
         {images.map((image, index) => (
           <button
             key={image._key || index}
             type="button"
             onClick={() => setSelectedIndex(index)}
-            className="group relative aspect-[4/5] overflow-hidden bg-[var(--color-line)] text-left"
+            className={cn(
+              "group relative aspect-[4/5] overflow-hidden bg-[var(--color-line)] text-left",
+              fewImages &&
+                "w-full sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)]"
+            )}
           >
             <Image
               src={urlFor(image).width(800).height(1000).format("webp").fit("crop").url()}

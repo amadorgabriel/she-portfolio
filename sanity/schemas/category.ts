@@ -1,4 +1,5 @@
 import { defineType, defineField } from "sanity";
+import { slugifyFromTitle, validateSlugField } from "../lib/slug";
 
 export const category = defineType({
   name: "category",
@@ -18,8 +19,9 @@ export const category = defineType({
       options: {
         source: "title",
         maxLength: 96,
+        slugify: (input) => slugifyFromTitle(input, 96),
       },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().custom(validateSlugField),
     }),
     defineField({
       name: "order",
@@ -27,6 +29,23 @@ export const category = defineType({
       type: "number",
       initialValue: 0,
       validation: (Rule) => Rule.required().integer().min(0),
+    }),
+    defineField({
+      name: "backgroundImage",
+      title: "Imagem de Fundo",
+      type: "image",
+      options: {
+        hotspot: true,
+      },
+      description:
+        "Arte de fundo full-bleed na página da categoria e nos projetos associados (primeira categoria).",
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Texto Alternativo",
+          type: "string",
+        }),
+      ],
     }),
     defineField({
       name: "description",

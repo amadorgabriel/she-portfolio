@@ -98,8 +98,8 @@ Arquivos em `public/placeholders/`:
 
 1. `/` — splash “Karina Reis” + CTA ABRIR
 2. `/menu` — 5 categorias
-3. `/c/estilo` — projetos da categoria
-4. `/p/floral` — detalhe com galeria/texto
+3. `/categoria/estilo` — projetos da categoria
+4. `/projeto/floral` — detalhe com galeria/texto
 5. Remover um projeto no Studio → some do grid e 404 no slug
 
 ## Notas

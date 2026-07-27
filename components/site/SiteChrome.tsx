@@ -6,6 +6,10 @@ interface SiteChromeProps {
   logoUrl?: string;
 }
 
+function isGifUrl(url: string): boolean {
+  return /\.gif(\?|$)/i.test(url);
+}
+
 export function SiteChrome({ brandName, logoUrl }: SiteChromeProps) {
   return (
     <header className="w-full px-6 py-6 md:px-10 md:py-8">
@@ -22,6 +26,7 @@ export function SiteChrome({ brandName, logoUrl }: SiteChromeProps) {
             height={40}
             className="h-8 w-auto object-contain md:h-10"
             priority
+            unoptimized={isGifUrl(logoUrl)}
           />
         ) : (
           <span className="font-display text-xl tracking-tight md:text-2xl">{brandName}</span>

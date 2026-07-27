@@ -8,9 +8,10 @@ import {
   DEFAULT_SITE_CONFIG,
 } from "@/lib/cms";
 import { SiteChrome } from "@/components/site/SiteChrome";
+import { CategoryBackground } from "@/components/site/CategoryBackground";
 import { ProjectGrid } from "@/components/project/ProjectGrid";
 import { BackToTop } from "@/components/ui/BackToTop";
-import { imageUrlFromSanity } from "@/lib/sanity-image";
+import { brandArtUrl } from "@/lib/sanity-image";
 
 interface CategoryPageProps {
   params: Promise<{ category: string }>;
@@ -44,20 +45,23 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   if (!category) notFound();
 
   const site = config ?? DEFAULT_SITE_CONFIG;
-  const logoUrl = site.splashLogo
-    ? imageUrlFromSanity(site.splashLogo, { width: 240 })
+  const logoUrl = site.splashLogo?.asset
+    ? brandArtUrl(site.splashLogo, { width: 240 })
     : undefined;
 
   return (
-    <div className="flex min-h-[100dvh] flex-col">
-      <SiteChrome brandName={site.brandName || "Karina Reis"} logoUrl={logoUrl} />
-      <div className="mx-auto w-full max-w-6xl flex-1 px-6 pb-8 md:px-10">
-        <h1 className="font-display mb-10 text-4xl uppercase tracking-[0.06em] md:mb-14 md:text-5xl">
-          {category.title}
-        </h1>
-        <ProjectGrid projects={projects} />
+    <>
+      <CategoryBackground image={category.backgroundImage} />
+      <div className="relative z-10 flex min-h-[100dvh] flex-col">
+        <SiteChrome brandName={site.brandName || "Karina Reis"} logoUrl={logoUrl} />
+        <div className="mx-auto w-full max-w-6xl flex-1 px-6 pb-8 md:px-10">
+          <h1 className="font-display mb-10 text-4xl uppercase tracking-[0.06em] md:mb-14 md:text-5xl">
+            {category.title}
+          </h1>
+          <ProjectGrid projects={projects} />
+        </div>
+        <BackToTop />
       </div>
-      <BackToTop />
-    </div>
+    </>
   );
 }

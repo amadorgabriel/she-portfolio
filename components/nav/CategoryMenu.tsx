@@ -24,7 +24,7 @@ export function CategoryMenu({ categories }: CategoryMenuProps) {
         {categories.map((cat) => (
           <li key={cat.slug}>
             <Link
-              href={`/c/${cat.slug}`}
+              href={`/categoria/${cat.slug}`}
               className="font-display text-3xl uppercase tracking-[0.08em] no-underline transition-opacity hover:opacity-55 md:text-5xl"
             >
               {cat.title}

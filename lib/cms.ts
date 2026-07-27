@@ -39,7 +39,11 @@ const categoryFields = `
   title,
   slug,
   order,
-  description
+  description,
+  backgroundImage {
+    ...,
+    asset->
+  }
 `;
 
 const projectFields = `
@@ -63,9 +67,6 @@ const projectFields = `
   description,
   year,
   client,
-  materials,
-  team,
-  tools,
   order,
   publishedAt
 `;
@@ -103,8 +104,7 @@ const siteConfigFields = `
   ogImage {
     ...,
     asset->
-  },
-  analytics
+  }
 `;
 
 /** Fallback tipado quando Sanity está off ou vazio. */

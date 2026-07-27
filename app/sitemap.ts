@@ -25,14 +25,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const categoryEntries: MetadataRoute.Sitemap = categorySlugs.map((slug) => ({
-    url: `${base}/c/${slug}`,
+    url: `${base}/categoria/${slug}`,
     lastModified: new Date(),
     changeFrequency: "weekly",
     priority: 0.8,
   }));
 
   const projectEntries: MetadataRoute.Sitemap = projectSlugs.map((slug) => ({
-    url: `${base}/p/${slug}`,
+    url: `${base}/projeto/${slug}`,
     lastModified: new Date(),
     changeFrequency: "weekly",
     priority: 0.7,

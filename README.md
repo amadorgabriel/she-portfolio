@@ -2,7 +2,7 @@
 
 Portfólio editorial de moda (placeholder brand **Karina Reis**), com conteúdo no Sanity CMS e front em Next.js App Router.
 
-Referência de layout: clone estrutural Marina Catelli (`/`, `/menu`, `/c/[category]`, `/p/[slug]`).
+Referência de layout: clone estrutural Marina Catelli (`/`, `/menu`, `/categoria/[category]`, `/projeto/[slug]`).
 
 ## Stack
 
@@ -52,8 +52,8 @@ Guia detalhado: `sanity/seed/README.md`.
 |------|----------|
 | `/` | Splash + CTA |
 | `/menu` | Lista de categorias |
-| `/c/[category]` | Grid de projetos da categoria |
-| `/p/[slug]` | Detalhe do projeto |
+| `/categoria/[category]` | Grid de projetos da categoria |
+| `/projeto/[slug]` | Detalhe do projeto |
 | `/studio` | Sanity Studio |
 
 ## Deploy (Vercel)
@@ -71,7 +71,7 @@ Decisões (change `002`): host **Vercel**, URL `*.vercel.app`, merge em **`main`
    - `NEXT_PUBLIC_SITE_URL=https://<projeto>.vercel.app` (atualizar após primeira URL)
 4. [ ] Conectar o repo no dashboard Vercel com branch de produção = `main`
 5. [ ] Merge `feat/v2-marina-clone` → `main` (PR) e aguardar deploy
-6. [ ] Smoke: `/`, `/menu`, `/c/estilo`, `/p/floral`, `/studio`
+6. [ ] Smoke: `/`, `/menu`, `/categoria/estilo`, `/projeto/floral`, `/studio`
 
 CLI alternativa após login:
 
