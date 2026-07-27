@@ -68,9 +68,6 @@ export interface Project {
   description: PortableTextBlock[];
   year: number;
   client?: string;
-  materials?: string[];
-  team?: string[];
-  tools?: string[];
   order: number;
   publishedAt?: string;
 }
@@ -92,10 +89,6 @@ export interface SiteSocialLinks {
   email?: string;
 }
 
-export interface SiteAnalytics {
-  googleAnalyticsId?: string;
-}
-
 export interface SiteConfig {
   _id: string;
   _type: "siteConfig";
@@ -109,7 +102,6 @@ export interface SiteConfig {
   socialLinks?: SiteSocialLinks;
   favicon?: SanityImage;
   ogImage?: SanityImage;
-  analytics?: SiteAnalytics;
 }
 
 /** Alias explícito do modelo v2 (design). */

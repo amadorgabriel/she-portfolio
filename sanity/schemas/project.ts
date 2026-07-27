@@ -102,24 +102,6 @@ export const project = defineType({
       type: "string",
     }),
     defineField({
-      name: "materials",
-      title: "Materiais",
-      type: "array",
-      of: [{ type: "string" }],
-    }),
-    defineField({
-      name: "team",
-      title: "Equipe",
-      type: "array",
-      of: [{ type: "string" }],
-    }),
-    defineField({
-      name: "tools",
-      title: "Ferramentas/Softwares",
-      type: "array",
-      of: [{ type: "string" }],
-    }),
-    defineField({
       name: "order",
       title: "Ordem de Exibição",
       type: "number",

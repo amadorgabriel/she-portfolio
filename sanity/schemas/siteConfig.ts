@@ -93,19 +93,6 @@ export const siteConfig = defineType({
       },
       description: "Imagem que aparece quando o site é compartilhado (1200x630px recomendado)",
     }),
-    defineField({
-      name: "analytics",
-      title: "Analytics",
-      type: "object",
-      fields: [
-        defineField({
-          name: "googleAnalyticsId",
-          title: "Google Analytics ID",
-          type: "string",
-          description: "GA-XXXXXXXXX",
-        }),
-      ],
-    }),
   ],
   preview: {
     select: {
