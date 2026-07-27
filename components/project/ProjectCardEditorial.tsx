@@ -14,7 +14,7 @@ export function ProjectCardEditorial({ project }: ProjectCardEditorialProps) {
 
   return (
     <Link
-      href={`/p/${slug}`}
+      href={`/projeto/${slug}`}
       className="group block no-underline animate-fade-up"
     >
       <div className="relative aspect-[4/5] overflow-hidden bg-[var(--color-line)]">
