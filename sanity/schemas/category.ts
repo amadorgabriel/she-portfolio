@@ -31,6 +31,23 @@ export const category = defineType({
       validation: (Rule) => Rule.required().integer().min(0),
     }),
     defineField({
+      name: "backgroundImage",
+      title: "Imagem de Fundo",
+      type: "image",
+      options: {
+        hotspot: true,
+      },
+      description:
+        "Arte de fundo full-bleed na página da categoria e nos projetos associados (primeira categoria).",
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Texto Alternativo",
+          type: "string",
+        }),
+      ],
+    }),
+    defineField({
       name: "description",
       title: "Descrição",
       type: "text",

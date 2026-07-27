@@ -39,7 +39,11 @@ const categoryFields = `
   title,
   slug,
   order,
-  description
+  description,
+  backgroundImage {
+    ...,
+    asset->
+  }
 `;
 
 const projectFields = `

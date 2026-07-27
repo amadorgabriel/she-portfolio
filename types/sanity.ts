@@ -51,6 +51,7 @@ export interface Category {
   slug: SanitySlug;
   order: number;
   description?: string;
+  backgroundImage?: SanityImage;
 }
 
 // ============== PROJECT ==============
