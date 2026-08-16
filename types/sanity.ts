@@ -30,6 +30,10 @@ export interface SanityImage {
 export interface SanityFile {
   _type: "file";
   asset: SanityAsset;
+  /** Presente quando GROQ projeta `file.asset->url` (e campos irmãos). */
+  url?: string;
+  mimeType?: string;
+  size?: number;
 }
 
 export interface SanitySlug {
@@ -41,6 +45,49 @@ export interface SanityReference {
   _type: "reference";
   _ref: string;
 }
+
+// ============== GALLERY MEDIA ==============
+
+export interface SanityImageAssetMeta {
+  _id?: string;
+  _ref?: string;
+  _type?: string;
+  url?: string;
+  metadata?: {
+    dimensions?: {
+      width: number;
+      height: number;
+      aspectRatio?: number;
+    };
+  };
+  /** Alguns fetches expandem dimensões no próprio asset. */
+  width?: number;
+  height?: number;
+}
+
+export interface SanityGalleryImage extends SanityImage {
+  _type: "image";
+  alt: string;
+  caption?: string;
+  asset: SanityAsset & SanityImageAssetMeta;
+}
+
+export interface SanityGalleryVideo {
+  _type: "galleryVideo";
+  _key?: string;
+  file: SanityFile & {
+    asset?: SanityAsset & {
+      url?: string;
+      mimeType?: string;
+      size?: number;
+    };
+  };
+  alt: string;
+  caption?: string;
+  poster?: SanityImage;
+}
+
+export type GalleryMedia = SanityGalleryImage | SanityGalleryVideo;
 
 // ============== CATEGORY ==============
 
@@ -65,7 +112,7 @@ export interface Project {
   slug: SanitySlug;
   categories: Category[];
   thumbnail: SanityImage;
-  gallery?: SanityImage[];
+  gallery?: GalleryMedia[];
   description: PortableTextBlock[];
   year: number;
   client?: string;
