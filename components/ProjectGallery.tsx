@@ -14,6 +14,18 @@ interface ProjectGalleryProps {
   className?: string;
 }
 
+function getImageAspectRatio(image: SanityGalleryImage): number {
+  const dims = image.asset?.metadata?.dimensions;
+  if (dims?.aspectRatio && dims.aspectRatio > 0) return dims.aspectRatio;
+  if (dims?.width && dims?.height && dims.height > 0) {
+    return dims.width / dims.height;
+  }
+  if (image.asset?.width && image.asset?.height && image.asset.height > 0) {
+    return image.asset.width / image.asset.height;
+  }
+  return 4 / 5;
+}
+
 export function ProjectGallery({ images, projectTitle, className }: ProjectGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
@@ -66,17 +78,18 @@ export function ProjectGallery({ images, projectTitle, className }: ProjectGalle
             type="button"
             onClick={() => setSelectedIndex(index)}
             className={cn(
-              "group relative aspect-[4/5] overflow-hidden bg-[var(--color-line)] text-left",
+              "group relative overflow-hidden bg-[var(--color-line)] text-left",
               fewImages &&
                 "w-full sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)]"
             )}
+            style={{ aspectRatio: String(getImageAspectRatio(image)) }}
           >
             <Image
-              src={urlFor(image).width(800).height(1000).format("webp").fit("crop").url()}
+              src={urlFor(image).width(800).format("webp").url()}
               alt={image.alt || `${projectTitle} — imagem ${index + 1}`}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover transition-opacity duration-300 group-hover:opacity-80"
+              className="object-contain transition-opacity duration-300 group-hover:opacity-80"
               placeholder="blur"
               blurDataURL={IMAGE_BLUR_DATA_URL}
             />
