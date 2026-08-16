@@ -61,8 +61,31 @@ const projectFields = `
     asset->
   },
   gallery[] {
-    ...,
-    asset->
+    _type,
+    _key,
+    alt,
+    caption,
+    hotspot,
+    crop,
+    asset->{
+      _id,
+      url,
+      metadata {
+        dimensions
+      }
+    },
+    file {
+      _type,
+      asset->{
+        url,
+        mimeType,
+        size
+      }
+    },
+    poster {
+      ...,
+      asset->
+    }
   },
   description,
   year,
