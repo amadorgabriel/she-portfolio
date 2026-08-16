@@ -68,9 +68,9 @@ Decisões (change `002`): host **Vercel**, URL `*.vercel.app`, merge em **`main`
    - `NEXT_PUBLIC_SANITY_PROJECT_ID`
    - `NEXT_PUBLIC_SANITY_DATASET=production`
    - `NEXT_PUBLIC_SANITY_API_VERSION=2024-01-01`
-   - `NEXT_PUBLIC_SITE_URL=https://<projeto>.vercel.app` (atualizar após primeira URL)
+   - `NEXT_PUBLIC_SITE_URL=https://karinadosreis.vercel.app` (atualizar se o domínio Vercel mudar)
 4. [ ] Conectar o repo no dashboard Vercel com branch de produção = `main`
-5. [ ] Merge `feat/v2-marina-clone` → `main` (PR) e aguardar deploy
+5. [ ] No Sanity Manage → API → CORS Origins: adicionar a URL do site com **Allow credentials** (obrigatório para `/studio`)
 6. [ ] Smoke: `/`, `/menu`, `/categoria/estilo`, `/projeto/floral`, `/studio`
 
 CLI alternativa após login:

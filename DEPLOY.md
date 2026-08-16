@@ -158,6 +158,19 @@ npm run build
 
 ## 🚨 Troubleshooting
 
+### Erro: "Connect this studio to your project" / "This studio is not registered"
+O Sanity bloqueia o Studio em origins que não estão na allowlist CORS do projeto. Isso aparece ao **trocar o domínio na Vercel** (ex.: `reiskarina.vercel.app` → `karinadosreis.vercel.app`).
+
+**Correção (obrigatória):**
+1. Abra [https://www.sanity.io/manage](https://www.sanity.io/manage) → seu projeto → **API** → **CORS Origins**
+2. Adicione `https://karinadosreis.vercel.app` (URL exata, com `https://`)
+3. Marque **Allow credentials**
+4. (Opcional) Mantenha o domínio antigo se ainda redireciona ou é usado em previews
+5. Volte a `/studio` e recarregue (a tela do Studio também tem atalho "Register studio" / "Add development host")
+
+**Também atualize na Vercel:**
+- `NEXT_PUBLIC_SITE_URL=https://karinadosreis.vercel.app` → depois faça redeploy
+
 ### Erro: "Project ID not found"
 Verifique se `NEXT_PUBLIC_SANITY_PROJECT_ID` está configurado nas variáveis de ambiente da Vercel.
 

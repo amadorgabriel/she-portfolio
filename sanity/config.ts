@@ -21,6 +21,7 @@ if (!projectId) {
 export default defineConfig({
   name: "default",
   title: "Karina Reis Portfolio",
+  basePath: "/studio",
   projectId,
   dataset,
   apiVersion,

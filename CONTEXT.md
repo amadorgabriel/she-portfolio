@@ -29,13 +29,38 @@ Segmento de URL derivado do título (categoria ou projeto): apenas `a-z`, `0-9` 
 _Avoid_: path, permalink (como sinônimo no Studio)
 
 **Fundo de categoria**:
-Arte associada à categoria, usada como plano de fundo full-bleed (sem overlay) da página da categoria; nos projetos, herda da primeira categoria referenciada.
+Arte associada à categoria, usada como plano de fundo full-bleed (sem overlay) da página da categoria; nos projetos, herda da primeira categoria referenciada. No mobile, deve permanecer visualmente estável durante o scroll (efeito fixed).
 _Avoid_: banner, hero image (neste contexto), overlay automático
+
+**Galeria**:
+Lista ordenada de mídias de um Projeto, editada no Studio.
+_Avoid_: carousel (salvo se a UI pública virar carousel), “Galeria de Imagens” como nome de domínio
+
+**Mídia de galeria**:
+Unidade da Galeria: imagem ou vídeo no mesmo campo.
+_Avoid_: attachment, só-imagem como unidade canônica
+
+**Texto alternativo**:
+Texto de acessibilidade obrigatório da mídia (`alt`); bloqueia publish se ausente.
+_Avoid_: description como sinônimo de alt
+
+**Legenda**:
+Texto visível opcional associado à mídia (`caption`). No vocabulário editorial do pedido, “descrição” da mídia significa Legenda.
+_Avoid_: description como campo Sanity separado; alt
+
+**Preview da galeria**:
+Modal/lightbox ao tocar um item da Galeria no site público.
+_Avoid_: lightbox como termo de domínio preferencial
+
+**Studio**:
+Sanity Studio embutido no path `/studio`, único lugar de edição de conteúdo (incluindo upload em lote da Galeria).
+_Avoid_: CMS admin genérico, UI de upload custom no Next para a Galeria
 
 ## Relationships
 
 - Uma **Categoria** contém zero ou mais **Projetos**
 - Um **Projeto** pertence a uma ou mais **Categorias**
+- Um **Projeto** tem zero ou mais itens de **Mídia de galeria** na **Galeria**
 - A **Marca** é única por site (documento de configuração)
 - O **Fundo de categoria** de uma **Categoria** aplica-se à listagem dessa categoria
 - Na página de um **Projeto**, o fundo herdado é o da **primeira Categoria** referenciada no documento do projeto
@@ -54,8 +79,19 @@ _Avoid_: banner, hero image (neste contexto), overlay automático
 > **Dev:** "Posso salvar o slug `Moda--SS26!`?"
 > **Domain expert:** "Não. **Slug** só aceita minúsculas, números e hífen simples — sem `!`, sem `--`, sem hífen nas pontas."
 
+> **Dev:** "A 'descrição' da foto na galeria é o alt?"
+> **Domain expert:** "Não. 'Descrição' no pedido editorial é a **Legenda** (opcional). O **Texto alternativo** é outro campo e é obrigatório para publicar."
+
+> **Dev:** "Vídeo vai num campo separado?"
+> **Domain expert:** "Não. Vídeo é **Mídia de galeria** no mesmo campo da **Galeria**."
+
+> **Dev:** "Onde faço upload em lote?"
+> **Domain expert:** "Só no **Studio** (`/studio`). Não há tela de upload da Galeria no site Next."
+
 ## Flagged ambiguities
 
 - `splashLogo` no schema atual é o campo legado da arte da **Marca** — consolidar na UX/docs; não tratar como conceito separado.
 - Rotas públicas: `/categoria/[slug]` e `/projeto/[slug]`. Paths legados `/c` e `/p` não redirecionam (404).
 - Campos removidos do Studio nesta change: `materials`, `team`, `tools`, `analytics`. `favicon` passa a ser usado de verdade.
+- **Schema Studio (change 004 em Design):** título do campo ainda pode aparecer como “Galeria de Imagens” no código até PR1 renomear para **Galeria**; tipo de vídeo (`galleryVideo`) a confirmar na Execute.
+- Player de vídeo (poster, autoplay, controls): defaults no Design; não grilled em detalhe.
