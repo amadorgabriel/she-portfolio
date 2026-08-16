@@ -26,8 +26,17 @@ function getImageAspectRatio(image: SanityGalleryImage): number {
   return 4 / 5;
 }
 
+function thumbUrl(image: SanityGalleryImage): string {
+  return urlFor(image).width(800).format("webp").url();
+}
+
+function hiResUrl(image: SanityGalleryImage): string {
+  return urlFor(image).width(1400).format("webp").url();
+}
+
 export function ProjectGallery({ images, projectTitle, className }: ProjectGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [hiResLoaded, setHiResLoaded] = useState(false);
 
   if (!images || images.length === 0) {
     return (
@@ -42,14 +51,21 @@ export function ProjectGallery({ images, projectTitle, className }: ProjectGalle
     );
   }
 
+  const openAt = (index: number) => {
+    setHiResLoaded(false);
+    setSelectedIndex(index);
+  };
+
   const handlePrevious = () => {
     if (selectedIndex !== null) {
+      setHiResLoaded(false);
       setSelectedIndex(selectedIndex === 0 ? images.length - 1 : selectedIndex - 1);
     }
   };
 
   const handleNext = () => {
     if (selectedIndex !== null) {
+      setHiResLoaded(false);
       setSelectedIndex(selectedIndex === images.length - 1 ? 0 : selectedIndex + 1);
     }
   };
@@ -76,7 +92,7 @@ export function ProjectGallery({ images, projectTitle, className }: ProjectGalle
           <button
             key={image._key || index}
             type="button"
-            onClick={() => setSelectedIndex(index)}
+            onClick={() => openAt(index)}
             className={cn(
               "group relative overflow-hidden bg-[var(--color-line)] text-left",
               fewImages &&
@@ -85,7 +101,7 @@ export function ProjectGallery({ images, projectTitle, className }: ProjectGalle
             style={{ aspectRatio: String(getImageAspectRatio(image)) }}
           >
             <Image
-              src={urlFor(image).width(800).format("webp").url()}
+              src={thumbUrl(image)}
               alt={image.alt || `${projectTitle} — imagem ${index + 1}`}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -130,7 +146,7 @@ export function ProjectGallery({ images, projectTitle, className }: ProjectGalle
               </button>
             </div>
 
-            <div className="relative flex items-center justify-center bg-black">
+            <div className="relative flex min-h-[40vh] items-center justify-center bg-black">
               {images.length > 1 && (
                 <button
                   type="button"
@@ -142,17 +158,35 @@ export function ProjectGallery({ images, projectTitle, className }: ProjectGalle
                 </button>
               )}
 
-              <Image
-                src={urlFor(images[selectedIndex]).width(1400).format("webp").url()}
-                alt={
-                  images[selectedIndex].alt ||
-                  `${projectTitle} — imagem ${selectedIndex + 1}`
-                }
-                width={1400}
-                height={1050}
-                className="max-h-[75vh] w-auto object-contain"
-                priority
-              />
+              <div className="relative flex max-h-[75vh] w-full items-center justify-center">
+                <Image
+                  src={thumbUrl(images[selectedIndex])}
+                  alt=""
+                  width={1400}
+                  height={1050}
+                  aria-hidden
+                  className={cn(
+                    "max-h-[75vh] w-auto object-contain blur-sm scale-105 transition-opacity duration-300",
+                    hiResLoaded ? "opacity-0" : "opacity-100"
+                  )}
+                />
+                <Image
+                  key={images[selectedIndex]._key || selectedIndex}
+                  src={hiResUrl(images[selectedIndex])}
+                  alt={
+                    images[selectedIndex].alt ||
+                    `${projectTitle} — imagem ${selectedIndex + 1}`
+                  }
+                  width={1400}
+                  height={1050}
+                  className={cn(
+                    "absolute inset-0 m-auto max-h-[75vh] w-auto object-contain transition-opacity duration-300",
+                    hiResLoaded ? "opacity-100" : "opacity-0"
+                  )}
+                  priority
+                  onLoad={() => setHiResLoaded(true)}
+                />
+              </div>
 
               {images.length > 1 && (
                 <button
