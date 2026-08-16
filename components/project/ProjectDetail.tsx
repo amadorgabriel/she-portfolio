@@ -1,4 +1,4 @@
-import type { Project } from "@/types/sanity";
+import type { Project, SanityGalleryImage } from "@/types/sanity";
 import { ProjectGallery } from "@/components/ProjectGallery";
 import { RichText } from "@/components/RichText";
 
@@ -6,13 +6,21 @@ interface ProjectDetailProps {
   project: Project;
 }
 
+function isGalleryImage(
+  item: NonNullable<Project["gallery"]>[number] | Project["thumbnail"]
+): item is SanityGalleryImage {
+  return item != null && item._type === "image";
+}
+
 export function ProjectDetail({ project }: ProjectDetailProps) {
   const categoryTitles = project.categories?.map((c) => c.title).filter(Boolean) ?? [];
-  const gallery = project.gallery?.length
+  const gallerySource = project.gallery?.length
     ? project.gallery
     : project.thumbnail
       ? [project.thumbnail]
       : [];
+  // PR1 compat: render só imagens até PR2 (T6–T8) tratar vídeo na UI
+  const gallery = gallerySource.filter(isGalleryImage);
 
   return (
     <article className="mx-auto w-full max-w-5xl px-6 pb-8 md:px-10 animate-fade-in">
