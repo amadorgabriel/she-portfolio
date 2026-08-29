@@ -1,4 +1,4 @@
-import type { Project, SanityGalleryImage } from "@/types/sanity";
+import type { GalleryMedia, Project, SanityGalleryImage } from "@/types/sanity";
 import { ProjectGallery } from "@/components/ProjectGallery";
 import { RichText } from "@/components/RichText";
 
@@ -6,21 +6,23 @@ interface ProjectDetailProps {
   project: Project;
 }
 
-function isGalleryImage(
-  item: NonNullable<Project["gallery"]>[number] | Project["thumbnail"]
-): item is SanityGalleryImage {
-  return item != null && item._type === "image";
+function toGalleryItems(project: Project): GalleryMedia[] {
+  if (project.gallery?.length) return project.gallery;
+  if (project.thumbnail) {
+    return [
+      {
+        ...project.thumbnail,
+        _type: "image",
+        alt: project.thumbnail.alt || project.title,
+      } satisfies SanityGalleryImage,
+    ];
+  }
+  return [];
 }
 
 export function ProjectDetail({ project }: ProjectDetailProps) {
   const categoryTitles = project.categories?.map((c) => c.title).filter(Boolean) ?? [];
-  const gallerySource = project.gallery?.length
-    ? project.gallery
-    : project.thumbnail
-      ? [project.thumbnail]
-      : [];
-  // PR1 compat: render só imagens até PR2 (T6–T8) tratar vídeo na UI
-  const gallery = gallerySource.filter(isGalleryImage);
+  const gallery = toGalleryItems(project);
 
   return (
     <article className="mx-auto w-full max-w-5xl px-6 pb-8 md:px-10 animate-fade-in">
@@ -44,7 +46,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
       </header>
 
       {gallery.length > 0 && (
-        <ProjectGallery images={gallery} projectTitle={project.title} className="mb-12" />
+        <ProjectGallery items={gallery} projectTitle={project.title} className="mb-12" />
       )}
 
       {project.description?.length > 0 && (
