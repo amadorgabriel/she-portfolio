@@ -59,7 +59,7 @@ export const project = defineType({
     }),
     defineField({
       name: "gallery",
-      title: "Galeria de Imagens",
+      title: "Galeria",
       type: "array",
       of: [
         {
@@ -80,6 +80,54 @@ export const project = defineType({
               type: "string",
             }),
           ],
+        },
+        {
+          type: "object",
+          name: "galleryVideo",
+          title: "Vídeo",
+          fields: [
+            defineField({
+              name: "file",
+              title: "Arquivo de vídeo",
+              type: "file",
+              options: {
+                accept: "video/*",
+              },
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "alt",
+              title: "Texto Alternativo",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "caption",
+              title: "Legenda",
+              type: "string",
+            }),
+            defineField({
+              name: "poster",
+              title: "Poster",
+              type: "image",
+              options: {
+                hotspot: true,
+              },
+            }),
+          ],
+          preview: {
+            select: {
+              title: "alt",
+              media: "poster",
+            },
+            prepare({ title, media }) {
+              return {
+                title: title || "Vídeo sem texto alternativo",
+                subtitle: "Vídeo",
+                media,
+              };
+            },
+          },
         },
       ],
     }),

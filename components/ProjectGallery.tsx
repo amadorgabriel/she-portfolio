@@ -4,12 +4,12 @@ import { useState } from "react";
 import Image from "next/image";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { urlFor } from "@/sanity/client";
-import type { SanityImage } from "@/types/sanity";
+import type { SanityGalleryImage } from "@/types/sanity";
 import { cn } from "@/lib/utils";
 import { IMAGE_BLUR_DATA_URL } from "@/lib/image-blur";
 
 interface ProjectGalleryProps {
-  images: SanityImage[];
+  images: SanityGalleryImage[];
   projectTitle: string;
   className?: string;
 }
