@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import MuxPlayer from "@mux/mux-player-react/lazy";
 import { X, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { urlFor } from "@/sanity/client";
 import type {
@@ -11,6 +12,8 @@ import type {
 } from "@/types/sanity";
 import { cn } from "@/lib/utils";
 import { IMAGE_BLUR_DATA_URL } from "@/lib/image-blur";
+
+const GRID_SIZES = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw";
 
 interface ProjectGalleryProps {
   items: GalleryMedia[];
@@ -38,10 +41,17 @@ function getImageAspectRatio(image: SanityGalleryImage): number {
   return 4 / 5;
 }
 
+/** `aspect_ratio` da Mux vem como "16:9"; converte para número. */
+function parseMuxAspectRatio(ratio?: string): number | undefined {
+  if (!ratio) return undefined;
+  const [w, h] = ratio.split(":").map(Number);
+  return w > 0 && h > 0 ? w / h : undefined;
+}
+
 function getMediaAspectRatio(item: GalleryMedia): number {
   if (isGalleryImage(item)) return getImageAspectRatio(item);
   if (item.poster) return getImageAspectRatio({ ...item.poster, alt: item.alt, _type: "image" });
-  return 16 / 9;
+  return parseMuxAspectRatio(item.video?.asset?.data?.aspect_ratio) ?? 16 / 9;
 }
 
 function thumbUrl(image: SanityGalleryImage): string {
@@ -52,12 +62,86 @@ function hiResUrl(image: SanityGalleryImage): string {
   return urlFor(image).width(1400).format("webp").url();
 }
 
-function videoSrc(video: SanityGalleryVideo): string | undefined {
-  return video.file?.asset?.url ?? video.file?.url;
+function videoPlaybackId(video: SanityGalleryVideo): string | undefined {
+  return video.video?.asset?.playbackId;
+}
+
+function muxThumbnailUrl(playbackId: string, thumbTime?: number): string {
+  const url = `https://image.mux.com/${playbackId}/thumbnail.jpg`;
+  return thumbTime != null ? `${url}?time=${thumbTime}` : url;
+}
+
+function posterAsImage(video: SanityGalleryVideo): SanityGalleryImage | undefined {
+  if (!video.poster) return undefined;
+  return { ...video.poster, _type: "image", alt: video.alt };
+}
+
+/** Poster do player: override editorial (Sanity) vence; senão, thumbnail Mux. */
+function playerPosterUrl(video: SanityGalleryVideo): string | undefined {
+  const poster = posterAsImage(video);
+  if (poster) return urlFor(poster).width(1600).format("jpg").url();
+  const playbackId = videoPlaybackId(video);
+  return playbackId ? muxThumbnailUrl(playbackId, video.video?.asset?.thumbTime) : undefined;
 }
 
 function mediaKey(item: GalleryMedia, index: number): string {
   return item._key || `${item._type}-${index}`;
+}
+
+function GridVideoThumb({ video, title }: { video: SanityGalleryVideo; title: string }) {
+  const poster = posterAsImage(video);
+  if (poster) {
+    return (
+      <Image
+        src={thumbUrl(poster)}
+        alt={title}
+        fill
+        sizes={GRID_SIZES}
+        className="object-contain transition-opacity duration-300 group-hover:opacity-80"
+        placeholder="blur"
+        blurDataURL={IMAGE_BLUR_DATA_URL}
+      />
+    );
+  }
+  const playbackId = videoPlaybackId(video);
+  if (playbackId) {
+    return (
+      <Image
+        src={muxThumbnailUrl(playbackId, video.video?.asset?.thumbTime)}
+        alt={title}
+        fill
+        sizes={GRID_SIZES}
+        className="object-contain transition-opacity duration-300 group-hover:opacity-80"
+        placeholder="blur"
+        blurDataURL={IMAGE_BLUR_DATA_URL}
+      />
+    );
+  }
+  return <span className="absolute inset-0 bg-[var(--color-ink)]/10" aria-hidden />;
+}
+
+function GalleryVideoPlayer({ video, title }: { video: SanityGalleryVideo; title: string }) {
+  const playbackId = videoPlaybackId(video);
+  if (!playbackId) return null;
+  const poster = playerPosterUrl(video);
+  const aspectRatio = parseMuxAspectRatio(video.video?.asset?.data?.aspect_ratio);
+  return (
+    <MuxPlayer
+      playbackId={playbackId}
+      poster={poster}
+      placeholder={poster}
+      playsInline
+      metadata={{
+        video_id: video.video?.asset?.assetId,
+        video_title: title,
+      }}
+      style={{
+        width: "100%",
+        maxHeight: "75vh",
+        aspectRatio: aspectRatio ? String(aspectRatio) : undefined,
+      }}
+    />
+  );
 }
 
 export function ProjectGallery({ items, projectTitle, className }: ProjectGalleryProps) {
@@ -97,6 +181,9 @@ export function ProjectGallery({ items, projectTitle, className }: ProjectGaller
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    // Eventos vindos do <mux-player> (hotkeys de seek/play) ficam no player;
+    // sem este guard, uma seta faria seek no vídeo e trocaria de mídia no lightbox.
+    if (e.target instanceof HTMLElement && e.target.closest("mux-player")) return;
     if (e.key === "ArrowLeft") handlePrevious();
     if (e.key === "ArrowRight") handleNext();
     if (e.key === "Escape") setSelectedIndex(null);
@@ -132,26 +219,17 @@ export function ProjectGallery({ items, projectTitle, className }: ProjectGaller
                 src={thumbUrl(item)}
                 alt={item.alt || `${projectTitle} — mídia ${index + 1}`}
                 fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                sizes={GRID_SIZES}
                 className="object-contain transition-opacity duration-300 group-hover:opacity-80"
                 placeholder="blur"
                 blurDataURL={IMAGE_BLUR_DATA_URL}
               />
             ) : (
               <>
-                {item.poster ? (
-                  <Image
-                    src={thumbUrl({ ...item.poster, alt: item.alt, _type: "image" })}
-                    alt={item.alt || `${projectTitle} — vídeo ${index + 1}`}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-contain transition-opacity duration-300 group-hover:opacity-80"
-                    placeholder="blur"
-                    blurDataURL={IMAGE_BLUR_DATA_URL}
-                  />
-                ) : (
-                  <span className="absolute inset-0 bg-[var(--color-ink)]/10" aria-hidden />
-                )}
+                <GridVideoThumb
+                  video={item}
+                  title={item.alt || `${projectTitle} — vídeo ${index + 1}`}
+                />
                 <span className="absolute inset-0 flex items-center justify-center">
                   <span className="rounded-full bg-[var(--color-bg)]/90 p-3 text-[var(--color-ink)] shadow-sm">
                     <Play className="h-6 w-6 fill-current" aria-hidden />
@@ -240,24 +318,16 @@ export function ProjectGallery({ items, projectTitle, className }: ProjectGaller
                     onLoad={() => setHiResLoaded(true)}
                   />
                 </div>
-              ) : isGalleryVideo(selected) && videoSrc(selected) ? (
-                <video
-                  key={mediaKey(selected, selectedIndex)}
-                  src={videoSrc(selected)}
-                  controls
-                  playsInline
-                  poster={
-                    selected.poster
-                      ? thumbUrl({ ...selected.poster, alt: selected.alt, _type: "image" })
-                      : undefined
-                  }
-                  className="max-h-[75vh] w-full max-w-5xl object-contain"
-                  aria-label={
-                    selected.alt || `${projectTitle} — vídeo ${selectedIndex + 1}`
-                  }
-                >
-                  Seu navegador não suporta vídeo.
-                </video>
+              ) : isGalleryVideo(selected) && videoPlaybackId(selected) ? (
+                <div className="relative flex max-h-[75vh] w-full items-center justify-center">
+                  <GalleryVideoPlayer
+                    key={mediaKey(selected, selectedIndex)}
+                    video={selected}
+                    title={
+                      selected.alt || `${projectTitle} — vídeo ${selectedIndex + 1}`
+                    }
+                  />
+                </div>
               ) : (
                 <p className="p-8 text-sm text-[var(--color-bg)]/80">
                   Mídia indisponível
