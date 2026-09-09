@@ -277,7 +277,7 @@ export function ProjectGallery({ items, projectTitle, className }: ProjectGaller
               </button>
             </div>
 
-            <div className="relative flex min-h-[40vh] items-center justify-center bg-black">
+            <div className="relative flex items-center justify-center bg-black">
               {items.length > 1 && (
                 <button
                   type="button"
@@ -290,15 +290,23 @@ export function ProjectGallery({ items, projectTitle, className }: ProjectGaller
               )}
 
               {isGalleryImage(selected) ? (
-                <div className="relative flex max-h-[75vh] w-full items-center justify-center">
+                <div
+                  className="relative max-h-[75vh] max-w-full"
+                  style={{
+                    aspectRatio: String(getImageAspectRatio(selected)),
+                    // Largura limitada pelo painel e pelo teto de 75vh, para o
+                    // box manter o aspect real sem faixas nem transbordo.
+                    width: `min(100%, calc(75vh * ${getImageAspectRatio(selected)}))`,
+                  }}
+                >
                   <Image
                     src={thumbUrl(selected)}
                     alt=""
-                    width={1400}
-                    height={1050}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 1024px"
                     aria-hidden
                     className={cn(
-                      "max-h-[75vh] w-auto object-contain blur-sm scale-105 transition-opacity duration-300",
+                      "object-contain blur-sm scale-105 transition-opacity duration-300",
                       hiResLoaded ? "opacity-0" : "opacity-100"
                     )}
                   />
@@ -308,10 +316,10 @@ export function ProjectGallery({ items, projectTitle, className }: ProjectGaller
                     alt={
                       selected.alt || `${projectTitle} — mídia ${selectedIndex + 1}`
                     }
-                    width={1400}
-                    height={1050}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 1024px"
                     className={cn(
-                      "absolute inset-0 m-auto max-h-[75vh] w-auto object-contain transition-opacity duration-300",
+                      "object-contain transition-opacity duration-300",
                       hiResLoaded ? "opacity-100" : "opacity-0"
                     )}
                     priority

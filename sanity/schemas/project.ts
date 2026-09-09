@@ -60,6 +60,8 @@ export const project = defineType({
     defineField({
       name: "gallery",
       title: "Galeria",
+      description:
+        "Arraste várias imagens de uma vez para criar vários itens na Galeria. O Texto Alternativo pode ser preenchido depois do upload, mas é obrigatório para publicar. Para vídeos, adicione um item do tipo Vídeo (Mux).",
       type: "array",
       of: [
         {
