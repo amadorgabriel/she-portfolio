@@ -39,19 +39,6 @@ export const category = defineType({
       },
       description:
         "Arte de fundo full-bleed na página da categoria e nos projetos associados (primeira categoria).",
-      fields: [
-        defineField({
-          name: "alt",
-          title: "Texto Alternativo",
-          type: "string",
-        }),
-      ],
-    }),
-    defineField({
-      name: "description",
-      title: "Descrição",
-      type: "text",
-      rows: 3,
     }),
   ],
   preview: {

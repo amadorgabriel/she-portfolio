@@ -91,14 +91,16 @@ export type GalleryMedia = SanityGalleryImage | SanityGalleryVideo;
 
 // ============== CATEGORY ==============
 
+/** Imagem de fundo decorativa (aria-hidden) — sem alt/caption por design (CLEAN-03). */
+export type SanityBackgroundImage = Omit<SanityImage, "alt" | "caption">;
+
 export interface Category {
   _id: string;
   _type: "category";
   title: string;
   slug: SanitySlug;
   order: number;
-  description?: string;
-  backgroundImage?: SanityImage;
+  backgroundImage?: SanityBackgroundImage;
 }
 
 // ============== PROJECT ==============
@@ -117,7 +119,6 @@ export interface Project {
   year: number;
   client?: string;
   order: number;
-  publishedAt?: string;
 }
 
 export interface ProjectCardData {
@@ -126,7 +127,6 @@ export interface ProjectCardData {
   slug: string;
   year: number;
   thumbnail: SanityImage;
-  categories?: string[];
 }
 
 // ============== SITE CONFIG (v2) ==============

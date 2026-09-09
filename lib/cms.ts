@@ -39,10 +39,11 @@ const categoryFields = `
   title,
   slug,
   order,
-  description,
   backgroundImage {
-    ...,
-    asset->
+    _type,
+    asset->,
+    hotspot,
+    crop
   }
 `;
 
@@ -90,8 +91,7 @@ const projectFields = `
   description,
   year,
   client,
-  order,
-  publishedAt
+  order
 `;
 
 const projectCardFields = `
@@ -102,8 +102,7 @@ const projectCardFields = `
   thumbnail {
     ...,
     asset->
-  },
-  "categories": categories[]->title
+  }
 `;
 
 const siteConfigFields = `

@@ -155,12 +155,6 @@ export const project = defineType({
       type: "number",
       initialValue: 0,
     }),
-    defineField({
-      name: "publishedAt",
-      title: "Data de Publicação",
-      type: "datetime",
-      initialValue: () => new Date().toISOString(),
-    }),
   ],
   preview: {
     select: {
@@ -187,11 +181,6 @@ export const project = defineType({
       title: "Ano (Mais recente)",
       name: "yearDesc",
       by: [{ field: "year", direction: "desc" }],
-    },
-    {
-      title: "Data de Publicação",
-      name: "publishedAtDesc",
-      by: [{ field: "publishedAt", direction: "desc" }],
     },
   ],
 });

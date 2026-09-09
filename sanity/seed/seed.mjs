@@ -195,35 +195,30 @@ const CATEGORIES = [
     title: "Estilo",
     slug: "estilo",
     order: 1,
-    description: "Projetos de estilo e lookbook.",
   },
   {
     id: "category-estamparia",
     title: "Estamparia",
     slug: "estamparia",
     order: 2,
-    description: "Estampas e padrões.",
   },
   {
     id: "category-direcao",
     title: "Direção",
     slug: "direcao",
     order: 3,
-    description: "Direção de arte e imagem.",
   },
   {
     id: "category-desenho",
     title: "Desenho",
     slug: "desenho",
     order: 4,
-    description: "Desenhos e ilustração.",
   },
   {
     id: "category-modelagem",
     title: "Modelagem",
     slug: "modelagem",
     order: 5,
-    description: "Modelagem e protótipos.",
   },
 ];
 
@@ -355,7 +350,6 @@ async function main() {
       title: cat.title,
       slug: { _type: "slug", current: cat.slug },
       order: cat.order,
-      description: cat.description,
     });
     console.log(`  ${cat.slug} OK`);
   }
@@ -388,7 +382,6 @@ async function main() {
       description: portableText(p.description),
       year: p.year,
       order: p.order,
-      publishedAt: new Date().toISOString(),
     });
     console.log(`  ${p.slug} OK`);
   }

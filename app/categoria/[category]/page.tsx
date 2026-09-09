@@ -26,11 +26,16 @@ export async function generateMetadata({
   params,
 }: CategoryPageProps): Promise<Metadata> {
   const { category: slug } = await params;
-  const category = await getCategoryBySlug(slug);
+  const [category, config] = await Promise.all([
+    getCategoryBySlug(slug),
+    getSiteConfig(),
+  ]);
   if (!category) return { title: "Categoria" };
+  const site = config ?? DEFAULT_SITE_CONFIG;
   return {
     title: category.title,
-    description: category.description || `Projetos em ${category.title}`,
+    description:
+      site.metaDescription || `Portfólio de ${site.brandName || "Karina Reis"}`,
   };
 }
 
