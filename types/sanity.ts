@@ -146,6 +146,8 @@ export interface SiteConfig {
   brandName: string;
   metaDescription?: string;
   splashLogo?: SanityImage;
+  /** Fundo decorativo da home/menu (DEC-005-03) — sem alt, mesmo modelo de categoria. */
+  backgroundImage?: SanityBackgroundImage;
   ctaLabel: string;
   socialLinks?: SiteSocialLinks;
   favicon?: SanityImage;

@@ -119,6 +119,12 @@ const siteConfigFields = `
     ...,
     asset->
   },
+  backgroundImage {
+    _type,
+    asset->,
+    hotspot,
+    crop
+  },
   favicon {
     ...,
     asset->

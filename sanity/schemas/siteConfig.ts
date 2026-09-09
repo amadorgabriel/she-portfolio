@@ -45,6 +45,16 @@ export const siteConfig = defineType({
       ],
     }),
     defineField({
+      name: "backgroundImage",
+      title: "Imagem de Fundo (Home/Menu)",
+      type: "image",
+      description:
+        "Fundo decorativo da splash e do menu (mesmo modelo visual das categorias). Sem texto alternativo por ser decorativa.",
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
       name: "ctaLabel",
       title: "Label do CTA (Splash)",
       type: "string",
