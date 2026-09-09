@@ -7,6 +7,11 @@ interface SplashViewProps {
   config?: SiteConfig | null;
 }
 
+const MAIL_SUBJECT =
+  "Contato%20via%20Portf%C3%B3lio%20%E2%80%94%20%5Bseu%20nome%5D";
+const MAIL_BODY =
+  "Ol%C3%A1!%20Vi%20seu%20trabalho%20em%20%5Blink%2Fportf%C3%B3lio%5D%20e%20quero%20te%20conhecer%20melhor.%20Me%20conta%20um%20pouco%20sobre%20sua%20disponibilidade%3F%0A";
+
 function isGifUrl(url: string): boolean {
   return /\.gif(\?|$)/i.test(url);
 }
@@ -72,7 +77,7 @@ export function SplashView({ config }: SplashViewProps) {
             )}
             {social.email && (
               <a
-                href={`mailto:${social.email}`}
+                href={`mailto:${social.email}?subject=${MAIL_SUBJECT}&body=${MAIL_BODY}`}
                 className="no-underline uppercase tracking-wider hover:text-[var(--color-ink)]"
               >
                 E-mail
