@@ -40,6 +40,10 @@ _Avoid_: carousel (salvo se a UI pública virar carousel), “Galeria de Imagens
 Unidade da Galeria: imagem ou vídeo no mesmo campo.
 _Avoid_: attachment, só-imagem como unidade canônica
 
+**Vídeo da galeria**:
+Mídia hospedada na Mux com streaming HLS (upload direto e resumável, sem limite de ~100MB do file asset); o Studio guarda a referência ao asset Mux e o site renderiza via player Mux.
+_Avoid_: file asset do Sanity, URL direta de arquivo
+
 **Texto alternativo**:
 Texto de acessibilidade obrigatório da mídia (`alt`); bloqueia publish se ausente.
 _Avoid_: description como sinônimo de alt

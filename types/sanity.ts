@@ -72,15 +72,22 @@ export interface SanityGalleryImage extends SanityImage {
   asset: SanityAsset & SanityImageAssetMeta;
 }
 
+/** Asset Mux (`mux.videoAsset`) expandido via GROQ. */
+export interface MuxVideoAsset {
+  playbackId?: string;
+  assetId?: string;
+  thumbTime?: number;
+  data?: {
+    aspect_ratio?: string;
+  };
+}
+
 export interface SanityGalleryVideo {
   _type: "galleryVideo";
   _key?: string;
-  file: SanityFile & {
-    asset?: SanityAsset & {
-      url?: string;
-      mimeType?: string;
-      size?: number;
-    };
+  video: {
+    _type: "mux.video";
+    asset?: MuxVideoAsset;
   };
   alt: string;
   caption?: string;

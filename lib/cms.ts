@@ -75,12 +75,17 @@ const projectFields = `
         dimensions
       }
     },
-    file {
-      _type,
-      asset->{
-        url,
-        mimeType,
-        size
+    _type == "galleryVideo" => {
+      video {
+        _type,
+        asset->{
+          playbackId,
+          assetId,
+          thumbTime,
+          data {
+            aspect_ratio
+          }
+        }
       }
     },
     poster {
