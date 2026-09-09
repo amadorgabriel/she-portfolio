@@ -87,11 +87,11 @@ export const project = defineType({
           title: "Vídeo",
           fields: [
             defineField({
-              name: "file",
-              title: "Arquivo de vídeo",
-              type: "file",
+              name: "video",
+              title: "Vídeo (Mux)",
+              type: "mux.video",
               options: {
-                accept: "video/*",
+                acceptedMimeTypes: ["video/*"],
               },
               validation: (Rule) => Rule.required(),
             }),
@@ -108,8 +108,10 @@ export const project = defineType({
             }),
             defineField({
               name: "poster",
-              title: "Poster",
+              title: "Poster (opcional)",
               type: "image",
+              description:
+                "Override opcional da imagem de capa. Se vazio, usa a thumbnail automática gerada pelo Mux.",
               options: {
                 hotspot: true,
               },
@@ -118,12 +120,13 @@ export const project = defineType({
           preview: {
             select: {
               title: "alt",
+              caption: "caption",
               media: "poster",
             },
-            prepare({ title, media }) {
+            prepare({ title, caption, media }) {
               return {
                 title: title || "Vídeo sem texto alternativo",
-                subtitle: "Vídeo",
+                subtitle: caption || "Vídeo",
                 media,
               };
             },
