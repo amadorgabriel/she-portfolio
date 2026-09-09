@@ -6,6 +6,7 @@
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
+import { muxInput } from "sanity-plugin-mux-input";
 import { schemas } from "./schemas";
 
 // Use as variáveis de ambiente ou valores padrão para build
@@ -21,10 +22,11 @@ if (!projectId) {
 export default defineConfig({
   name: "default",
   title: "Karina Reis Portfolio",
+  basePath: "/studio",
   projectId,
   dataset,
   apiVersion,
-  plugins: [structureTool(), visionTool()],
+  plugins: [structureTool(), visionTool(), muxInput()],
   schema: {
     types: schemas,
   },

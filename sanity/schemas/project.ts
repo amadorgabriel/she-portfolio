@@ -59,7 +59,7 @@ export const project = defineType({
     }),
     defineField({
       name: "gallery",
-      title: "Galeria de Imagens",
+      title: "Galeria",
       type: "array",
       of: [
         {
@@ -80,6 +80,57 @@ export const project = defineType({
               type: "string",
             }),
           ],
+        },
+        {
+          type: "object",
+          name: "galleryVideo",
+          title: "Vídeo",
+          fields: [
+            defineField({
+              name: "video",
+              title: "Vídeo (Mux)",
+              type: "mux.video",
+              options: {
+                acceptedMimeTypes: ["video/*"],
+              },
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "alt",
+              title: "Texto Alternativo",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "caption",
+              title: "Legenda",
+              type: "string",
+            }),
+            defineField({
+              name: "poster",
+              title: "Poster (opcional)",
+              type: "image",
+              description:
+                "Override opcional da imagem de capa. Se vazio, usa a thumbnail automática gerada pelo Mux.",
+              options: {
+                hotspot: true,
+              },
+            }),
+          ],
+          preview: {
+            select: {
+              title: "alt",
+              caption: "caption",
+              media: "poster",
+            },
+            prepare({ title, caption, media }) {
+              return {
+                title: title || "Vídeo sem texto alternativo",
+                subtitle: caption || "Vídeo",
+                media,
+              };
+            },
+          },
         },
       ],
     }),
@@ -107,12 +158,6 @@ export const project = defineType({
       type: "number",
       initialValue: 0,
     }),
-    defineField({
-      name: "publishedAt",
-      title: "Data de Publicação",
-      type: "datetime",
-      initialValue: () => new Date().toISOString(),
-    }),
   ],
   preview: {
     select: {
@@ -139,11 +184,6 @@ export const project = defineType({
       title: "Ano (Mais recente)",
       name: "yearDesc",
       by: [{ field: "year", direction: "desc" }],
-    },
-    {
-      title: "Data de Publicação",
-      name: "publishedAtDesc",
-      by: [{ field: "publishedAt", direction: "desc" }],
     },
   ],
 });

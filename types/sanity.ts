@@ -30,6 +30,10 @@ export interface SanityImage {
 export interface SanityFile {
   _type: "file";
   asset: SanityAsset;
+  /** Presente quando GROQ projeta `file.asset->url` (e campos irmãos). */
+  url?: string;
+  mimeType?: string;
+  size?: number;
 }
 
 export interface SanitySlug {
@@ -42,7 +46,60 @@ export interface SanityReference {
   _ref: string;
 }
 
+// ============== GALLERY MEDIA ==============
+
+export interface SanityImageAssetMeta {
+  _id?: string;
+  _ref?: string;
+  _type?: string;
+  url?: string;
+  metadata?: {
+    dimensions?: {
+      width: number;
+      height: number;
+      aspectRatio?: number;
+    };
+  };
+  /** Alguns fetches expandem dimensões no próprio asset. */
+  width?: number;
+  height?: number;
+}
+
+export interface SanityGalleryImage extends SanityImage {
+  _type: "image";
+  alt: string;
+  caption?: string;
+  asset: SanityAsset & SanityImageAssetMeta;
+}
+
+/** Asset Mux (`mux.videoAsset`) expandido via GROQ. */
+export interface MuxVideoAsset {
+  playbackId?: string;
+  assetId?: string;
+  thumbTime?: number;
+  data?: {
+    aspect_ratio?: string;
+  };
+}
+
+export interface SanityGalleryVideo {
+  _type: "galleryVideo";
+  _key?: string;
+  video: {
+    _type: "mux.video";
+    asset?: MuxVideoAsset;
+  };
+  alt: string;
+  caption?: string;
+  poster?: SanityImage;
+}
+
+export type GalleryMedia = SanityGalleryImage | SanityGalleryVideo;
+
 // ============== CATEGORY ==============
+
+/** Imagem de fundo decorativa (aria-hidden) — sem alt/caption por design (CLEAN-03). */
+export type SanityBackgroundImage = Omit<SanityImage, "alt" | "caption">;
 
 export interface Category {
   _id: string;
@@ -50,8 +107,7 @@ export interface Category {
   title: string;
   slug: SanitySlug;
   order: number;
-  description?: string;
-  backgroundImage?: SanityImage;
+  backgroundImage?: SanityBackgroundImage;
 }
 
 // ============== PROJECT ==============
@@ -65,12 +121,11 @@ export interface Project {
   slug: SanitySlug;
   categories: Category[];
   thumbnail: SanityImage;
-  gallery?: SanityImage[];
+  gallery?: GalleryMedia[];
   description: PortableTextBlock[];
   year: number;
   client?: string;
   order: number;
-  publishedAt?: string;
 }
 
 export interface ProjectCardData {
@@ -79,7 +134,6 @@ export interface ProjectCardData {
   slug: string;
   year: number;
   thumbnail: SanityImage;
-  categories?: string[];
 }
 
 // ============== SITE CONFIG (v2) ==============
@@ -99,6 +153,8 @@ export interface SiteConfig {
   brandName: string;
   metaDescription?: string;
   splashLogo?: SanityImage;
+  /** Fundo decorativo da home/menu (DEC-005-03) — sem alt, mesmo modelo de categoria. */
+  backgroundImage?: SanityBackgroundImage;
   ctaLabel: string;
   socialLinks?: SiteSocialLinks;
   favicon?: SanityImage;

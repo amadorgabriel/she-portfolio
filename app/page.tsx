@@ -4,6 +4,7 @@ import {
   DEFAULT_SITE_CONFIG,
 } from "@/lib/cms";
 import { SplashView } from "@/components/pages/SplashView";
+import { CategoryBackground } from "@/components/site/CategoryBackground";
 import { imageUrlFromSanity } from "@/lib/sanity-image";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -27,5 +28,12 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function HomePage() {
   const config = (await getSiteConfig()) ?? DEFAULT_SITE_CONFIG;
-  return <SplashView config={config} />;
+  return (
+    <>
+      <CategoryBackground image={config.backgroundImage} />
+      <div className="relative z-10">
+        <SplashView config={config} />
+      </div>
+    </>
+  );
 }

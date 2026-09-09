@@ -27,7 +27,7 @@ O script `sanity/seed/seed.mjs` é **idempotente** (`createOrReplace` com IDs fi
 | `category-estilo` … `category-modelagem` | 5 categorias |
 | `project-floral` … `project-modelagem-prototipo` | 6 projetos |
 
-Uploads usam SVGs em `public/placeholders/`. Pode reexecutar sem duplicar documentos.
+Uploads usam **PNGs gerados em runtime** pelo seed (`solidPng`: 800×1000, paleta fixa `project.png` … `project-3.png`) — os SVGs locais não são enviados. Pode reexecutar sem duplicar documentos.
 
 ## Seed manual (alternativa)
 
@@ -60,8 +60,6 @@ Crie um documento **Categoria** para cada linha, na ordem:
 | Desenho | `desenho` | 4 |
 | Modelagem | `modelagem` | 5 |
 
-Descrição: opcional (ex.: “Projetos de estilo e lookbook”).
-
 ## 3. Projetos (exemplos espelhados da IA)
 
 Para cada projeto:
@@ -91,8 +89,8 @@ Para cada projeto:
 
 Arquivos em `public/placeholders/`:
 
-- `project.svg` — fallback genérico (também usado por `imageUrlFromSanity`)
-- `project-1.svg` … `project-3.svg` — variações para upload no Studio
+- `project.svg` — fallback estático do site (`PLACEHOLDER_IMAGE` em `lib/sanity-image.ts`)
+- `project-1.svg` … `project-3.svg` — variações locais; **no seed, não são enviados** — o script gera PNGs sólidos em runtime (`project.png` … `project-3.png`) e faz upload deles ao dataset
 
 ## 5. Verificação
 

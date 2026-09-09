@@ -39,10 +39,11 @@ const categoryFields = `
   title,
   slug,
   order,
-  description,
   backgroundImage {
-    ...,
-    asset->
+    _type,
+    asset->,
+    hotspot,
+    crop
   }
 `;
 
@@ -61,14 +62,41 @@ const projectFields = `
     asset->
   },
   gallery[] {
-    ...,
-    asset->
+    _type,
+    _key,
+    alt,
+    caption,
+    hotspot,
+    crop,
+    asset->{
+      _id,
+      url,
+      metadata {
+        dimensions
+      }
+    },
+    _type == "galleryVideo" => {
+      video {
+        _type,
+        asset->{
+          playbackId,
+          assetId,
+          thumbTime,
+          data {
+            aspect_ratio
+          }
+        }
+      }
+    },
+    poster {
+      ...,
+      asset->
+    }
   },
   description,
   year,
   client,
-  order,
-  publishedAt
+  order
 `;
 
 const projectCardFields = `
@@ -79,8 +107,7 @@ const projectCardFields = `
   thumbnail {
     ...,
     asset->
-  },
-  "categories": categories[]->title
+  }
 `;
 
 const siteConfigFields = `
@@ -96,6 +123,12 @@ const siteConfigFields = `
   splashLogo {
     ...,
     asset->
+  },
+  backgroundImage {
+    _type,
+    asset->,
+    hotspot,
+    crop
   },
   favicon {
     ...,
