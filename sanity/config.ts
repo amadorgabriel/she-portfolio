@@ -6,6 +6,7 @@
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
+import { muxInput } from "sanity-plugin-mux-input";
 import { schemas } from "./schemas";
 
 // Use as variáveis de ambiente ou valores padrão para build
@@ -25,7 +26,7 @@ export default defineConfig({
   projectId,
   dataset,
   apiVersion,
-  plugins: [structureTool(), visionTool()],
+  plugins: [structureTool(), visionTool(), muxInput()],
   schema: {
     types: schemas,
   },
