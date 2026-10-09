@@ -5,7 +5,6 @@
 
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
-import { visionTool } from "@sanity/vision";
 import { muxInput } from "sanity-plugin-mux-input";
 import { schemas } from "./schemas";
 import { structure } from "./structure";
@@ -28,7 +27,13 @@ export default defineConfig({
   projectId,
   dataset,
   apiVersion,
-  plugins: [structureTool({ structure }), visionTool(), muxInput()],
+  plugins: [structureTool({ structure, title: "Conteúdo" }), muxInput()],
+  releases: {
+    enabled: false,
+  },
+  scheduledDrafts: {
+    enabled: false,
+  },
   schema: {
     types: schemas,
   },
