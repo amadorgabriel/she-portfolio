@@ -1,24 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import { SiteJsonLd } from "@/components/seo/SiteJsonLd";
 import { getSiteConfig } from "@/lib/cms";
 import { defaultMetadataBase } from "@/lib/metadata-shared";
 import { resolveSiteIcons } from "@/lib/site-icons";
 import "./globals.css";
-
-const display = Cormorant_Garamond({
-  variable: "--font-display-family",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const body = DM_Sans({
-  variable: "--font-body-family",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -88,7 +73,7 @@ export default function RootLayout({
     <html
       lang="pt-BR"
       suppressHydrationWarning
-      className={`${display.variable} ${body.variable} h-full antialiased`}
+      className="h-full antialiased"
     >
       <body
         suppressHydrationWarning

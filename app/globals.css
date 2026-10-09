@@ -1,3 +1,11 @@
+@import "@fontsource/cormorant-garamond/latin-400.css";
+@import "@fontsource/cormorant-garamond/latin-500.css";
+@import "@fontsource/cormorant-garamond/latin-600.css";
+@import "@fontsource/cormorant-garamond/latin-700.css";
+@import "@fontsource/dm-sans/latin-400.css";
+@import "@fontsource/dm-sans/latin-500.css";
+@import "@fontsource/dm-sans/latin-600.css";
+@import "@fontsource/dm-sans/latin-700.css";
 @import "tailwindcss";
 
 :root {
@@ -6,6 +14,8 @@
   --color-muted: #6b6b6b;
   --color-line: #d8d6d1;
   --color-surface: #ffffff;
+  --font-display-family: "Cormorant Garamond";
+  --font-body-family: "DM Sans";
   --font-display: var(--font-display-family);
   --font-body: var(--font-body-family);
 
