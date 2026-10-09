@@ -1,6 +1,7 @@
 import { defineType, defineField, defineArrayMember } from "sanity";
 import { orderRankField, orderRankOrdering } from "@sanity/orderable-document-list";
 import { slugifyFromTitle, validateSlugField } from "../lib/slug";
+import { ProjectPreview } from "../components/ProjectPreview";
 
 export const project = defineType({
   name: "project",
@@ -28,7 +29,8 @@ export const project = defineType({
     defineField({
       name: "categories",
       title: "Categorias",
-      description: "A primeira categoria aparece na lista de projetos e define o fundo da página.",
+      description:
+        "O projeto entra na lista de cada categoria marcada. A primeira define o fundo da página.",
       type: "array",
       of: [
         {
@@ -95,21 +97,23 @@ export const project = defineType({
       description: "Substituído pela ordem arrastável da lista de projetos.",
     }),
   ],
+  components: {
+    preview: ProjectPreview,
+  },
   preview: {
     select: {
       title: "title",
       media: "thumbnail",
       year: "year",
-      category0: "categories.0->title",
-      category1: "categories.1->title",
-      category2: "categories.2->title",
+      docId: "_id",
     },
-    prepare({ title, media, year, category0, category1, category2 }) {
-      const categories = [category0, category1, category2].filter(Boolean).join(", ");
+    prepare({ title, media, year, docId }) {
       return {
         title,
-        subtitle: [categories || "Sem categoria", year].filter(Boolean).join(" · "),
         media,
+        year,
+        docId,
+        subtitle: year ? String(year) : "",
       };
     },
   },
