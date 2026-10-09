@@ -167,6 +167,8 @@ export interface Project {
   year: number;
   client?: string;
   order: number;
+  /** Ordem arrastável no Studio. Ausente até a lista ser reordenada. */
+  orderRank?: string;
 }
 
 export interface ProjectCardData {

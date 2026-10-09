@@ -1,4 +1,5 @@
 import { defineType, defineField, defineArrayMember } from "sanity";
+import { orderRankField, orderRankOrdering } from "@sanity/orderable-document-list";
 import { slugifyFromTitle, validateSlugField } from "../lib/slug";
 
 export const project = defineType({
@@ -6,6 +7,7 @@ export const project = defineType({
   title: "Projetos",
   type: "document",
   fields: [
+    orderRankField({ type: "project" }),
     defineField({
       name: "title",
       title: "Título",
@@ -26,6 +28,7 @@ export const project = defineType({
     defineField({
       name: "categories",
       title: "Categorias",
+      description: "A primeira categoria aparece na lista de projetos e define o fundo da página.",
       type: "array",
       of: [
         {
@@ -86,7 +89,10 @@ export const project = defineType({
       name: "order",
       title: "Ordem de Exibição",
       type: "number",
+      hidden: true,
+      readOnly: true,
       initialValue: 0,
+      description: "Substituído pela ordem arrastável da lista de projetos.",
     }),
   ],
   preview: {
@@ -95,16 +101,20 @@ export const project = defineType({
       media: "thumbnail",
       year: "year",
       category0: "categories.0->title",
+      category1: "categories.1->title",
+      category2: "categories.2->title",
     },
-    prepare({ title, media, year, category0 }) {
+    prepare({ title, media, year, category0, category1, category2 }) {
+      const categories = [category0, category1, category2].filter(Boolean).join(", ");
       return {
         title,
-        subtitle: `${category0 || "Sem categoria"} • ${year || "Sem ano"}`,
+        subtitle: [categories || "Sem categoria", year].filter(Boolean).join(" · "),
         media,
       };
     },
   },
   orderings: [
+    orderRankOrdering,
     {
       title: "Ordem de Exibição",
       name: "orderAsc",

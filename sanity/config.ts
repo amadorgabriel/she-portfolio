@@ -9,6 +9,7 @@ import { visionTool } from "@sanity/vision";
 import { muxInput } from "sanity-plugin-mux-input";
 import { schemas } from "./schemas";
 import { structure } from "./structure";
+import { withVideoLibraryHelp } from "./components/VideoLibraryTool";
 
 // Use as variáveis de ambiente ou valores padrão para build
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "";
@@ -30,5 +31,24 @@ export default defineConfig({
   plugins: [structureTool({ structure }), visionTool(), muxInput()],
   schema: {
     types: schemas,
+  },
+  tools: (prev) =>
+    prev.map((tool) =>
+      tool.name === "mux"
+        ? {
+            ...tool,
+            title: "Biblioteca de vídeos",
+            component: withVideoLibraryHelp(tool.component),
+          }
+        : tool,
+    ),
+  document: {
+    actions: (prev, { schemaType }) => {
+      if (schemaType !== "siteConfig") return prev;
+      return prev.filter(
+        (action) => action.action !== "delete" && action.action !== "duplicate",
+      );
+    },
+    newDocumentOptions: (prev) => prev.filter((item) => item.templateId !== "siteConfig"),
   },
 });

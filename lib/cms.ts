@@ -231,7 +231,7 @@ export const getCategoryBySlug = cache(
 export const getProjectsByCategorySlug = cache(
   async (slug: string, options?: QueryOptions): Promise<ProjectCardData[]> => {
     if (!isSanityConfigured()) return [];
-    const query = `*[_type == "project" && references(*[_type == "category" && slug.current == $slug]._id)] | order(order asc, year desc) { ${projectCardFields} }`;
+    const query = `*[_type == "project" && references(*[_type == "category" && slug.current == $slug]._id)] | order(select(defined(orderRank) => 0, 1) asc, orderRank asc, order asc, year desc) { ${projectCardFields} }`;
     return client.fetch(query, { slug }, getFetchOptions(options));
   }
 );
@@ -285,7 +285,7 @@ export const getCategorySitemapEntries = cache(
 export const getProjectSitemapEntries = cache(
   async (options?: QueryOptions): Promise<SitemapEntry[]> => {
     if (!isSanityConfigured()) return [];
-    const query = `*[_type == "project" && defined(slug.current)] | order(order asc, year desc) {
+    const query = `*[_type == "project" && defined(slug.current)] | order(select(defined(orderRank) => 0, 1) asc, orderRank asc, order asc, year desc) {
       "slug": slug.current,
       "lastModified": _updatedAt
     }`;

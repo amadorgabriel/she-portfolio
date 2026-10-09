@@ -14,7 +14,8 @@
     "sanity:purge:apply": "node sanity/seed/purge.mjs --apply",
     "sanity:migrate:content": "sanity migrations run migrate-project-content --no-dry-run",
     "sanity:migrate:remove-legacy": "sanity migrations run remove-legacy-project-fields --no-dry-run --no-confirm",
-    "sanity:migrate:category-order": "sanity migrations run seed-category-order-rank --no-dry-run --no-confirm"
+    "sanity:migrate:category-order": "sanity migrations run seed-category-order-rank --no-dry-run --no-confirm",
+    "sanity:migrate:project-order": "node sanity/seed/seed-project-order-rank.mjs --apply"
   },
   "dependencies": {
     "@fontsource/cormorant-garamond": "^5.3.0",

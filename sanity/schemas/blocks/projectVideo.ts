@@ -6,10 +6,14 @@ export const projectVideo = defineType({
   title: "Vídeo",
   type: "object",
   icon: PlayIcon,
+  description:
+    "Bloco de vídeo desta página. O ficheiro fica na biblioteca, mas só aparece no site dentro deste projeto.",
   fields: [
     defineField({
       name: "video",
-      title: "Vídeo (Mux)",
+      title: "Ficheiro de vídeo",
+      description:
+        "Envie o vídeo que deve tocar neste bloco. A aba Biblioteca de vídeos só lista ficheiros já enviados; não publica o vídeo sozinha.",
       type: "mux.video",
       options: {
         acceptedMimeTypes: ["video/*"],
