@@ -11,7 +11,8 @@ import { CategoryBackground } from "@/components/site/CategoryBackground";
 import { ProjectDetail } from "@/components/project/ProjectDetail";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { brandArtUrl, imageUrlFromSanity } from "@/lib/sanity-image";
-import { portableTextToPlain } from "@/lib/portable-plain";
+import { resolveProjectContent } from "@/lib/resolve-project-content";
+import { extractPlainFromProjectContent } from "@/lib/project-content-plain";
 
 interface ProjectPageProps {
   params: Promise<{ slug: string }>;
@@ -30,7 +31,7 @@ export async function generateMetadata({
   if (!project) return { title: "Projeto" };
 
   const description =
-    portableTextToPlain(project.description, 160) ||
+    extractPlainFromProjectContent(resolveProjectContent(project), 160) ||
     `${project.title} (${project.year})`;
 
   return {

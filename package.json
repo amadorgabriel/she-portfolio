@@ -11,13 +11,16 @@
     "sanity:seed": "node sanity/seed/seed.mjs",
     "sanity:verify": "node sanity/seed/verify.mjs",
     "sanity:purge": "node sanity/seed/purge.mjs",
-    "sanity:purge:apply": "node sanity/seed/purge.mjs --apply"
+    "sanity:purge:apply": "node sanity/seed/purge.mjs --apply",
+    "sanity:migrate:content": "sanity migrations run migrate-project-content --no-dry-run",
+    "sanity:migrate:remove-legacy": "sanity migrations run remove-legacy-project-fields --no-dry-run --no-confirm"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@mux/mux-player-react": "^3.13.2",
     "@portabletext/react": "^6.0.3",
     "@sanity/client": "^7.21.0",
+    "@sanity/icons": "^5.2.3",
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^5.21.0",
     "class-variance-authority": "^0.7.1",

@@ -6,5 +6,8 @@ export { CategoryMenu } from "./nav/CategoryMenu";
 export { ProjectCardEditorial } from "./project/ProjectCardEditorial";
 export { ProjectGrid } from "./project/ProjectGrid";
 export { ProjectDetail } from "./project/ProjectDetail";
+export { ProjectContentBuilder } from "./project/ProjectContentBuilder";
+export { ProjectBodyImage } from "./project/ProjectBodyImage";
+export { ProjectBodyVideo } from "./project/ProjectBodyVideo";
 export { BackToTop } from "./ui/BackToTop";
 export { EmptyState } from "./ui/EmptyState";
