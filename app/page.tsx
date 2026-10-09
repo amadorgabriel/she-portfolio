@@ -6,24 +6,23 @@ import {
 import { SplashView } from "@/components/pages/SplashView";
 import { CategoryBackground } from "@/components/site/CategoryBackground";
 import { imageUrlFromSanity } from "@/lib/sanity-image";
+import { buildPageMetadata } from "@/lib/seo/metadata-helpers";
 
 export async function generateMetadata(): Promise<Metadata> {
   const config = (await getSiteConfig()) ?? DEFAULT_SITE_CONFIG;
   const title = config.siteTitle || config.brandName || "Karina Reis";
   const description =
     config.metaDescription || `Portfólio de ${config.brandName || "Karina Reis"}`;
+  const ogImageUrl = config.ogImage
+    ? imageUrlFromSanity(config.ogImage, { width: 1200, height: 630 })
+    : undefined;
 
-  return {
+  return buildPageMetadata({
     title,
     description,
-    openGraph: {
-      title,
-      description,
-      ...(config.ogImage
-        ? { images: [{ url: imageUrlFromSanity(config.ogImage, { width: 1200, height: 630 }) }] }
-        : {}),
-    },
-  };
+    path: "/",
+    ogImageUrl,
+  });
 }
 
 export default async function HomePage() {

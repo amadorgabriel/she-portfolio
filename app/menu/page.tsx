@@ -8,15 +8,22 @@ import { SiteChrome } from "@/components/site/SiteChrome";
 import { CategoryBackground } from "@/components/site/CategoryBackground";
 import { CategoryMenu } from "@/components/nav/CategoryMenu";
 import { BackToTop } from "@/components/ui/BackToTop";
-import { brandArtUrl } from "@/lib/sanity-image";
+import { brandArtUrl, imageUrlFromSanity } from "@/lib/sanity-image";
+import { buildPageMetadata } from "@/lib/seo/metadata-helpers";
 
 export async function generateMetadata(): Promise<Metadata> {
   const config = (await getSiteConfig()) ?? DEFAULT_SITE_CONFIG;
   const brand = config.brandName || "Karina Reis";
-  return {
+  const ogImageUrl = config.ogImage
+    ? imageUrlFromSanity(config.ogImage, { width: 1200, height: 630 })
+    : undefined;
+
+  return buildPageMetadata({
     title: "Menu",
     description: `Categorias do portfólio de ${brand}`,
-  };
+    path: "/menu",
+    ogImageUrl,
+  });
 }
 
 export default async function MenuPage() {

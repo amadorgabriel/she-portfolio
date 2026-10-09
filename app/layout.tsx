@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
-import { PersonJsonLd } from "@/components/seo/PersonJsonLd";
+import { SiteJsonLd } from "@/components/seo/SiteJsonLd";
 import { getSiteConfig } from "@/lib/cms";
 import { defaultMetadataBase } from "@/lib/metadata-shared";
 import { resolveSiteIcons } from "@/lib/site-icons";
@@ -28,14 +28,18 @@ export const viewport: Viewport = {
 
 export async function generateMetadata(): Promise<Metadata> {
   const config = await getSiteConfig();
+  const brand = config?.brandName || config?.siteTitle || "Karina Reis";
+  const description =
+    config?.metaDescription ||
+    `Portfólio de ${brand} — design, estilo e direção criativa.`;
 
   return {
     metadataBase: defaultMetadataBase(),
     title: {
-      default: "Karina Reis",
-      template: "%s | Karina Reis",
+      default: brand,
+      template: `%s | ${brand}`,
     },
-    description: "Portfólio de Karina Reis — design, estilo e direção criativa.",
+    description,
     keywords: [
       "Karina Reis",
       "portfólio",
@@ -45,9 +49,9 @@ export async function generateMetadata(): Promise<Metadata> {
       "direção criativa",
       "moda",
     ],
-    authors: [{ name: "Karina Reis" }],
-    creator: "Karina Reis",
-    publisher: "Karina Reis",
+    authors: [{ name: brand }],
+    creator: brand,
+    publisher: brand,
     robots: {
       index: true,
       follow: true,
@@ -62,17 +66,14 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       type: "website",
       locale: "pt_BR",
-      siteName: "Karina Reis",
-      title: "Karina Reis",
-      description: "Portfólio de Karina Reis — design, estilo e direção criativa.",
+      siteName: brand,
+      title: brand,
+      description,
     },
     twitter: {
       card: "summary_large_image",
-      title: "Karina Reis",
-      description: "Portfólio de Karina Reis — design, estilo e direção criativa.",
-    },
-    alternates: {
-      canonical: "/",
+      title: brand,
+      description,
     },
     icons: resolveSiteIcons(config?.favicon),
   };
@@ -96,7 +97,7 @@ export default function RootLayout({
         <a href="#conteudo-principal" className="skip-to-content">
           Saltar para o conteúdo
         </a>
-        <PersonJsonLd />
+        <SiteJsonLd />
         <main id="conteudo-principal" className="flex min-h-full flex-1 flex-col">
           {children}
         </main>

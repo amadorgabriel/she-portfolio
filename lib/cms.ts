@@ -247,22 +247,49 @@ export const getProjectBySlug = cache(
   }
 );
 
+export interface SitemapEntry {
+  slug: string;
+  lastModified?: string;
+}
+
 /**
  * Slugs de categorias (sitemap / generateStaticParams).
  */
 export const getAllCategorySlugs = cache(async (options?: QueryOptions): Promise<string[]> => {
-  if (!isSanityConfigured()) return [];
-  const query = `*[_type == "category" && defined(slug.current)] | order(order asc) { "slug": slug.current }`;
-  const rows = await client.fetch<Array<{ slug: string }>>(query, {}, getFetchOptions(options));
-  return rows.map((r) => r.slug).filter(Boolean);
+  const rows = await getCategorySitemapEntries(options);
+  return rows.map((r) => r.slug);
 });
 
 /**
  * Slugs de projetos (sitemap / generateStaticParams).
  */
 export const getAllProjectSlugs = cache(async (options?: QueryOptions): Promise<string[]> => {
-  if (!isSanityConfigured()) return [];
-  const query = `*[_type == "project" && defined(slug.current)] | order(order asc, year desc) { "slug": slug.current }`;
-  const rows = await client.fetch<Array<{ slug: string }>>(query, {}, getFetchOptions(options));
-  return rows.map((r) => r.slug).filter(Boolean);
+  const rows = await getProjectSitemapEntries(options);
+  return rows.map((r) => r.slug);
 });
+
+/** Categorias com data de atualização para sitemap.xml */
+export const getCategorySitemapEntries = cache(
+  async (options?: QueryOptions): Promise<SitemapEntry[]> => {
+    if (!isSanityConfigured()) return [];
+    const query = `*[_type == "category" && defined(slug.current)] | order(order asc) {
+      "slug": slug.current,
+      "lastModified": _updatedAt
+    }`;
+    const rows = await client.fetch<SitemapEntry[]>(query, {}, getFetchOptions(options));
+    return rows.filter((r) => Boolean(r.slug));
+  }
+);
+
+/** Projetos com data de atualização para sitemap.xml */
+export const getProjectSitemapEntries = cache(
+  async (options?: QueryOptions): Promise<SitemapEntry[]> => {
+    if (!isSanityConfigured()) return [];
+    const query = `*[_type == "project" && defined(slug.current)] | order(order asc, year desc) {
+      "slug": slug.current,
+      "lastModified": _updatedAt
+    }`;
+    const rows = await client.fetch<SitemapEntry[]>(query, {}, getFetchOptions(options));
+    return rows.filter((r) => Boolean(r.slug));
+  }
+);
