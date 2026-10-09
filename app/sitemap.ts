@@ -1,41 +1,46 @@
 import type { MetadataRoute } from "next";
-import { getAllCategorySlugs, getAllProjectSlugs } from "@/lib/cms";
+import {
+  getCategorySitemapEntries,
+  getProjectSitemapEntries,
+  getSiteConfig,
+} from "@/lib/cms";
 import { getSiteBaseUrl } from "@/lib/site-url";
+
+function parseLastModified(value?: string): Date | undefined {
+  if (!value) return undefined;
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? undefined : d;
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = getSiteBaseUrl() || "http://localhost:3000";
-  const [categorySlugs, projectSlugs] = await Promise.all([
-    getAllCategorySlugs(),
-    getAllProjectSlugs(),
+  const [config, categoryRows, projectRows] = await Promise.all([
+    getSiteConfig(),
+    getCategorySitemapEntries(),
+    getProjectSitemapEntries(),
   ]);
+
+  const siteUpdated = parseLastModified(config?._updatedAt);
 
   const staticEntries: MetadataRoute.Sitemap = [
     {
       url: `${base}/`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1,
+      lastModified: siteUpdated ?? new Date(),
     },
     {
       url: `${base}/menu`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
+      lastModified: siteUpdated ?? new Date(),
     },
   ];
 
-  const categoryEntries: MetadataRoute.Sitemap = categorySlugs.map((slug) => ({
-    url: `${base}/categoria/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly",
-    priority: 0.8,
+  const categoryEntries: MetadataRoute.Sitemap = categoryRows.map((row) => ({
+    url: `${base}/categoria/${row.slug}`,
+    lastModified: parseLastModified(row.lastModified) ?? siteUpdated,
   }));
 
-  const projectEntries: MetadataRoute.Sitemap = projectSlugs.map((slug) => ({
-    url: `${base}/projeto/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly",
-    priority: 0.7,
+  const projectEntries: MetadataRoute.Sitemap = projectRows.map((row) => ({
+    url: `${base}/projeto/${row.slug}`,
+    lastModified: parseLastModified(row.lastModified),
   }));
 
   return [...staticEntries, ...categoryEntries, ...projectEntries];

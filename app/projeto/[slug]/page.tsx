@@ -13,6 +13,9 @@ import { BackToTop } from "@/components/ui/BackToTop";
 import { brandArtUrl, imageUrlFromSanity } from "@/lib/sanity-image";
 import { resolveProjectContent } from "@/lib/resolve-project-content";
 import { extractPlainFromProjectContent } from "@/lib/project-content-plain";
+import { buildPageMetadata } from "@/lib/seo/metadata-helpers";
+import { resolveOgImageUrl, sanityOgImageUrl } from "@/lib/seo/resolve-og-image";
+import { ProjectPageJsonLd } from "@/components/seo/ProjectPageJsonLd";
 
 interface ProjectPageProps {
   params: Promise<{ slug: string }>;
@@ -33,27 +36,19 @@ export async function generateMetadata({
   const description =
     extractPlainFromProjectContent(resolveProjectContent(project), 160) ||
     `${project.title} (${project.year})`;
+  const site = (await getSiteConfig()) ?? DEFAULT_SITE_CONFIG;
+  const ogImageUrl = resolveOgImageUrl(
+    sanityOgImageUrl(project.thumbnail),
+    sanityOgImageUrl(site.ogImage)
+  );
 
-  return {
+  return buildPageMetadata({
     title: project.title,
     description,
-    openGraph: {
-      title: project.title,
-      description,
-      ...(project.thumbnail
-        ? {
-            images: [
-              {
-                url: imageUrlFromSanity(project.thumbnail, {
-                  width: 1200,
-                  height: 630,
-                }),
-              },
-            ],
-          }
-        : {}),
-    },
-  };
+    path: `/projeto/${slug}`,
+    ogImageUrl,
+    ogType: "article",
+  });
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
@@ -71,9 +66,13 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     : undefined;
   // Only first category — no fallback to later categories (DEC-003-03)
   const backgroundImage = project.categories?.[0]?.backgroundImage;
+  const description =
+    extractPlainFromProjectContent(resolveProjectContent(project), 160) ||
+    `${project.title} (${project.year})`;
 
   return (
     <>
+      <ProjectPageJsonLd project={project} description={description} site={site} />
       <CategoryBackground image={backgroundImage} />
       <div className="relative z-10 flex min-h-[100dvh] flex-col">
         <SiteChrome brandName={site.brandName || "Karina Reis"} logoUrl={logoUrl} />

@@ -12,6 +12,9 @@ import { CategoryBackground } from "@/components/site/CategoryBackground";
 import { ProjectGrid } from "@/components/project/ProjectGrid";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { brandArtUrl } from "@/lib/sanity-image";
+import { buildPageMetadata } from "@/lib/seo/metadata-helpers";
+import { resolveOgImageUrl, sanityOgImageUrl } from "@/lib/seo/resolve-og-image";
+import { CategoryPageJsonLd } from "@/components/seo/CategoryPageJsonLd";
 
 interface CategoryPageProps {
   params: Promise<{ category: string }>;
@@ -32,11 +35,18 @@ export async function generateMetadata({
   ]);
   if (!category) return { title: "Categoria" };
   const site = config ?? DEFAULT_SITE_CONFIG;
-  return {
+  const description = `Projetos de ${category.title} — portfólio de ${site.brandName || "Karina Reis"}`;
+  const ogImageUrl = resolveOgImageUrl(
+    sanityOgImageUrl(category.backgroundImage),
+    sanityOgImageUrl(site.ogImage)
+  );
+
+  return buildPageMetadata({
     title: category.title,
-    description:
-      site.metaDescription || `Portfólio de ${site.brandName || "Karina Reis"}`,
-  };
+    description,
+    path: `/categoria/${slug}`,
+    ogImageUrl,
+  });
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
@@ -56,6 +66,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <>
+      <CategoryPageJsonLd category={category} projects={projects} site={site} />
       <CategoryBackground image={category.backgroundImage} />
       <div className="relative z-10 flex min-h-[100dvh] flex-col">
         <SiteChrome brandName={site.brandName || "Karina Reis"} logoUrl={logoUrl} />
