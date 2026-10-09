@@ -13,7 +13,7 @@ export default function robots(): MetadataRoute.Robots {
   const base = getSiteBaseUrl();
   const publicAllow = {
     allow: "/",
-    disallow: ["/studio/", "/api/"],
+    disallow: ["/studio/", "/api/", "/prototypes/"],
   };
 
   return {

@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { absoluteUrl } from "@/lib/site-url";
+import { resolveOgImageUrl } from "@/lib/seo/resolve-og-image";
 
 export type PageMetadataInput = {
   title: string;
   description: string;
   /** Path only, e.g. `/projeto/foo` */
   path: string;
-  ogImageUrl?: string;
+  /** URL Sanity ou caminho relativo; omitir usa `/opengraph-image`. */
+  ogImageUrl?: string | null;
   ogType?: "website" | "article";
 };
 
@@ -19,9 +21,10 @@ export function buildPageMetadata({
   ogType = "website",
 }: PageMetadataInput): Metadata {
   const url = absoluteUrl(path);
-  const images = ogImageUrl
-    ? [{ url: ogImageUrl, width: 1200, height: 630, alt: title }]
-    : undefined;
+  const resolvedImage = resolveOgImageUrl(ogImageUrl);
+  const images = [
+    { url: resolvedImage, width: 1200, height: 630, alt: title },
+  ];
 
   return {
     title,
@@ -33,13 +36,13 @@ export function buildPageMetadata({
       title,
       description,
       url,
-      ...(images ? { images } : {}),
+      images,
     },
     twitter: {
-      card: ogImageUrl ? "summary_large_image" : "summary",
+      card: "summary_large_image",
       title,
       description,
-      ...(ogImageUrl ? { images: [ogImageUrl] } : {}),
+      images: [images[0]!.url],
     },
   };
 }

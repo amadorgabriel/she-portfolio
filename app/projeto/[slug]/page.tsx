@@ -14,6 +14,7 @@ import { brandArtUrl, imageUrlFromSanity } from "@/lib/sanity-image";
 import { resolveProjectContent } from "@/lib/resolve-project-content";
 import { extractPlainFromProjectContent } from "@/lib/project-content-plain";
 import { buildPageMetadata } from "@/lib/seo/metadata-helpers";
+import { resolveOgImageUrl, sanityOgImageUrl } from "@/lib/seo/resolve-og-image";
 import { ProjectPageJsonLd } from "@/components/seo/ProjectPageJsonLd";
 
 interface ProjectPageProps {
@@ -35,9 +36,11 @@ export async function generateMetadata({
   const description =
     extractPlainFromProjectContent(resolveProjectContent(project), 160) ||
     `${project.title} (${project.year})`;
-  const ogImageUrl = project.thumbnail
-    ? imageUrlFromSanity(project.thumbnail, { width: 1200, height: 630 })
-    : undefined;
+  const site = (await getSiteConfig()) ?? DEFAULT_SITE_CONFIG;
+  const ogImageUrl = resolveOgImageUrl(
+    sanityOgImageUrl(project.thumbnail),
+    sanityOgImageUrl(site.ogImage)
+  );
 
   return buildPageMetadata({
     title: project.title,

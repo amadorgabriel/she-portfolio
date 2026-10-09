@@ -16,6 +16,8 @@
     "sanity:migrate:remove-legacy": "sanity migrations run remove-legacy-project-fields --no-dry-run --no-confirm"
   },
   "dependencies": {
+    "@fontsource/cormorant-garamond": "^5.3.0",
+    "@fontsource/dm-sans": "^5.3.0",
     "@hookform/resolvers": "^5.2.2",
     "@mux/mux-player-react": "^3.13.2",
     "@portabletext/react": "^6.0.3",
