@@ -47,21 +47,7 @@ const categoryFields = `
   }
 `;
 
-const projectFields = `
-  _id,
-  _type,
-  _createdAt,
-  _updatedAt,
-  title,
-  slug,
-  categories[]->{
-    ${categoryFields}
-  },
-  thumbnail {
-    ...,
-    asset->
-  },
-  gallery[] {
+const galleryMediaFields = `
     _type,
     _key,
     alt,
@@ -92,8 +78,67 @@ const projectFields = `
       ...,
       asset->
     }
+`;
+
+const projectFields = `
+  _id,
+  _type,
+  _createdAt,
+  _updatedAt,
+  title,
+  slug,
+  categories[]->{
+    ${categoryFields}
   },
-  description,
+  thumbnail {
+    ...,
+    asset->
+  },
+  content[] {
+    _type,
+    _key,
+    _type == "projectText" => {
+      body
+    },
+    _type == "projectImage" => {
+      alt,
+      caption,
+      image {
+        ...,
+        asset->{
+          _id,
+          url,
+          metadata {
+            dimensions
+          }
+        }
+      }
+    },
+    _type == "projectVideo" => {
+      alt,
+      caption,
+      video {
+        _type,
+        asset->{
+          playbackId,
+          assetId,
+          thumbTime,
+          data {
+            aspect_ratio
+          }
+        }
+      },
+      poster {
+        ...,
+        asset->
+      }
+    },
+    _type == "projectGallery" => {
+      items[] {
+        ${galleryMediaFields}
+      }
+    }
+  },
   year,
   client,
   order

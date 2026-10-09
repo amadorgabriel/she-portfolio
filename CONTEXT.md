@@ -13,8 +13,28 @@ Agrupamento editorial de projetos, com slug próprio e opcionalmente arte de fun
 _Avoid_: collection, tag
 
 **Projeto**:
-Peça do portfólio com galeria, metadados e uma ou mais categorias.
+Peça do portfólio com conteúdo editorial em blocos, metadados e uma ou mais categorias.
 _Avoid_: post, work item
+
+**Conteúdo do projeto**:
+Lista ordenada de blocos (`content[]`) que compõem a página pública do **Projeto** — texto, imagem, vídeo ou galeria.
+_Avoid_: page builder genérico, corpo único fixo
+
+**Bloco de texto**:
+Unidade de **Conteúdo do projeto** com corpo em Portable Text (`projectText`).
+_Avoid_: description como nome de bloco
+
+**Bloco de imagem**:
+Unidade de **Conteúdo do projeto** com uma imagem, alt e legenda opcional (`projectImage`).
+_Avoid_: item solto fora de bloco
+
+**Bloco de vídeo**:
+Unidade de **Conteúdo do projeto** com vídeo Mux, alt, legenda e poster opcional (`projectVideo`).
+_Avoid_: embed avulso fora do page builder
+
+**Bloco de galeria**:
+Unidade de **Conteúdo do projeto** que agrupa zero ou mais **Mídias de galeria** em `items[]` (`projectGallery`). No Studio aparece como **Galeria**.
+_Avoid_: campo top-level `gallery[]` (removido do schema)
 
 **Rota de categoria**:
 Path público `/categoria/{slug}`.
@@ -33,7 +53,7 @@ Arte associada à categoria, usada como plano de fundo full-bleed (sem overlay) 
 _Avoid_: banner, hero image (neste contexto), overlay automático
 
 **Galeria**:
-Lista ordenada de mídias de um Projeto, editada no Studio.
+Lista ordenada de mídias dentro de um **Bloco de galeria**. Editada no Studio.
 _Avoid_: carousel (salvo se a UI pública virar carousel), “Galeria de Imagens” como nome de domínio
 
 **Mídia de galeria**:
@@ -64,7 +84,8 @@ _Avoid_: CMS admin genérico, UI de upload custom no Next para a Galeria
 
 - Uma **Categoria** contém zero ou mais **Projetos**
 - Um **Projeto** pertence a uma ou mais **Categorias**
-- Um **Projeto** tem zero ou mais itens de **Mídia de galeria** na **Galeria**
+- Um **Projeto** tem zero ou mais blocos em **Conteúdo do projeto** (ordem editorial da página)
+- Um **Bloco de galeria** contém zero ou mais **Mídias de galeria** em `items[]`
 - A **Marca** é única por site (documento de configuração)
 - O **Fundo de categoria** de uma **Categoria** aplica-se à listagem dessa categoria
 - Na página de um **Projeto**, o fundo herdado é o da **primeira Categoria** referenciada no documento do projeto

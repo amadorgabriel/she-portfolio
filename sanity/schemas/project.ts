@@ -1,4 +1,4 @@
-import { defineType, defineField } from "sanity";
+import { defineType, defineField, defineArrayMember } from "sanity";
 import { slugifyFromTitle, validateSlugField } from "../lib/slug";
 
 export const project = defineType({
@@ -58,90 +58,18 @@ export const project = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "gallery",
-      title: "Galeria",
+      name: "content",
+      title: "Conteúdo",
       description:
-        "Arraste várias imagens de uma vez para criar vários itens na Galeria. O Texto Alternativo pode ser preenchido depois do upload, mas é obrigatório para publicar. Para vídeos, adicione um item do tipo Vídeo (Mux).",
+        "Monte a página do projeto com blocos de texto, imagem, vídeo e galeria.",
       type: "array",
       of: [
-        {
-          type: "image",
-          options: {
-            hotspot: true,
-          },
-          fields: [
-            defineField({
-              name: "alt",
-              title: "Texto Alternativo",
-              type: "string",
-              validation: (Rule) => Rule.required(),
-            }),
-            defineField({
-              name: "caption",
-              title: "Legenda",
-              type: "string",
-            }),
-          ],
-        },
-        {
-          type: "object",
-          name: "galleryVideo",
-          title: "Vídeo",
-          fields: [
-            defineField({
-              name: "video",
-              title: "Vídeo (Mux)",
-              type: "mux.video",
-              options: {
-                acceptedMimeTypes: ["video/*"],
-              },
-              validation: (Rule) => Rule.required(),
-            }),
-            defineField({
-              name: "alt",
-              title: "Texto Alternativo",
-              type: "string",
-              validation: (Rule) => Rule.required(),
-            }),
-            defineField({
-              name: "caption",
-              title: "Legenda",
-              type: "string",
-            }),
-            defineField({
-              name: "poster",
-              title: "Poster (opcional)",
-              type: "image",
-              description:
-                "Override opcional da imagem de capa. Se vazio, usa a thumbnail automática gerada pelo Mux.",
-              options: {
-                hotspot: true,
-              },
-            }),
-          ],
-          preview: {
-            select: {
-              title: "alt",
-              caption: "caption",
-              media: "poster",
-            },
-            prepare({ title, caption, media }) {
-              return {
-                title: title || "Vídeo sem texto alternativo",
-                subtitle: caption || "Vídeo",
-                media,
-              };
-            },
-          },
-        },
+        defineArrayMember({ type: "projectText" }),
+        defineArrayMember({ type: "projectImage" }),
+        defineArrayMember({ type: "projectVideo" }),
+        defineArrayMember({ type: "projectGallery" }),
       ],
-    }),
-    defineField({
-      name: "description",
-      title: "Descrição",
-      type: "array",
-      of: [{ type: "block" }],
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
       name: "year",

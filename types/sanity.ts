@@ -96,6 +96,46 @@ export interface SanityGalleryVideo {
 
 export type GalleryMedia = SanityGalleryImage | SanityGalleryVideo;
 
+// ============== PROJECT CONTENT (page builder) ==============
+
+export interface ProjectTextBlock {
+  _type: "projectText";
+  _key: string;
+  body: PortableTextBlock[];
+}
+
+export interface ProjectImageBlock {
+  _type: "projectImage";
+  _key: string;
+  image: SanityImage;
+  alt: string;
+  caption?: string;
+}
+
+export interface ProjectVideoBlock {
+  _type: "projectVideo";
+  _key: string;
+  video: {
+    _type: "mux.video";
+    asset?: MuxVideoAsset;
+  };
+  alt: string;
+  caption?: string;
+  poster?: SanityImage;
+}
+
+export interface ProjectGalleryBlock {
+  _type: "projectGallery";
+  _key: string;
+  items: GalleryMedia[];
+}
+
+export type ProjectContentBlock =
+  | ProjectTextBlock
+  | ProjectImageBlock
+  | ProjectVideoBlock
+  | ProjectGalleryBlock;
+
 // ============== CATEGORY ==============
 
 /** Imagem de fundo decorativa (aria-hidden) — sem alt/caption por design (CLEAN-03). */
@@ -121,8 +161,7 @@ export interface Project {
   slug: SanitySlug;
   categories: Category[];
   thumbnail: SanityImage;
-  gallery?: GalleryMedia[];
-  description: PortableTextBlock[];
+  content: ProjectContentBlock[];
   year: number;
   client?: string;
   order: number;

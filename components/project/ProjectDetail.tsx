@@ -1,28 +1,14 @@
-import type { GalleryMedia, Project, SanityGalleryImage } from "@/types/sanity";
-import { ProjectGallery } from "@/components/ProjectGallery";
-import { RichText } from "@/components/RichText";
+import type { Project } from "@/types/sanity";
+import { resolveProjectContent } from "@/lib/resolve-project-content";
+import { ProjectContentBuilder } from "@/components/project/ProjectContentBuilder";
 
 interface ProjectDetailProps {
   project: Project;
 }
 
-function toGalleryItems(project: Project): GalleryMedia[] {
-  if (project.gallery?.length) return project.gallery;
-  if (project.thumbnail) {
-    return [
-      {
-        ...project.thumbnail,
-        _type: "image",
-        alt: project.thumbnail.alt || project.title,
-      } satisfies SanityGalleryImage,
-    ];
-  }
-  return [];
-}
-
 export function ProjectDetail({ project }: ProjectDetailProps) {
   const categoryTitles = project.categories?.map((c) => c.title).filter(Boolean) ?? [];
-  const gallery = toGalleryItems(project);
+  const contentBlocks = resolveProjectContent(project);
 
   return (
     <article className="mx-auto w-full max-w-5xl px-6 pb-8 md:px-10 animate-fade-in">
@@ -45,15 +31,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
         </div>
       </header>
 
-      {gallery.length > 0 && (
-        <ProjectGallery items={gallery} projectTitle={project.title} className="mb-12" />
-      )}
-
-      {project.description?.length > 0 && (
-        <div className="mx-auto max-w-2xl">
-          <RichText value={project.description} />
-        </div>
-      )}
+      <ProjectContentBuilder blocks={contentBlocks} projectTitle={project.title} />
     </article>
   );
 }

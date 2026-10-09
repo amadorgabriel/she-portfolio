@@ -170,11 +170,15 @@ function imageRef(assetId, alt, caption) {
   };
 }
 
+function blockKey(seed) {
+  return createHash("md5").update(seed).digest("hex").slice(0, 12);
+}
+
 function portableText(text) {
   return [
     {
       _type: "block",
-      _key: createHash("md5").update(text).digest("hex").slice(0, 12),
+      _key: blockKey(text),
       style: "normal",
       markDefs: [],
       children: [
@@ -187,6 +191,28 @@ function portableText(text) {
       ],
     },
   ];
+}
+
+function projectContentFromLegacy({ projectId, gallery, description }) {
+  const content = [];
+
+  if (gallery?.length) {
+    content.push({
+      _type: "projectGallery",
+      _key: blockKey(`${projectId}:gallery`),
+      items: gallery,
+    });
+  }
+
+  if (description?.length) {
+    content.push({
+      _type: "projectText",
+      _key: blockKey(`${projectId}:description`),
+      body: description,
+    });
+  }
+
+  return content;
 }
 
 const CATEGORIES = [
@@ -362,6 +388,12 @@ async function main() {
       galleryAssets.push(await getAsset(g));
     }
 
+    const gallery = galleryAssets.map((a, i) => ({
+      ...imageRef(a._id, `${p.title} — imagem ${i + 1}`),
+      _key: `g${i + 1}`,
+    }));
+    const description = portableText(p.description);
+
     await client.createOrReplace({
       _id: p.id,
       _type: "project",
@@ -375,11 +407,11 @@ async function main() {
         },
       ],
       thumbnail: imageRef(thumbAsset._id, `Thumbnail ${p.title}`),
-      gallery: galleryAssets.map((a, i) => ({
-        ...imageRef(a._id, `${p.title} — imagem ${i + 1}`),
-        _key: `g${i + 1}`,
-      })),
-      description: portableText(p.description),
+      content: projectContentFromLegacy({
+        projectId: p.id,
+        gallery,
+        description,
+      }),
       year: p.year,
       order: p.order,
     });
