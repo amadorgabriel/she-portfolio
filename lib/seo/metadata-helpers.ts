@@ -12,6 +12,16 @@ export type PageMetadataInput = {
   ogType?: "website" | "article";
 };
 
+function socialImageUrl(url: string): string {
+  if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  return absoluteUrl(url);
+}
+
+function socialImageType(url: string): string {
+  if (url.includes("/opengraph-image") || /\.png(\?|$)/i.test(url)) return "image/png";
+  return "image/jpeg";
+}
+
 /** Shared Open Graph + Twitter + canonical for public routes. */
 export function buildPageMetadata({
   title,
@@ -21,9 +31,15 @@ export function buildPageMetadata({
   ogType = "website",
 }: PageMetadataInput): Metadata {
   const url = absoluteUrl(path);
-  const resolvedImage = resolveOgImageUrl(ogImageUrl);
+  const imageUrl = socialImageUrl(resolveOgImageUrl(ogImageUrl));
   const images = [
-    { url: resolvedImage, width: 1200, height: 630, alt: title },
+    {
+      url: imageUrl,
+      width: 1200,
+      height: 630,
+      alt: title,
+      type: socialImageType(imageUrl),
+    },
   ];
 
   return {

@@ -147,6 +147,8 @@ export interface Category {
   title: string;
   slug: SanitySlug;
   order: number;
+  /** Ordem arrastável no Studio. Ausente até a lista ser reordenada. */
+  orderRank?: string;
   backgroundImage?: SanityBackgroundImage;
 }
 

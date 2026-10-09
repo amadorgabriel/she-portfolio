@@ -8,6 +8,7 @@ import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import { muxInput } from "sanity-plugin-mux-input";
 import { schemas } from "./schemas";
+import { structure } from "./structure";
 
 // Use as variáveis de ambiente ou valores padrão para build
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "";
@@ -26,7 +27,7 @@ export default defineConfig({
   projectId,
   dataset,
   apiVersion,
-  plugins: [structureTool(), visionTool(), muxInput()],
+  plugins: [structureTool({ structure }), visionTool(), muxInput()],
   schema: {
     types: schemas,
   },

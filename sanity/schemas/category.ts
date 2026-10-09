@@ -1,4 +1,5 @@
 import { defineType, defineField } from "sanity";
+import { orderRankField, orderRankOrdering } from "@sanity/orderable-document-list";
 import { slugifyFromTitle, validateSlugField } from "../lib/slug";
 
 export const category = defineType({
@@ -6,6 +7,7 @@ export const category = defineType({
   title: "Categorias",
   type: "document",
   fields: [
+    orderRankField({ type: "category" }),
     defineField({
       name: "title",
       title: "Título",
@@ -27,8 +29,10 @@ export const category = defineType({
       name: "order",
       title: "Ordem de Exibição",
       type: "number",
+      hidden: true,
+      readOnly: true,
       initialValue: 0,
-      validation: (Rule) => Rule.required().integer().min(0),
+      description: "Substituído pela ordem arrastável da lista de categorias.",
     }),
     defineField({
       name: "backgroundImage",
@@ -44,16 +48,13 @@ export const category = defineType({
   preview: {
     select: {
       title: "title",
-      order: "order",
     },
-    prepare({ title, order }) {
-      return {
-        title,
-        subtitle: `Ordem: ${order ?? 0}`,
-      };
+    prepare({ title }) {
+      return { title };
     },
   },
   orderings: [
+    orderRankOrdering,
     {
       title: "Ordem de Exibição",
       name: "orderAsc",

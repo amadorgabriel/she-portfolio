@@ -210,7 +210,7 @@ export const getSiteConfig = cache(async (options?: QueryOptions): Promise<SiteC
  */
 export const getCategories = cache(async (options?: QueryOptions): Promise<Category[]> => {
   if (!isSanityConfigured()) return [];
-  const query = `*[_type == "category"] | order(order asc, title asc) { ${categoryFields} }`;
+  const query = `*[_type == "category"] | order(select(defined(orderRank) => 0, 1) asc, orderRank asc, order asc, title asc) { ${categoryFields} }`;
   return client.fetch(query, {}, getFetchOptions(options));
 });
 
@@ -272,7 +272,7 @@ export const getAllProjectSlugs = cache(async (options?: QueryOptions): Promise<
 export const getCategorySitemapEntries = cache(
   async (options?: QueryOptions): Promise<SitemapEntry[]> => {
     if (!isSanityConfigured()) return [];
-    const query = `*[_type == "category" && defined(slug.current)] | order(order asc) {
+    const query = `*[_type == "category" && defined(slug.current)] | order(select(defined(orderRank) => 0, 1) asc, orderRank asc, order asc) {
       "slug": slug.current,
       "lastModified": _updatedAt
     }`;
